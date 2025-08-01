@@ -42,16 +42,29 @@ export const updateProgram = async (id: string, program: Omit<Program, 'id'>) =>
   return data;
 };
 
-// 📥 Récupérer tous les programmes
-export const fetchPrograms = async () => {
+// api/programs.ts
+
+// ... (votre interface Program)
+
+// 📥 Récupérer les programmes PUBLICS (pour les clients)
+export const fetchPrograms = async (): Promise<Program[]> => {
   const { data, error } = await supabase
     .from('programs')
     .select('*')
+    // 1. FILTRE DE SÉCURITÉ : Ne récupérer que les programmes "actifs"
+    .eq('status', 'active') 
     .order('created_at', { ascending: false });
 
-  if (error) throw error;
-  return data;
+  if (error) {
+    // 2. AMÉLIORATION DU DÉBOGAGE : Log l'erreur avant de la lancer
+    console.error("Erreur lors de la récupération des programmes publics:", error.message);
+    throw error;
+  }
+  
+  // 3. AMÉLIORATION DE LA ROBUSTESSE : Garantir qu'on retourne toujours un tableau
+  return data || [];
 };
+
 
 // ❌ Supprimer un programme
 export const deleteProgram = async (id: string) => {
