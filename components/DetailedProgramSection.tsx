@@ -58,10 +58,7 @@ const DetailedProgramSection = () => {
         setPrograms(formattedPrograms);
       } catch (err) {
         console.error("Erreur de chargement des programmes:", err);
-        // ===================================================================================
-        // CORRECTION ESLINT : Remplacement de l'apostrophe
         setError("Impossible de charger les programmes. Veuillez réessayer plus tard.");
-        // ===================================================================================
       } finally {
         setLoading(false);
       }
@@ -116,7 +113,6 @@ const DetailedProgramSection = () => {
             </div>
           ) : (
             <div className="text-center" style={{ color: colors.brown600 }}>
-              {/* CORRECTION ESLINT : Remplacement de l'apostrophe */}
               <p>Aucun programme n&apos;est disponible pour le moment.</p>
             </div>
           )
