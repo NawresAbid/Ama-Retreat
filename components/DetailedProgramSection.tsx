@@ -26,6 +26,7 @@ interface ProgramForCard {
   };
   instructor: string;
   schedule: string[];
+  images?: string[];
 }
 
 const DetailedProgramSection = () => {
@@ -53,6 +54,7 @@ const DetailedProgramSection = () => {
             city: p.city,
             postalCode: p.postal_code,
           },
+          images: p.images || [],
         }));
 
         setPrograms(formattedPrograms);

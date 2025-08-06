@@ -39,7 +39,8 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
     postal_code: '',
     instructor: '',
     schedule: [''],
-    status: 'active' as 'active' | 'inactive'
+    status: 'active' as 'active' | 'inactive',
+    images: [] as string[],
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -58,7 +59,8 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         postal_code: program.postal_code,
         instructor: program.instructor,
         schedule: program.schedule,
-        status: program.status
+        status: program.status,
+        images: program.images || [],
       });
     } else {
       // Reset form when adding a new program
@@ -73,10 +75,32 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         postal_code: '',
         instructor: '',
         schedule: [''],
-        status: 'active'
+        status: 'active',
+        images: [],
       });
     }
   }, [program]);
+
+  // Handle image URLs input (comma separated)
+  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    // Split by comma, trim whitespace, filter out empty
+    const images = value.split(',').map((url) => url.trim()).filter(Boolean);
+    setFormData({ ...formData, images });
+  };
+
+  // Handle image file upload from PC
+  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files) return;
+    const fileArray = Array.from(files);
+    // For preview, use object URLs. In production, upload to server and use the returned URLs.
+    const newImageUrls = fileArray.map(file => URL.createObjectURL(file));
+    setFormData(prev => ({ ...prev, images: [...prev.images, ...newImageUrls] }));
+  };
+
+  // Helper to get the images as a comma-separated string for the input
+  const imagesInputValue = formData.images.filter(url => url.startsWith('http')).join(', ');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,8 +125,9 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         city: formData.city,
         postal_code: formData.postal_code,
         instructor: formData.instructor,
-        schedule: formData.schedule.filter(s => s.trim() !== ''), // Filter out empty schedule slots
-        status: formData.status
+        schedule: formData.schedule.filter(s => s.trim() !== ''),
+        status: formData.status,
+        images: formData.images,
       };
 
       let savedProgram: Program | null = null;
@@ -176,6 +201,40 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Images URLs */}
+            <div>
+              <Label htmlFor="images" style={{ color: colors.brown700 }}>Images (URLs, séparées par des virgules ou fichiers locaux)</Label>
+              <Input
+                id="images"
+                value={imagesInputValue}
+                onChange={handleImagesChange}
+                placeholder="https://exemple.com/image1.jpg, https://exemple.com/image2.jpg"
+                disabled={isLoading}
+                style={{ borderColor: colors.beige300, outlineColor: colors.gold500 }}
+                className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 mb-2"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleImageFileUpload}
+                disabled={isLoading}
+                className="block mt-1"
+              />
+              {/* Preview thumbnails */}
+              {formData.images.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.images.map((url, idx) => (
+                    <img
+                      key={idx}
+                      src={url}
+                      alt={`Aperçu ${idx + 1}`}
+                      style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, border: `1px solid ${colors.beige300}` }}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
               <div>
                 <Label htmlFor="title" style={{ color: colors.brown700 }}>Titre</Label>
                 <Input

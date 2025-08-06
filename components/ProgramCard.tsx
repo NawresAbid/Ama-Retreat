@@ -70,9 +70,10 @@ interface ProgramCardProps {
   iconColor: string;
   buttonBgColor: string;
   buttonTextColor: string;
+  imageUrl?: string;
 }
 
-const ProgramCard = ({ program, iconType, iconColor, buttonBgColor, buttonTextColor }: ProgramCardProps) => {
+const ProgramCard = ({ program, iconType, iconColor, buttonBgColor, buttonTextColor, imageUrl }: ProgramCardProps) => {
   const router = useRouter();
   const IconComponent = customIcons[iconType];
 
@@ -83,6 +84,11 @@ const ProgramCard = ({ program, iconType, iconColor, buttonBgColor, buttonTextCo
   return (
     <Card className="bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 shadow-md flex flex-col">
       <CardHeader className="text-center pb-4">
+        <img
+          src={imageUrl || "https://plus.unsplash.com/premium_photo-1673697239981-389164b7b87f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bmF0dXJlfGVufDB8fDB8fHww"}
+          alt={program.title}
+          style={{ width: '100%', maxHeight: 160, objectFit: 'cover', borderRadius: 10, marginBottom: 12 }}
+        />
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br mb-4" style={{ backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`, color: iconColor }}>
           {IconComponent && <IconComponent width={32} height={32} />}
         </div>

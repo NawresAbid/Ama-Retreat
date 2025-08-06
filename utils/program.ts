@@ -1,6 +1,6 @@
 import { createClient } from './supabase/client';
 
-const supabase = createClient(); // utilise la bonne instance
+const supabase = createClient();
 
 export interface Program {
   id?: string;
@@ -15,21 +15,21 @@ export interface Program {
   instructor: string;
   schedule: string[];
   status: 'active' | 'inactive';
+  images?: string[]; // stocke ici les chemins dans le storage (ex: programs/123456.jpg)
 }
 
-// ➕ Ajouter un programme
+// Ajouter un programme
 export const addProgram = async (program: Omit<Program, 'id'>) => {
   const { data, error } = await supabase
     .from('programs')
     .insert([program])
     .select()
     .single();
-
   if (error) throw error;
   return data;
 };
 
-// ✏️ Modifier un programme
+// Modifier un programme
 export const updateProgram = async (id: string, program: Omit<Program, 'id'>) => {
   const { data, error } = await supabase
     .from('programs')
@@ -37,41 +37,38 @@ export const updateProgram = async (id: string, program: Omit<Program, 'id'>) =>
     .eq('id', id)
     .select()
     .single();
-
   if (error) throw error;
   return data;
 };
 
-// api/programs.ts
-
-// ... (votre interface Program)
-
-// 📥 Récupérer les programmes PUBLICS (pour les clients)
+// Récupérer les programmes publics avec URLs publiques pour les images
 export const fetchPrograms = async (): Promise<Program[]> => {
   const { data, error } = await supabase
     .from('programs')
     .select('*')
-    // 1. FILTRE DE SÉCURITÉ : Ne récupérer que les programmes "actifs"
-    .eq('status', 'active') 
+    .eq('status', 'active')
     .order('created_at', { ascending: false });
 
-  if (error) {
-    // 2. AMÉLIORATION DU DÉBOGAGE : Log l'erreur avant de la lancer
-    console.error("Erreur lors de la récupération des programmes publics:", error.message);
-    throw error;
-  }
-  
-  // 3. AMÉLIORATION DE LA ROBUSTESSE : Garantir qu'on retourne toujours un tableau
-  return data || [];
+  if (error) throw error;
+
+  // Pour chaque programme, convertir les chemins images en URLs publiques
+  return (data || []).map(program => {
+    if (program.images && program.images.length) {
+      const imagesUrls = program.images.map((path: string) => {
+        const { data } = supabase.storage.from('programs').getPublicUrl(path);
+        return data.publicUrl;
+      });
+      return { ...program, images: imagesUrls };
+    }
+    return program;
+  });
 };
 
-
-// ❌ Supprimer un programme
+// Supprimer un programme
 export const deleteProgram = async (id: string) => {
   const { error } = await supabase
     .from('programs')
     .delete()
     .eq('id', id);
-
   if (error) throw error;
 };
