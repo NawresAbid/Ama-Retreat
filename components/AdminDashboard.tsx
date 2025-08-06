@@ -206,9 +206,9 @@ const AdminDashboard = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen p-6 flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
+      <div className="min-h-screen p-4 sm:p-6 flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 mx-auto mb-4" style={{ borderColor: colors.gold600 }}></div>
+          <div className="animate-spin rounded-full h-24 w-24 sm:h-32 sm:w-32 border-b-2 mx-auto mb-4" style={{ borderColor: colors.gold600 }}></div>
           <p style={{ color: colors.brown600 }}>Chargement des programmes...</p>
         </div>
       </div>
@@ -217,12 +217,12 @@ const AdminDashboard = () => {
 
   return (
     // Conteneur principal du tableau de bord d'administration
-    <div className="min-h-screen p-6" style={{ backgroundColor: colors.beige50 }}>
+    <div className="min-h-screen p-2 sm:p-4 md:p-6" style={{ backgroundColor: colors.beige50 }}>
       <div className="max-w-7xl mx-auto space-y-6">
         {/* Affichage des erreurs */}
         {error && (
           <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-            <div className="flex justify-between items-center">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
               <span>{error}</span>
               <Button
                 variant="ghost"
@@ -237,28 +237,28 @@ const AdminDashboard = () => {
         )}
 
         {/* Section d'en-tête du tableau de bord */}
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+            <h1 className="text-2xl sm:text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
               Dashboard Administrateur
             </h1>
-            <p className="mt-2" style={{ color: colors.brown600 }}>
+            <p className="mt-2 text-base sm:text-lg" style={{ color: colors.brown600 }}>
               Gérez vos programmes AMA Retreat
             </p>
           </div>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Button
               onClick={loadPrograms}
               variant="outline"
               style={{ borderColor: colors.gold600, color: colors.gold600 }}
-              className="hover:bg-gold-50"
+              className="hover:bg-gold-50 w-full sm:w-auto"
             >
               Actualiser
             </Button>
             <Button
               onClick={handleAddProgram}
               style={{ backgroundColor: colors.gold600, color: colors.white }}
-              className="hover:bg-gold-700"
+              className="hover:bg-gold-700 w-full sm:w-auto"
             >
               <Plus size={20} className="mr-2" />
               Nouveau Programme
@@ -267,7 +267,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Section des cartes de statistiques */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           <Card style={{ backgroundColor: colors.white, boxShadow: customShadows.ama }}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium" style={{ color: colors.brown600 }}>
@@ -324,7 +324,7 @@ const AdminDashboard = () => {
               Gérez et modifiez vos programmes
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto p-0 sm:p-6">
             {programs.length === 0 ? (
               <div className="text-center py-8">
                 <p style={{ color: colors.brown600 }}>Aucun programme trouvé.</p>
@@ -338,80 +338,82 @@ const AdminDashboard = () => {
                 </Button>
               </div>
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead style={{ color: colors.brown700 }}>Programme</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Instructeur</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Durée</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Capacité</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Prix</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Statut</TableHead>
-                    <TableHead style={{ color: colors.brown700 }}>Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {programs.map((programData) => (
-                    <TableRow key={programData.id}>
-                      <TableCell>
-                        <div>
-                          <div className="font-medium" style={{ color: colors.brown800 }}>{programData.title}</div>
-                          <div className="text-sm" style={{ color: colors.brown600 }}>{programData.location.city}</div>
-                        </div>
-                      </TableCell>
-                      <TableCell style={{ color: colors.brown700 }}>{programData.instructor}</TableCell>
-                      <TableCell style={{ color: colors.brown700 }}>{programData.duration}</TableCell>
-                      <TableCell style={{ color: colors.brown700 }}>{programData.capacity}</TableCell>
-                      <TableCell style={{ color: colors.brown700 }}>{programData.price}€</TableCell>
-                      <TableCell>
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-medium`}
-                          style={{
-                            backgroundColor: programData.status === 'active' ? colors.green100 : colors.red100,
-                            color: programData.status === 'active' ? colors.green800 : colors.red800,
-                          }}
-                        >
-                          {programData.status === 'active' ? 'Actif' : 'Inactif'}
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex space-x-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => window.open(`/programme/${programData.id}`, '_blank')}
-                            style={{ color: colors.gold600 }}
-                            className="hover:text-gold-700"
-                            title="Voir le programme"
-                          >
-                            <Eye size={16} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleEditProgram(programData)}
-                            style={{ color: colors.blue600 }}
-                            className="hover:text-blue-700"
-                            title="Modifier le programme"
-                          >
-                            <Edit size={16} />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDeleteProgram(programData.id)}
-                            style={{ color: colors.red600 }}
-                            className="hover:text-red-700"
-                            title="Supprimer le programme"
-                          >
-                            <Trash2 size={16} />
-                          </Button>
-                        </div>
-                      </TableCell>
+              <div className="w-full min-w-[600px] sm:min-w-0">
+                <Table className="text-xs sm:text-sm">
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead style={{ color: colors.brown700 }}>Programme</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Instructeur</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Durée</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Capacité</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Prix</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Statut</TableHead>
+                      <TableHead style={{ color: colors.brown700 }}>Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {programs.map((programData) => (
+                      <TableRow key={programData.id}>
+                        <TableCell>
+                          <div>
+                            <div className="font-medium" style={{ color: colors.brown800 }}>{programData.title}</div>
+                            <div className="text-xs sm:text-sm" style={{ color: colors.brown600 }}>{programData.location.city}</div>
+                          </div>
+                        </TableCell>
+                        <TableCell style={{ color: colors.brown700 }}>{programData.instructor}</TableCell>
+                        <TableCell style={{ color: colors.brown700 }}>{programData.duration}</TableCell>
+                        <TableCell style={{ color: colors.brown700 }}>{programData.capacity}</TableCell>
+                        <TableCell style={{ color: colors.brown700 }}>{programData.price}€</TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium`}
+                            style={{
+                              backgroundColor: programData.status === 'active' ? colors.green100 : colors.red100,
+                              color: programData.status === 'active' ? colors.green800 : colors.red800,
+                            }}
+                          >
+                            {programData.status === 'active' ? 'Actif' : 'Inactif'}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex flex-col sm:flex-row space-y-1 sm:space-y-0 sm:space-x-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => window.open(`/programme/${programData.id}`, '_blank')}
+                              style={{ color: colors.gold600 }}
+                              className="hover:text-gold-700"
+                              title="Voir le programme"
+                            >
+                              <Eye size={16} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditProgram(programData)}
+                              style={{ color: colors.blue600 }}
+                              className="hover:text-blue-700"
+                              title="Modifier le programme"
+                            >
+                              <Edit size={16} />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteProgram(programData.id)}
+                              style={{ color: colors.red600 }}
+                              className="hover:text-red-700"
+                              title="Supprimer le programme"
+                            >
+                              <Trash2 size={16} />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             )}
           </CardContent>
         </Card>

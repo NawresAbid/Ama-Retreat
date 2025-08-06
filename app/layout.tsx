@@ -6,7 +6,7 @@ import '../app/globals.css' // Assurez-vous d'importer vos styles globaux
 
 export const metadata: Metadata = {
   title: 'Next.js Supabase Auth',
-  description: 'Authentication example with Next.js and Supabase',
+  description: 'Ama Retreat',
 };
 
 export default function RootLayout({
