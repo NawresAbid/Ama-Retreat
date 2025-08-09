@@ -139,7 +139,7 @@ const ProgramCard = ({
         <Image
           src={
             imageUrl ||
-            "https://media.istockphoto.com/id/1716187757/photo/traditional-blue-door-with-pattern-tiles-and-pink-flowers-hara-sghira-er-riadh-djerbahood-in.jpg?s=612x612&w=0&k=20&c=-vM1Inf-ZZTGFEpnSCWGqyPEeOe_g7UNWUcHU0V8tCw="
+            "https://media.istockphoto.com/id/499195103/photo/africa-tunisia-jerba-beach.jpg?s=612x612&w=0&k=20&c=n0Y1oOwakn6BQexWLy9mozDbHligNQf7Lhj2H4eXPmI="
           }
           alt={program.title}
           width={400}
