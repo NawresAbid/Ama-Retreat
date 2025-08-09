@@ -70,7 +70,7 @@ const ProgramSection = () => {
             Notre Programme
           </h2>
           <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: colors.brown600 }}>
-            Un séjour complet conçue pour votre bien-être physique, mental et spirituel
+           Un séjour de 3 à 5 jours conçu pour votre bien-être physique, mental et spirituel
           </p>
         </div>
 
