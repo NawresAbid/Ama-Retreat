@@ -1,4 +1,4 @@
-import { Heart, Star, Flower, Sun } from "lucide-react";
+import { Star, Flower, Sun } from "lucide-react";
 
 const About = () => {
   return (

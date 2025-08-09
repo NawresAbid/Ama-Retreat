@@ -105,9 +105,9 @@ const DetailedProgramSection = () => {
                     program.title.toLowerCase().includes('sport') ? 'sport' :
                     program.title.toLowerCase().includes('massage') ? 'massage' : 'yoga'
                   }
-                  iconColor={
-                    program.title.toLowerCase().includes('yoga') || program.title.toLowerCase().includes('sport') ? colors.gold600 : colors.brown600
-                  }
+                  //iconColor={
+                  //  program.title.toLowerCase().includes('yoga') || program.title.toLowerCase().includes('sport') ? colors.gold600 : colors.brown600
+                  //}
                   buttonBgColor={colors.gold600}
                   buttonTextColor={colors.white}
                 />
