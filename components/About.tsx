@@ -4,7 +4,7 @@ const About = () => {
   return (
     <section className="py-20 bg-gradient-to-br from-stone-50 via-amber-50 to-stone-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* En-tête */}
+        {/* En-tête 
         <div className="text-center mb-16">
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-amber-200 to-amber-300 mb-6 shadow-xl">
             <Heart className="text-amber-700" size={36} />
@@ -20,7 +20,7 @@ const About = () => {
             l&apos;essentiel.
           </p>
         </div>
-
+*/}
         {/* Introduction */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl mb-12 border border-amber-200/30">
           <p className="text-lg md:text-xl text-stone-800 leading-relaxed text-center mb-8">

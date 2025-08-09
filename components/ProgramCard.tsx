@@ -87,17 +87,15 @@ const ProgramCard = ({ program, iconType, iconColor, buttonBgColor, buttonTextCo
     <Card className="bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 shadow-md flex flex-col">
       <CardHeader className="text-center pb-4">
             <Image
-              src={imageUrl || "https://media.istockphoto.com/id/1181276039/photo/tunisia-djerba.jpg?s=612x612&w=0&k=20&c=-jSYzxa0hEeLCPTNYEyvwvvYdW0XMOnP97eFuTmdjRo="}
+              src={imageUrl || "https://media.istockphoto.com/id/499195103/photo/africa-tunisia-jerba-beach.jpg?s=612x612&w=0&k=20&c=n0Y1oOwakn6BQexWLy9mozDbHligNQf7Lhj2H4eXPmI="}
               alt={program.title}
-              width={400}
-              height={192}
-              className="w-full h-48 object-cover rounded-t-2xl"
-              style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-              priority
-            />
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br mb-4" style={{ backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`, color: iconColor }}>
-          {IconComponent && <IconComponent width={32} height={32} />}
-        </div>
+    width={400}
+    height={260} // Agrandit la hauteur de l'image
+    className="w-full h-64 object-cover rounded-t-2xl" // h-64 = 16rem, plus grand que h-48
+    style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+    priority
+  />
+       
         <CardTitle className="text-xl font-serif" style={{ color: colors.brown800 }}>{program.title}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4 flex flex-col flex-grow">
