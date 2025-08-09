@@ -70,7 +70,7 @@ const ProgramSection = () => {
             Notre Programme
           </h2>
           <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: colors.brown600 }}>
-            Une séjour complet conçue pour votre bien-être physique, mental et spirituel
+            Un séjour complet conçue pour votre bien-être physique, mental et spirituel
           </p>
         </div>
 
