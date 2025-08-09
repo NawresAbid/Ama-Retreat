@@ -33,7 +33,7 @@ const ProgramSection = () => {
         </svg>
       ),
       title: "Alimentation Saine",
-      description: "Cuisine végétarienne bio préparée avec des ingrédients locaux et de saison.",
+      description: "Cuisine méditerranéenne  bio préparée avec des ingrédients locaux et de saison.",
       iconColor: colors.brown600
     },
     {
@@ -70,7 +70,7 @@ const ProgramSection = () => {
             Notre Programme
           </h2>
           <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{ color: colors.brown600 }}>
-            Une semaine complète conçue pour votre bien-être physique, mental et spirituel
+            Une séjour complet conçue pour votre bien-être physique, mental et spirituel
           </p>
         </div>
 

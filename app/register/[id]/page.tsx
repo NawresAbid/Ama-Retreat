@@ -1,25 +1,26 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, CheckCircle, Calendar, MapPin, User } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import RegistrationForm from '@/components/RegistrationForm';
-import PaymentForm from '@/components/PaymentForm';
-import { fetchPrograms, Program as ProgramFromAPI } from '@/utils/program';
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { ArrowLeft, CheckCircle, Calendar, MapPin, User } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import RegistrationForm from "@/components/RegistrationForm";
+import PaymentForm from "@/components/PaymentForm";
+import { fetchPrograms, Program as ProgramFromAPI } from "@/utils/program";
+import { createReservation, CreateReservationData } from "@/utils/réservation";
 
 const colors = {
-  beige50: '#FDF8F0',
-  beige100: '#F9ECD9',
-  brown600: '#7A5230',
-  brown800: '#5C3A1F',
-  gold600: '#B58C58',
-  gold700: '#A37E4C',
-  white: '#FFFFFF',
-  green500: '#10B981',
-  green100: '#D1FAE5',
+  beige50: "#FDF8F0",
+  beige100: "#F9ECD9",
+  brown600: "#7A5230",
+  brown800: "#5C3A1F",
+  gold600: "#B58C58",
+  gold700: "#A37E4C",
+  white: "#FFFFFF",
+  green500: "#10B981",
+  green100: "#D1FAE5",
 };
 
 interface ProgramForRegistration {
@@ -63,15 +64,15 @@ interface PaymentData {
   billingCountry: string;
 }
 
-type Step = 'registration' | 'payment' | 'confirmation';
+type Step = "registration" | "payment" | "confirmation";
 
 const RegisterPage = () => {
   const router = useRouter();
   const params = useParams();
-  const [currentStep, setCurrentStep] = useState<Step>('registration');
+
+  const [currentStep, setCurrentStep] = useState<Step>("registration");
   const [program, setProgram] = useState<ProgramForRegistration | null>(null);
   const [registrationData, setRegistrationData] = useState<RegistrationData | null>(null);
-  //const [paymentData, setPaymentData] = useState<PaymentData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -81,9 +82,9 @@ const RegisterPage = () => {
       try {
         setLoading(true);
         const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
-        
-        const foundProgram = apiPrograms.find(p => (p.id || p.title) === params.id);
-        
+
+        const foundProgram = apiPrograms.find((p) => (p.id || p.title) === params.id);
+
         if (foundProgram) {
           const formattedProgram: ProgramForRegistration = {
             id: foundProgram.id || foundProgram.title,
@@ -117,34 +118,66 @@ const RegisterPage = () => {
     }
   }, [params.id]);
 
-  const handleRegistrationNext = (data: RegistrationData) => {
-    setRegistrationData(data);
-    setCurrentStep('payment');
+  const handleRegistrationNext = async (data: RegistrationData) => {
+    if (!program) {
+      setError("Programme non chargé");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    const reservationData: CreateReservationData = {
+      program_id: program.id,
+      first_name: data.firstName,
+      last_name: data.lastName,
+      email: data.email,
+      phone: data.phone,
+      date_of_birth: data.dateOfBirth,
+      emergency_contact: data.emergencyContact,
+      emergency_phone: data.emergencyPhone,
+      medical_conditions: data.medicalConditions,
+      experience: data.experience,
+      special_requests: data.specialRequests,
+    };
+
+    try {
+      const { reservation, error } = await createReservation(reservationData);
+      if (error) {
+        setError("Erreur lors de la création de la réservation. Veuillez réessayer.");
+        console.error(error);
+      } else if (reservation) {
+        setRegistrationData(data);
+        setCurrentStep("payment");
+      }
+    } catch (err) {
+      setError("Erreur inattendue lors de la réservation.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePaymentBack = () => {
-    setCurrentStep('registration');
+    setCurrentStep("registration");
   };
 
   const handlePayment = async (data: PaymentData) => {
     setIsProcessingPayment(true);
-    //setPaymentData(data);
 
-    // Simulation du traitement du paiement
     try {
-      // Simuler un délai de traitement
-      await new Promise(resolve => setTimeout(resolve, 3000));
-      
-      // Ici, vous intégreriez normalement avec votre API de paiement
-      console.log('Données d\'inscription:', registrationData);
-      console.log('Données de paiement:', data);
-      console.log('Programme:', program);
-      
-      // Simuler un succès
-      setCurrentStep('confirmation');
+      // Simulate payment processing delay
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      // Normally integrate with payment API here
+      console.log("Données d'inscription:", registrationData);
+      console.log("Données de paiement:", data);
+      console.log("Programme:", program);
+
+      setCurrentStep("confirmation");
     } catch (err) {
-      console.error('Erreur de paiement:', err);
-      setError('Erreur lors du traitement du paiement. Veuillez réessayer.');
+      console.error("Erreur de paiement:", err);
+      setError("Erreur lors du traitement du paiement. Veuillez réessayer.");
     } finally {
       setIsProcessingPayment(false);
     }
@@ -152,19 +185,27 @@ const RegisterPage = () => {
 
   const getStepProgress = (): number => {
     switch (currentStep) {
-      case 'registration': return 33;
-      case 'payment': return 66;
-      case 'confirmation': return 100;
-      default: return 0;
+      case "registration":
+        return 33;
+      case "payment":
+        return 66;
+      case "confirmation":
+        return 100;
+      default:
+        return 0;
     }
   };
 
   const getStepTitle = (): string => {
     switch (currentStep) {
-      case 'registration': return 'Informations personnelles';
-      case 'payment': return 'Paiement';
-      case 'confirmation': return 'Confirmation';
-      default: return '';
+      case "registration":
+        return "Informations personnelles";
+      case "payment":
+        return "Paiement";
+      case "confirmation":
+        return "Confirmation";
+      default:
+        return "";
     }
   };
 
@@ -189,8 +230,8 @@ const RegisterPage = () => {
               <h3 className="font-bold text-lg mb-2">Erreur</h3>
               <p>{error}</p>
             </div>
-            <Button 
-              onClick={() => router.back()} 
+            <Button
+              onClick={() => router.back()}
               className="mt-6"
               style={{ backgroundColor: colors.gold600, color: colors.white }}
             >
@@ -208,14 +249,14 @@ const RegisterPage = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* En-tête avec bouton retour */}
         <div className="mb-8">
-          <Button 
-            onClick={() => router.back()} 
+          <Button
+            onClick={() => router.back()}
             variant="outline"
             className="mb-6 border-2 hover:bg-opacity-10"
-            style={{ 
-              borderColor: colors.brown600, 
+            style={{
+              borderColor: colors.brown600,
               color: colors.brown600,
-              backgroundColor: 'transparent'
+              backgroundColor: "transparent",
             }}
           >
             <ArrowLeft className="mr-2" size={16} />
@@ -227,7 +268,10 @@ const RegisterPage = () => {
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <h1 className="text-2xl font-serif font-bold mb-2" style={{ color: colors.brown800 }}>
+                  <h1
+                    className="text-2xl font-serif font-bold mb-2"
+                    style={{ color: colors.brown800 }}
+                  >
                     {program.title}
                   </h1>
                   <p className="text-sm" style={{ color: colors.brown600 }}>
@@ -235,21 +279,33 @@ const RegisterPage = () => {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <div className="flex items-center gap-2 text-sm" style={{ color: colors.brown600 }}>
+                  <div
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: colors.brown600 }}
+                  >
                     <User size={16} />
                     <span>Instructeur : {program.instructor}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm" style={{ color: colors.brown600 }}>
+                  <div
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: colors.brown600 }}
+                  >
                     <Calendar size={16} />
                     <span>Durée : {program.duration}</span>
                   </div>
-                  <div className="flex items-center gap-2 text-sm" style={{ color: colors.brown600 }}>
+                  <div
+                    className="flex items-center gap-2 text-sm"
+                    style={{ color: colors.brown600 }}
+                  >
                     <MapPin size={16} />
                     <span>{program.location.city}</span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-3xl font-bold" style={{ color: colors.gold600 }}>
+                  <div
+                    className="text-3xl font-bold"
+                    style={{ color: colors.gold600 }}
+                  >
                     {program.price}€
                   </div>
                   <p className="text-sm" style={{ color: colors.brown600 }}>
@@ -260,29 +316,51 @@ const RegisterPage = () => {
             </CardContent>
           </Card>
 
+          {/* Afficher l'erreur si elle existe */}
+          {error && (
+            <div
+              className="text-red-600 bg-red-100 p-4 rounded mb-4 max-w-md mx-auto"
+              role="alert"
+            >
+              {error}
+            </div>
+          )}
+
           {/* Indicateur de progression */}
           <Card className="bg-white shadow-lg border-0">
             <CardContent className="p-6">
               <div className="mb-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h2 className="text-lg font-semibold" style={{ color: colors.brown800 }}>
+                  <h2
+                    className="text-lg font-semibold"
+                    style={{ color: colors.brown800 }}
+                  >
                     {getStepTitle()}
                   </h2>
                   <span className="text-sm" style={{ color: colors.brown600 }}>
-                    Étape {currentStep === 'registration' ? '1' : currentStep === 'payment' ? '2' : '3'} sur 3
+                    Étape{" "}
+                    {currentStep === "registration"
+                      ? "1"
+                      : currentStep === "payment"
+                      ? "2"
+                      : "3"}{" "}
+                    sur 3
                   </span>
                 </div>
                 <Progress value={getStepProgress()} className="h-2" />
               </div>
-              
-              <div className="flex justify-between text-xs" style={{ color: colors.brown600 }}>
-                <span className={currentStep === 'registration' ? 'font-semibold' : ''}>
+
+              <div
+                className="flex justify-between text-xs"
+                style={{ color: colors.brown600 }}
+              >
+                <span className={currentStep === "registration" ? "font-semibold" : ""}>
                   Informations
                 </span>
-                <span className={currentStep === 'payment' ? 'font-semibold' : ''}>
+                <span className={currentStep === "payment" ? "font-semibold" : ""}>
                   Paiement
                 </span>
-                <span className={currentStep === 'confirmation' ? 'font-semibold' : ''}>
+                <span className={currentStep === "confirmation" ? "font-semibold" : ""}>
                   Confirmation
                 </span>
               </div>
@@ -292,14 +370,14 @@ const RegisterPage = () => {
 
         {/* Contenu principal selon l'étape */}
         <div className="mb-8">
-          {currentStep === 'registration' && (
-            <RegistrationForm 
+          {currentStep === "registration" && (
+            <RegistrationForm
               onNext={handleRegistrationNext}
               initialData={registrationData || {}}
             />
           )}
 
-          {currentStep === 'payment' && (
+          {currentStep === "payment" && (
             <PaymentForm
               program={{
                 id: program.id,
@@ -310,19 +388,24 @@ const RegisterPage = () => {
               }}
               onPayment={handlePayment}
               onBack={handlePaymentBack}
-              isProcessing={isProcessingPayment}
+                            isProcessing={isProcessingPayment}
             />
           )}
 
-          {currentStep === 'confirmation' && (
+          {currentStep === "confirmation" && (
             <Card className="bg-white shadow-xl border-0">
               <CardContent className="p-8 text-center">
                 <div className="mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4" 
-                       style={{ backgroundColor: colors.green100 }}>
+                  <div
+                    className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
+                    style={{ backgroundColor: colors.green100 }}
+                  >
                     <CheckCircle size={32} style={{ color: colors.green500 }} />
                   </div>
-                  <h2 className="text-2xl font-serif font-bold mb-2" style={{ color: colors.brown800 }}>
+                  <h2
+                    className="text-2xl font-serif font-bold mb-2"
+                    style={{ color: colors.brown800 }}
+                  >
                     Inscription confirmée !
                   </h2>
                   <p className="text-lg mb-6" style={{ color: colors.brown600 }}>
@@ -355,7 +438,9 @@ const RegisterPage = () => {
                     </div>
                     <div className="flex justify-between font-semibold">
                       <span style={{ color: colors.brown800 }}>Total payé :</span>
-                      <span style={{ color: colors.gold600 }}>{program.price + Math.round(program.price * 0.2 * 100) / 100}€</span>
+                      <span style={{ color: colors.gold600 }}>
+                        {program.price + Math.round(program.price * 0.2 * 100) / 100}€
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -364,10 +449,10 @@ const RegisterPage = () => {
                   <p className="text-sm" style={{ color: colors.brown600 }}>
                     Un email de confirmation avec tous les détails vous a été envoyé à l&apos;adresse {registrationData?.email}.
                   </p>
-                  
+
                   <div className="flex gap-4 justify-center">
                     <Button
-                      onClick={() => router.push('/')}
+                      onClick={() => router.push("/")}
                       variant="outline"
                       style={{ borderColor: colors.brown600, color: colors.brown600 }}
                     >
@@ -391,3 +476,4 @@ const RegisterPage = () => {
 };
 
 export default RegisterPage;
+

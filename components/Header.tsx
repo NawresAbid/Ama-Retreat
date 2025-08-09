@@ -48,6 +48,10 @@ const Header = () => {
                   style={{ color: colors.brown700 }}
                   onMouseEnter={(e) => e.currentTarget.style.color = colors.gold600}
                   onMouseLeave={(e) => e.currentTarget.style.color = colors.brown700}
+                  onClick={item.name === 'Contact' ? (e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                  } : undefined}
                 >
                   {item.name}
                   {/* The underline animation still uses Tailwind's group-hover for simplicity and effectiveness */}
@@ -88,7 +92,11 @@ const Header = () => {
                 href={item.href}
                 className="block px-3 py-2 text-base font-medium transition-colors duration-200"
                 style={{ color: colors.brown700 }}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={item.name === 'Contact' ? (e) => {
+                  e.preventDefault();
+                  setIsMenuOpen(false);
+                  window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                } : () => setIsMenuOpen(false)}
                 onMouseEnter={(e) => e.currentTarget.style.color = colors.gold600}
                 onMouseLeave={(e) => e.currentTarget.style.color = colors.brown700}
               >

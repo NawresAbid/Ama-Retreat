@@ -77,10 +77,7 @@ const Footer = () => {
             </a>
           </div>
 
-          <h3 className="text-2xl font-bold mb-4 text-[#F0D597]">Réservation</h3>
-          <button className="bg-[#F0D597] text-[#5C4033] font-bold py-3 px-8 rounded-lg shadow-md hover:bg-[#E0C587] transition duration-300 w-full sm:w-auto">
-            Réserver maintenant
-          </button>
+          
         </div>
       </div>
 
