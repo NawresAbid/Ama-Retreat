@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -225,11 +226,14 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
               {formData.images.length > 0 && (
                 <div className="flex flex-wrap gap-2 mt-2">
                   {formData.images.map((url, idx) => (
-                    <img
+                    <Image
                       key={idx}
                       src={url}
                       alt={`Aperçu ${idx + 1}`}
-                      style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 6, border: `1px solid ${colors.beige300}` }}
+                      width={60}
+                      height={60}
+                      style={{ objectFit: 'cover', borderRadius: 6, border: `1px solid ${colors.beige300}` }}
+                      className="rounded"
                     />
                   ))}
                 </div>

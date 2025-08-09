@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, MapPin, Clock, Calendar, User } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -231,17 +232,25 @@ const ProgramDetailsPage = () => {
           </Card>
         </div>
 
-        {/* Image before CTA - stacked vertically */}
+        {/* Image before CTA - stacked vertically, optimized */}
         <div className="flex flex-col items-center my-12 gap-4">
-          <img 
+          <Image
             src='https://plus.unsplash.com/premium_photo-1669446008800-9a124b0fd3a2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8eW9nYXxlbnwwfHwwfHx8MA%3D%3D'
             alt="Image du programme"
-            style={{ maxWidth: 320, borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
+            width={320}
+            height={220}
+            style={{ borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
+            className="w-full max-w-xs"
+            priority
           />
-          <img 
+          <Image
             src='https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGhlYWx0eSUyMGZvb2R8ZW58MHx8MHx8fDA%3D'
             alt="Image du programme"
-            style={{ maxWidth: 320, borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
+            width={320}
+            height={220}
+            style={{ borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
+            className="w-full max-w-xs"
+            priority
           />
         </div>
 

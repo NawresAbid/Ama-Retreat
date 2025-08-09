@@ -5,7 +5,7 @@ import '../app/globals.css' // Assurez-vous d'importer vos styles globaux
 //const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Next.js Supabase Auth',
+  title: 'Ama Retreat',
   description: 'Ama Retreat',
 };
 

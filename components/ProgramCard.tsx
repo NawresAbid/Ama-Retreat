@@ -7,6 +7,8 @@ import {  Clock, Users, Euro } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
+import Image from 'next/image';
+
 // Les définitions de `colors` et `customIcons` ne changent pas.
 const colors = {
   beige50: '#FDF8F0',
@@ -84,11 +86,15 @@ const ProgramCard = ({ program, iconType, iconColor, buttonBgColor, buttonTextCo
   return (
     <Card className="bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 shadow-md flex flex-col">
       <CardHeader className="text-center pb-4">
-        <img
-          src={imageUrl || "https://plus.unsplash.com/premium_photo-1673697239981-389164b7b87f?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8bmF0dXJlfGVufDB8fDB8fHww"}
-          alt={program.title}
-          style={{ width: '100%', maxHeight: 160, objectFit: 'cover', borderRadius: 10, marginBottom: 12 }}
-        />
+            <Image
+              src={imageUrl || "https://media.istockphoto.com/id/1181276039/photo/tunisia-djerba.jpg?s=612x612&w=0&k=20&c=-jSYzxa0hEeLCPTNYEyvwvvYdW0XMOnP97eFuTmdjRo="}
+              alt={program.title}
+              width={400}
+              height={192}
+              className="w-full h-48 object-cover rounded-t-2xl"
+              style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
+              priority
+            />
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br mb-4" style={{ backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`, color: iconColor }}>
           {IconComponent && <IconComponent width={32} height={32} />}
         </div>
