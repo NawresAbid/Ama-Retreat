@@ -65,46 +65,68 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
   const handleInput = (k: keyof typeof billing, v: string) =>
     setBilling((p) => ({ ...p, [k]: v }));
 
-  // Total amount = program price (TVA removed)
   const totalAmount = program.price;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!stripe || !elements) return;
 
+    // Validation simple
+    if (!billing.cardholderName || !billing.billingAddress || !billing.billingCity || !billing.billingPostalCode) {
+      setErrorMsg("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
     setProcessing(true);
     setErrorMsg(null);
 
-    // 1. Create PaymentIntent
-    const res = await fetch("/api/create-payment-intent", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reservationId, amount: totalAmount }),
-    });
-    const { clientSecret } = await res.json();
+    try {
+      // 1. Créer le PaymentIntent
+      const res = await fetch("/api/create-payment-intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reservationId, amount: totalAmount }),
+      });
+      const { clientSecret, error: intentError } = await res.json();
+      if (intentError) throw new Error(intentError);
 
-    // 2. Confirm card payment
-    const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement)!,
-        billing_details: {
-          name: billing.cardholderName,
-          address: {
-            line1: billing.billingAddress,
-            city: billing.billingCity,
-            postal_code: billing.billingPostalCode,
-            country: billing.billingCountry,
+      // 2. Confirmer le paiement
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) throw new Error("Élément de carte non trouvé.");
+
+      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: cardElement,
+          billing_details: {
+            name: billing.cardholderName,
+            address: {
+              line1: billing.billingAddress,
+              city: billing.billingCity,
+              postal_code: billing.billingPostalCode,
+              country: billing.billingCountry,
+            },
           },
         },
-      },
-    });
+      });
 
-    if (error) {
-      setErrorMsg(error.message ?? "Erreur de paiement");
+      if (error) {
+        setErrorMsg(error.message || "Erreur lors du paiement.");
+        setProcessing(false);
+      } else if (paymentIntent?.status === "succeeded") {
+        window.location.href = "/success";
+      }
+    } catch (err: unknown) {
+      if (
+        err &&
+        typeof err === "object" &&
+        "message" in err &&
+        typeof (err as { message?: string }).message === "string"
+      ) {
+        setErrorMsg((err as { message: string }).message);
+      } else {
+        setErrorMsg("Erreur inattendue.");
+      }
       setProcessing(false);
-    } else if (paymentIntent?.status === "succeeded") {
-      // Redirect or call success callback
-      window.location.href = "/success";
     }
   };
 
@@ -178,7 +200,17 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
                 Carte bancaire *
               </Label>
               <div className="p-3 border rounded-md mt-1">
-                <CardElement options={{ style: { base: { fontSize: "16px", color: colors.brown800 } } }} />
+                <CardElement
+                  options={{
+                    style: {
+                      base: { fontSize: "16px", color: colors.brown800, "::placeholder": { color: colors.gray600 } },
+                      invalid: { color: colors.red500 },
+                    },
+                  }}
+                />
+                <p className="text-xs mt-1" style={{ color: colors.gray600 }}>
+                  ⚠️ Entrez votre numéro de carte, date d’expiration et CVC.
+                </p>
               </div>
             </div>
 
@@ -208,7 +240,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
             </div>
 
             {errorMsg && (
-              <p className="text-sm" style={{ color: colors.red500 }}>
+              <p className="text-sm mt-2" style={{ color: colors.red500 }}>
                 {errorMsg}
               </p>
             )}
