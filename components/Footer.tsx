@@ -39,8 +39,8 @@ const Footer = () => {
               <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M5.05 4.05a7 7 0 0110.049 0A7 7 0 0115.95 15.95L10 20l-5.95-4.05a7 7 0 010-10.049zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
               </svg>
-             Suisse<br/>
-             france<br/>
+             Suisse,
+             France,
              Djerba
             </li>
             <li className="flex items-center">
