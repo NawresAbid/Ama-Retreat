@@ -4,7 +4,7 @@ const supabase = createClient();
 
 export interface Program {
   id?: string;
-  title: string;
+  title?: string;
   description: string;
   duration: string;
   capacity: number;

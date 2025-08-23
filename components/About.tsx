@@ -162,6 +162,7 @@ const About = () => {
               "Faire une vraie pause loin du quotidien",
               "Prendre du temps pour vous, sans culpabilité",
               "Recharger vos batteries en profondeur",
+              "Danse thérapeutique libérez vos émotions et retrouvez l’harmonie intérieure à chaque mouvement.",
               "Faire de belles rencontres, dans une ambiance chaleureuse et bienveillante",
             ].map((text, index) => (
               <div key={index} className="flex items-start space-x-3">

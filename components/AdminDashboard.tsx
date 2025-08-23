@@ -107,7 +107,7 @@ const AdminDashboard = () => {
   // Fonction pour convertir Program (Supabase) vers ProgramData (affichage)
   const convertProgramToDisplayFormat = (program: Program): ProgramData => ({
     id: program.id || '',
-    title: program.title,
+    title: program.title ?? '',
     description: program.description,
     duration: program.duration,
     capacity: program.capacity,

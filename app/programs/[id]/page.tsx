@@ -79,8 +79,8 @@ const ProgramDetailsPage = () => {
 
         if (foundProgram) {
           const formattedProgram: ProgramForCard = {
-            id: foundProgram.id || foundProgram.title,
-            title: foundProgram.title,
+            id: foundProgram.id ?? foundProgram.title ?? "",
+            title: foundProgram.title ?? "",
             description: foundProgram.description,
             duration: foundProgram.duration,
             capacity: foundProgram.capacity,

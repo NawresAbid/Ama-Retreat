@@ -50,18 +50,18 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
   useEffect(() => {
     if (program) {
       setFormData({
-        title: program.title,
-        description: program.description,
-        duration: program.duration,
-        capacity: program.capacity,
-        price: program.price,
-        address: program.address,
-        city: program.city,
-        postal_code: program.postal_code,
-        instructor: program.instructor,
-        schedule: program.schedule,
-        status: program.status,
-        images: program.images || [],
+        title: program.title ?? '',
+        description: program.description ?? '',
+        duration: program.duration ?? '',
+        capacity: program.capacity ?? 0,
+        price: program.price ?? 0,
+        address: program.address ?? '',
+        city: program.city ?? '',
+        postal_code: program.postal_code ?? '',
+        instructor: program.instructor ?? '',
+        schedule: program.schedule ?? [''],
+        status: program.status ?? 'active',
+        images: program.images ?? [],
       });
     } else {
       // Reset form when adding a new program

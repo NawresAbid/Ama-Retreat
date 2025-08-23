@@ -58,18 +58,18 @@ const RegisterPage = () => {
         const found = apiPrograms.find((p) => (p.id || p.title) === params.id);
         if (!found) return;
         setProgram({
-          id: found.id || found.title,
-          title: found.title,
-          description: found.description,
-          duration: found.duration,
-          capacity: found.capacity,
-          price: found.price,
-          instructor: found.instructor,
-          schedule: found.schedule,
+          id: found.id || found.title || "",
+          title: found.title || "",
+          description: found.description || "",
+          duration: found.duration || "",
+          capacity: found.capacity ?? 0,
+          price: found.price ?? 0,
+          instructor: found.instructor || "",
+          schedule: found.schedule || [],
           location: {
-            address: found.address,
-            city: found.city,
-            postalCode: found.postal_code,
+            address: found.address || "",
+            city: found.city || "",
+            postalCode: found.postal_code || "",
           },
         });
       } catch {

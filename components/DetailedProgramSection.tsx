@@ -41,8 +41,8 @@ const DetailedProgramSection = () => {
         const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
 
         const formattedPrograms: ProgramForCard[] = apiPrograms.map((p) => ({
-          id: p.id || p.title,
-          title: p.title,
+          id: p.id ?? p.title ?? 'unknown-id',
+          title: p.title ?? 'Titre inconnu',
           description: p.description,
           duration: p.duration,
           capacity: p.capacity,
