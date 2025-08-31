@@ -1,71 +1,58 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import { useRouter, useParams } from 'next/navigation';
-import { ArrowLeft, MapPin, Clock, Calendar, User } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { fetchPrograms, Program as ProgramFromAPI } from '@/utils/program';
+import { useState, useEffect } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { ArrowLeft, MapPin, Calendar, User, Sun, Users } from "lucide-react";
+import Image from "next/image";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  fetchPrograms,
+  Program as ProgramFromAPIType,
+} from "@/utils/program";
 
 const colors = {
-  beige50: '#FDF8F0',
-  beige100: '#F9ECD9',
-  brown600: '#7A5230',
-  brown800: '#5C3A1F',
-  gold100: '#E0B87A',
-  gold600: '#B58C58',
-  gold700: '#A37E4C',
-  white: '#FFFFFF',
+  beige50: "#FDF8F0",
+  beige100: "#F9ECD9",
+  beige200: "#F3E4D1",
+  brown600: "#7A5230",
+  brown700: "#6B4728",
+  brown800: "#5C3A1F",
+  gold50: "#FFFBEB",
+  gold100: "#E0B87A",
+  gold200: "#D7B481",
+  gold500: "#D4AF37",
+  gold600: "#B58C58",
+  gold700: "#A37E4C",
+  white: "#FFFFFF",
 };
 
-const customIcons = {
-  yoga: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-    </svg>
-  ),
-  alimentation: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M7 2c.5 1.5 1 3 1 5s-.5 3.5-1 5c-.5 1.5-1 3-1 5h2c0-2 1-4 1.5-5.5.5-1.5 1-3 1-5s-.5-3.5-1-5c-.5-1.5-1-3-1-5H7z"/>
-      <path d="M17 2c-.5 1.5-1 3-1 5s.5 3.5 1 5c.5 1.5 1 3 1 5h-2c0-2-1-4-1.5-5.5-.5-1.5-1-3-1-5s.5-3.5 1-5c.5-1.5 1-3 1-5h2z"/>
-      <line x1="12" y1="2" x2="12" y2="22" strokeWidth="1"/>
-    </svg>
-  ),
-  sport: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 12h3.5l2.5-8 5 16 2.5-8H21"/>
-    </svg>
-  ),
-  massage: (props: React.SVGProps<SVGSVGElement>) => (
-    <svg {...props} xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2z"/>
-      <path d="M20 10l-1.5 1.5L17 13l1.5 1.5L20 16l1.5-1.5L23 13l-1.5-1.5L20 10z"/>
-      <path d="M4 10l-1.5 1.5L1 13l1.5 1.5L4 16l1.5-1.5L7 13l-1.5-1.5L4 10z"/>
-    </svg>
-  ),
-};
-
-interface ProgramForCard {
-  id: string;
-  title: string;
+// Programme depuis l&apos;API (schedule est maintenant un texte simple)
+interface ProgramFromAPILocal {
+  id?: string;
+  title?: string;
   description: string;
   duration: string;
   capacity: number;
   price: number;
-  location: {
-    address: string;
-    city: string;
-    postalCode: string;
-  };
+  address: string;
+  city: string;
+  postal_code: string;
   instructor: string;
-  schedule: string[];
+  status: "active" | "inactive";
+  images?: string[];
+  schedule: string; // <-- simplifié en texte
 }
 
 const ProgramDetailsPage = () => {
   const router = useRouter();
   const params = useParams();
-  const [program, setProgram] = useState<ProgramForCard | null>(null);
+  const [program, setProgram] = useState<ProgramFromAPILocal | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -73,33 +60,29 @@ const ProgramDetailsPage = () => {
     const loadProgram = async () => {
       try {
         setLoading(true);
-        const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
+        const apiPrograms: ProgramFromAPIType[] = await fetchPrograms();
 
-        const foundProgram = apiPrograms.find(p => (p.id || p.title) === params.id);
+        const foundProgram = apiPrograms.find(
+          (p) => p.id === params.id || p.title === params.id
+        );
 
         if (foundProgram) {
-          const formattedProgram: ProgramForCard = {
-            id: foundProgram.id ?? foundProgram.title ?? "",
-            title: foundProgram.title ?? "",
-            description: foundProgram.description,
-            duration: foundProgram.duration,
-            capacity: foundProgram.capacity,
-            price: foundProgram.price,
-            instructor: foundProgram.instructor,
-            schedule: foundProgram.schedule,
-            location: {
-              address: foundProgram.address,
-              city: foundProgram.city,
-              postalCode: foundProgram.postal_code,
-            },
+          const mappedProgram: ProgramFromAPILocal = {
+            ...foundProgram,
+            schedule:
+              typeof foundProgram.schedule === "string"
+                ? foundProgram.schedule
+                : "", // fallback si pas string
           };
-          setProgram(formattedProgram);
+          setProgram(mappedProgram);
         } else {
-          setError("Programme non trouvé");
+          setError("Programme non trouv&eacute;.");
         }
       } catch (err) {
         console.error("Erreur de chargement du programme:", err);
-        setError("Impossible de charger le programme. Veuillez réessayer plus tard.");
+        setError(
+          "Impossible de charger le programme. Veuillez r&eacute;essayer plus tard."
+        );
       } finally {
         setLoading(false);
       }
@@ -110,25 +93,13 @@ const ProgramDetailsPage = () => {
     }
   }, [params.id]);
 
-  const getIconType = (title: string): keyof typeof customIcons => {
-    const lowerTitle = title.toLowerCase();
-    if (lowerTitle.includes('yoga')) return 'yoga';
-    if (lowerTitle.includes('alimentation')) return 'alimentation';
-    if (lowerTitle.includes('sport')) return 'sport';
-    if (lowerTitle.includes('massage')) return 'massage';
-    return 'yoga';
-  };
-
-  const getIconColor = (title: string): string => {
-    const lowerTitle = title.toLowerCase();
-    return (lowerTitle.includes('yoga') || lowerTitle.includes('sport')) ? colors.gold600 : colors.brown600;
-  };
-
-
   if (loading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center" style={{ color: colors.brown600 }}>
+        <div
+          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center"
+          style={{ color: colors.brown600 }}
+        >
           <p className="text-xl">Chargement du programme...</p>
         </div>
       </div>
@@ -143,7 +114,11 @@ const ProgramDetailsPage = () => {
             <h3 className="font-bold text-lg mb-2">Erreur</h3>
             <p>{error}</p>
           </div>
-          <Button onClick={() => router.back()} className="mt-6" style={{ backgroundColor: colors.gold600, color: colors.white }}>
+          <Button
+            onClick={() => router.back()}
+            className="mt-6"
+            style={{ backgroundColor: colors.gold600, color: colors.white }}
+          >
             <ArrowLeft className="mr-2" size={16} />
             Retour
           </Button>
@@ -152,113 +127,220 @@ const ProgramDetailsPage = () => {
     );
   }
 
-  const IconComponent = customIcons[getIconType(program.title)];
-  const iconColor = getIconColor(program.title);
- 
+  // Fonction pour simuler la division du programme en jours et ajouter l&apos;image
+  const getDailyPrograms = (scheduleText: string) => {
+    const allActivities = scheduleText.split("\n").filter(line => line.trim() !== "");
+    const dailyPrograms = [];
+    const activitiesPerDay = 9; 
+    let day = 1;
+
+    for (let i = 0; i < allActivities.length; i += activitiesPerDay) {
+      const activitiesForDay = allActivities.slice(i, i + activitiesPerDay);
+      const dayActivitiesString = activitiesForDay.join(" ").toLowerCase();
+
+      let imageSrc = null;
+
+      if (dayActivitiesString.includes("yoga") || dayActivitiesString.includes("m&eacute;ditation")) {
+        imageSrc = "/yoga.png";
+      } else if (dayActivitiesString.includes("randonn&eacute;e") || dayActivitiesString.includes("marche en nature")) {
+        imageSrc = "https://images.unsplash.com/photo-1594247585090-410a568165d7?q=80&w=2787&auto=format&fit=crop";
+      } else if (dayActivitiesString.includes("alimentation saine") || dayActivitiesString.includes("cuisine saine") || dayActivitiesString.includes("repas &eacute;quilibr&eacute;")) {
+        imageSrc = "https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=60";
+      } else {
+        imageSrc = "https://images.unsplash.com/photo-1517436214552-6e2793132711?q=80&w=2787&auto=format&fit=crop";
+      }
+
+      dailyPrograms.push({
+        day: `Jour ${day}`,
+        title: `Titre du Jour ${day}`,
+        activities: activitiesForDay,
+        image: imageSrc
+      });
+      day++;
+    }
+    return dailyPrograms;
+  };
+
+  const dailyPrograms = getDailyPrograms(program.schedule);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         {/* Retour */}
-        <Button onClick={() => router.back()} variant="outline" className="mb-8 border-2 hover:bg-opacity-10" style={{ borderColor: colors.brown600, color: colors.brown600, backgroundColor: 'transparent' }}>
+        <Button
+          onClick={() => router.back()}
+          variant="outline"
+          className="mb-8 border-2 hover:bg-opacity-10"
+          style={{
+            borderColor: colors.brown600,
+            color: colors.brown600,
+            backgroundColor: "transparent",
+          }}
+        >
           <ArrowLeft className="mr-2" size={16} />
           Retour aux programmes
         </Button>
 
-        {/* Détails */}
-        <Card className="bg-white shadow-xl border-0 mb-8">
-          <CardHeader className="text-center pb-6">
-            <div className="inline-flex items-center justify-center w-24 h-24 rounded-full mb-6" style={{ backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`, color: iconColor }}>
-              {IconComponent && <IconComponent width={48} height={48} />}
+        {/* En-tête */}
+        <div className="text-center mb-16">
+          <div
+            className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6"
+            style={{
+              backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`,
+              color: colors.gold600,
+            }}
+          >
+            <Sun size={36} />
+          </div>
+          <h2
+            className="text-4xl md:text-5xl font-serif font-bold mb-6"
+            style={{ color: colors.brown800 }}
+          >
+            <span
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {program.title}
+            </span>
+          </h2>
+          <p
+            className="text-xl max-w-4xl mx-auto leading-relaxed mb-8"
+            style={{ color: colors.brown600 }}
+          >
+            {program.description}
+          </p>
+
+          {/* Infos */}
+          <div
+            className="flex flex-wrap justify-center items-center gap-6 mb-8"
+            style={{ color: colors.brown600 }}
+          >
+            <div className="flex items-center space-x-2">
+              <Calendar size={20} style={{ color: colors.gold600 }} />
+              <span className="font-medium">{program.duration}</span>
             </div>
-            <CardTitle className="text-3xl md:text-4xl font-serif mb-4" style={{ color: colors.brown800 }}>{program.title}</CardTitle>
-            <p className="text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: colors.brown600 }}>{program.description}</p>
-          </CardHeader>
-        </Card>
+            <div className="flex items-center space-x-2">
+              <User size={20} style={{ color: colors.gold600 }} />
+              <span className="font-medium">
+                {program.capacity} participants max
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Users size={20} style={{ color: colors.gold600 }} />
+              <span className="font-medium">
+                Instructeur: {program.instructor}
+              </span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <MapPin size={20} style={{ color: colors.gold600 }} />
+              <span className="font-medium">
+                {program.city}, {program.postal_code}
+              </span>
+            </div>
+          </div>
 
-        {/* Info pratiques */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-white shadow-lg border-0">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.brown800 }}>
-                <Clock className="mr-2" size={20} /> Informations pratiques
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between"><span style={{ color: colors.brown600 }}>Durée :</span><span className="font-medium" style={{ color: colors.brown800 }}>{program.duration}</span></div>
-                <div className="flex justify-between"><span style={{ color: colors.brown600 }}>Capacité :</span><span className="font-medium" style={{ color: colors.brown800 }}>{program.capacity} personnes</span></div>
-                <div className="flex justify-between"><span style={{ color: colors.brown600 }}>Prix :</span><span className="font-bold text-xl" style={{ color: colors.gold600 }}>{program.price}€</span></div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white shadow-lg border-0">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.brown800 }}>
-                <MapPin className="mr-2" size={20} /> Localisation
-              </h3>
-              <div style={{ color: colors.brown600 }}>
-                <p className="font-medium">{program.location.address}</p>
-                <p>{program.location.postalCode} {program.location.city}</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div
+            className="rounded-full px-8 py-3 inline-block font-serif text-xl"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
+              color: colors.white,
+            }}
+          >
+            &Agrave; partir de {program.price}CHF tout compris (vol non inclu)
+          </div>
         </div>
 
-        {/* Instructeur et horaires */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card className="bg-white shadow-lg border-0">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.brown800 }}>
-                <User className="mr-2" size={20} /> Instructeur
-              </h3>
-              <p className="text-lg" style={{ color: colors.brown600 }}>{program.instructor}</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white shadow-lg border-0">
-            <CardContent className="p-6">
-              <h3 className="text-xl font-semibold mb-4 flex items-center" style={{ color: colors.brown800 }}>
-                <Calendar className="mr-2" size={20} /> Horaires
-              </h3>
-              <ul className="space-y-2">
-                {program.schedule.map((time, index) => (
-                  <li key={index} className="flex items-center" style={{ color: colors.brown600 }}>
-                    <span className="w-2 h-2 rounded-full mr-3" style={{ backgroundColor: colors.gold600 }}></span>
-                    {time}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Image before CTA - stacked vertically, optimized */}
-        <div className="flex flex-col items-center my-12 gap-4">
-          <Image
-            src='https://plus.unsplash.com/premium_photo-1669446008800-9a124b0fd3a2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8eW9nYXxlbnwwfHwwfHx8MA%3D%3D'
-            alt="Image du programme"
-            width={320}
-            height={220}
-            style={{ borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
-            className="w-full max-w-xs"
-            priority
-          />
-          <Image
-            src='https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGhlYWx0eSUyMGZvb2R8ZW58MHx8MHx8fDA%3D'
-            alt="Image du programme"
-            width={320}
-            height={220}
-            style={{ borderRadius: 10, border: `1px solid ${colors.beige100}`, objectFit: 'cover' }}
-            className="w-full max-w-xs"
-            priority
-          />
+        {/* Programme */}
+        <div className="space-y-8">
+          {dailyPrograms.length > 0 ? (
+            dailyPrograms.map((dayProgram, index) => (
+              <Card
+                key={index}
+                className="overflow-hidden bg-white shadow-lg border-0 p-8 animate-fade-in rounded-2xl"
+              >
+                <CardHeader className="p-0 mb-6">
+                  <div className="flex items-center space-x-4 mb-3">
+                    {dayProgram.image && (
+                      <Image
+                        src={dayProgram.image}
+                        alt={`Image pour le ${dayProgram.day}`}
+                        width={160}
+                        height={160}
+                        className="w-40 h-40 object-cover border-2"
+                        style={{ borderColor: colors.gold600 }}
+                      />
+                    )}
+                    <CardTitle
+                      className="text-2xl font-serif"
+                      style={{ color: colors.brown800 }}
+                    >
+                      {dayProgram.day}
+                    </CardTitle>
+                  </div>
+                  <p className="text-base leading-relaxed" style={{ color: colors.brown600 }}>
+                    {program.title} - Programme d&eacute;taill&eacute;
+                  </p>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {dayProgram.activities.map((activity: string, activityIndex: number) => (
+                      <div
+                        key={activityIndex}
+                        className="flex items-start space-x-3 p-4 rounded-xl border transition-all duration-300 transform hover:scale-105"
+                        style={{
+                          borderColor: colors.beige200,
+                          backgroundColor: colors.beige50,
+                        }}
+                      >
+                        <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: colors.gold500 }}></div>
+                        <span className="text-brown-700 text-sm leading-relaxed">{activity}</span>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : (
+            <p
+              className="text-center text-xl"
+              style={{ color: colors.brown600 }}
+            >
+              Aucun programme d&eacute;taill&eacute; n&apos;est disponible pour le moment.
+            </p>
+          )}
         </div>
 
         {/* CTA */}
-        <div className="text-center mt-8">
-          <Button size="lg" className="px-8 py-3 text-lg font-semibold hover:opacity-90" style={{ backgroundColor: colors.gold600, color: colors.white }} onClick={() => router.push(`/register/${program.id}`)}>
-            S&apos;inscrire au programme
-          </Button>
+        <div
+          className="text-center mt-16 rounded-2xl p-8"
+          style={{ backgroundColor: colors.white }}
+        >
+          <h3
+            className="text-2xl font-serif font-bold mb-4"
+            style={{ color: colors.brown800 }}
+          >
+            Pr&ecirc;t(e) pour cette exp&eacute;rience transformatrice ?
+          </h3>
+          <p className="mb-6 max-w-2xl mx-auto" style={{ color: colors.brown600 }}>
+            Rejoignez-nous pour une semaine inoubliable de reconnexion avec
+            vous-m&ecirc;me dans un cadre naturel exceptionnel.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <Button
+              size="lg"
+              className="px-12 py-4 text-lg font-medium rounded-full hover:scale-105 transition-all duration-300"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
+                color: colors.white,
+              }}
+              onClick={() => router.push(`/register/${program.id}`)}
+            >
+              R&eacute;server maintenant
+            </Button>
+          </div>
         </div>
       </div>
     </div>

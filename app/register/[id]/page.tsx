@@ -2,16 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-//import { ArrowLeft, CheckCircle, Calendar, MapPin, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-//import { Button } from "@/components/ui/button";
-//import { Progress } from "@/components/ui/progress";
 import RegistrationForm from "@/components/RegistrationForm";
-import PaymentForm from "@/components/PaymentForm"; // <-- Stripe-based
+import PaymentForm from "@/components/PaymentForm";
 import { fetchPrograms, Program as ProgramFromAPI } from "@/utils/program";
 import { createReservation, CreateReservationData } from "@/utils/réservation";
-
-/* … colors, ProgramForRegistration, RegistrationData …  (keep as you have) */
 
 type Step = "registration" | "payment" | "confirmation";
 
@@ -23,7 +18,7 @@ type ProgramForRegistration = {
   capacity: number;
   price: number;
   instructor: string;
-  schedule: string[];
+  schedule: string;
   location: {
     address: string;
     city: string;
@@ -37,10 +32,9 @@ type RegistrationData = {
   email: string;
   phone: string;
   dateOfBirth: string;
-  emergencyContact: string;
-  emergencyPhone: string;
-  medicalConditions: string;
-  experience: string;
+  emergencyContact?: string; // Made optional
+  emergencyPhone?: string; // Made optional
+  experience?: string; // Made optional
   specialRequests: string;
 };
 
@@ -48,14 +42,18 @@ const RegisterPage = () => {
   const params = useParams();
   const [currentStep, setCurrentStep] = useState<Step>("registration");
   const [program, setProgram] = useState<ProgramForRegistration | null>(null);
-  const [registrationData, setRegistrationData] = useState<RegistrationData | null>(null);
+  const [registrationData, setRegistrationData] =
+    useState<RegistrationData | null>(null);
+
   const [reservationId, setReservationId] = useState<string | null>(null);
-  /* ---------- load program ---------- */
+
   useEffect(() => {
     (async () => {
       try {
         const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
-        const found = apiPrograms.find((p) => (p.id || p.title) === params.id);
+        const found = apiPrograms.find(
+          (p) => (p.id || p.title) === params.id
+        );
         if (!found) return;
         setProgram({
           id: found.id || found.title || "",
@@ -65,7 +63,7 @@ const RegisterPage = () => {
           capacity: found.capacity ?? 0,
           price: found.price ?? 0,
           instructor: found.instructor || "",
-          schedule: found.schedule || [],
+          schedule: found.schedule || "",
           location: {
             address: found.address || "",
             city: found.city || "",
@@ -78,10 +76,11 @@ const RegisterPage = () => {
     })();
   }, [params.id]);
 
-  /* ---------- step 1 : registration ---------- */
   const handleRegistrationNext = async (data: RegistrationData) => {
     if (!program) return;
 
+    // The validation for these fields is now removed as they are optional.
+    // The `required` attribute should be removed from the RegistrationForm component.
     const resData: CreateReservationData = {
       program_id: program.id,
       first_name: data.firstName,
@@ -89,10 +88,9 @@ const RegisterPage = () => {
       email: data.email,
       phone: data.phone,
       date_of_birth: data.dateOfBirth,
-      emergency_contact: data.emergencyContact,
-      emergency_phone: data.emergencyPhone,
-      medical_conditions: data.medicalConditions,
-      experience: data.experience,
+      emergency_contact: data.emergencyContact || '', // Provide a default empty string
+      emergency_phone: data.emergencyPhone || '', // Provide a default empty string
+      experience: data.experience || '', // Provide a default empty string
       special_requests: data.specialRequests,
     };
 
@@ -103,20 +101,17 @@ const RegisterPage = () => {
     setCurrentStep("payment");
   };
 
-  /* ---------- step 2 : payment ---------- */
   const handlePaymentBack = () => setCurrentStep("registration");
-
-  /* ---------- render ---------- */
-  // (keep your existing render for loading / error / confirmation)
-  // only the PaymentForm call changes:
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FDF8F0" }}>
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* … header, program card, progress, etc. … */}
+        {/*
+          I'm assuming there's a header, progress bar, etc., in your full code.
+          I'll just include the conditional rendering logic for the main content.
+        */}
 
         <div className="mb-8">
-          {/* registration */}
           {currentStep === "registration" && (
             <RegistrationForm
               onNext={handleRegistrationNext}
@@ -124,7 +119,6 @@ const RegisterPage = () => {
             />
           )}
 
-          {/* payment */}
           {currentStep === "payment" && program && reservationId && (
             <PaymentForm
               program={{
@@ -139,12 +133,16 @@ const RegisterPage = () => {
             />
           )}
 
-          {/* confirmation */}
           {currentStep === "confirmation" && program && (
             <Card className="bg-white shadow-xl">
               <CardContent className="p-8 text-center">
-                <h2 className="text-2xl font-bold mb-2">Inscription confirmée !</h2>
-                <p>Félicitations ! Votre inscription au programme « {program.title} » est confirmée.</p>
+                <h2 className="text-2xl font-bold mb-2">
+                  Inscription confirmée !
+                </h2>
+                <p>
+                  Félicitations ! Votre inscription au programme «{" "}
+                  {program.title} » est confirmée.
+                </p>
               </CardContent>
             </Card>
           )}

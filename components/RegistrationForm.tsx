@@ -1,10 +1,9 @@
-
 // components/RegistrationForm.tsx
 
 "use client";
 
 import { useState } from 'react';
-import { User, Mail, Phone, Calendar} from 'lucide-react';
+import { User, Mail, Phone, Calendar } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,10 +28,9 @@ interface RegistrationData {
   email: string;
   phone: string;
   dateOfBirth: string;
-  emergencyContact: string;
-  emergencyPhone: string;
-  medicalConditions: string;
-  experience: string;
+  emergencyContact?: string;
+  emergencyPhone?: string;
+  experience?: string;
   specialRequests: string;
 }
 
@@ -50,7 +48,6 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
     dateOfBirth: initialData.dateOfBirth || '',
     emergencyContact: initialData.emergencyContact || '',
     emergencyPhone: initialData.emergencyPhone || '',
-    medicalConditions: initialData.medicalConditions || '',
     experience: initialData.experience || '',
     specialRequests: initialData.specialRequests || '',
   });
@@ -59,7 +56,6 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
 
   const handleInputChange = (field: keyof RegistrationData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Effacer l'erreur quand l'utilisateur commence à taper
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
@@ -71,35 +67,19 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'Le prénom est requis';
     }
-
     if (!formData.lastName.trim()) {
       newErrors.lastName = 'Le nom est requis';
     }
-
     if (!formData.email.trim()) {
       newErrors.email = 'L\'email est requis';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = 'Format d\'email invalide';
     }
-
     if (!formData.phone.trim()) {
       newErrors.phone = 'Le téléphone est requis';
     }
-
     if (!formData.dateOfBirth) {
       newErrors.dateOfBirth = 'La date de naissance est requise';
-    }
-
-    if (!formData.emergencyContact.trim()) {
-      newErrors.emergencyContact = 'Le contact d\'urgence est requis';
-    }
-
-    if (!formData.emergencyPhone.trim()) {
-      newErrors.emergencyPhone = 'Le téléphone d\'urgence est requis';
-    }
-
-    if (!formData.experience) {
-      newErrors.experience = 'Veuillez sélectionner votre niveau d\'expérience';
     }
 
     setErrors(newErrors);
@@ -220,91 +200,66 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
             )}
           </div>
 
-          {/* Contact d'urgence */}
+          {/* Contact d'urgence (optional) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <Label htmlFor="emergencyContact" className="text-sm font-medium" style={{ color: colors.brown800 }}>
-                Contact d&#39;urgence *
+                Contact d&#39;urgence(optionnel)
               </Label>
               <Input
                 id="emergencyContact"
                 type="text"
                 value={formData.emergencyContact}
                 onChange={(e) => handleInputChange('emergencyContact', e.target.value)}
-                className={`mt-1 ${errors.emergencyContact ? 'border-red-500' : ''}`}
+                className="mt-1"
                 placeholder="Nom du contact d&#39;urgence"
               />
-              {errors.emergencyContact && (
-                <p className="text-xs mt-1" style={{ color: colors.red500 }}>{errors.emergencyContact}</p>
-              )}
             </div>
 
             <div>
               <Label htmlFor="emergencyPhone" className="text-sm font-medium" style={{ color: colors.brown800 }}>
-                Téléphone d&#39;urgence *
+                Téléphone d&#39;urgence (optionnel)
               </Label>
               <Input
                 id="emergencyPhone"
                 type="tel"
                 value={formData.emergencyPhone}
                 onChange={(e) => handleInputChange('emergencyPhone', e.target.value)}
-                className={`mt-1 ${errors.emergencyPhone ? 'border-red-500' : ''}`}
+                className="mt-1"
                 placeholder="06 12 34 56 78"
               />
-              {errors.emergencyPhone && (
-                <p className="text-xs mt-1" style={{ color: colors.red500 }}>{errors.emergencyPhone}</p>
-              )}
             </div>
           </div>
 
-         {/* Niveau d'expérience */}
-<div>
-  <Label htmlFor="experience" className="text-sm font-medium" style={{ color: colors.brown800 }}>
-    Niveau d&rsquo;expérience *
-  </Label>
-  <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
-    <SelectTrigger className={`mt-1 ${errors.experience ? 'border-red-500' : ''}`}>
-      <SelectValue placeholder="Sélectionnez votre niveau" />
-    </SelectTrigger>
-    <SelectContent>
-      <SelectItem value="debutant">Débutant</SelectItem>
-      <SelectItem value="intermediaire">Intermédiaire</SelectItem>
-      <SelectItem value="avance">Avancé</SelectItem>
-      <SelectItem value="expert">Expert</SelectItem>
-    </SelectContent>
-  </Select>
-  {errors.experience && (
-    <p className="text-xs mt-1" style={{ color: colors.red500 }}>{errors.experience}</p>
-  )}
-</div>
-
-
-          {/* Conditions médicales */}
+          {/* Niveau d'expérience (optional) */}
           <div>
-            <Label htmlFor="medicalConditions" className="text-sm font-medium" style={{ color: colors.brown800 }}>
-              Conditions médicales ou allergies
+            <Label htmlFor="experience" className="text-sm font-medium" style={{ color: colors.brown800 }}>
+              Niveau d&rsquo;expérience (optionnel)
             </Label>
-            <Textarea
-              id="medicalConditions"
-              value={formData.medicalConditions}
-              onChange={(e) => handleInputChange('medicalConditions', e.target.value)}
-              className="mt-1"
-              placeholder="Veuillez mentionner toute condition médicale, allergie ou limitation physique que nous devrions connaître..."
-              rows={3}
-            />
+            <Select value={formData.experience} onValueChange={(value) => handleInputChange('experience', value)}>
+              <SelectTrigger className="mt-1">
+                <SelectValue placeholder="Sélectionnez votre niveau" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="debutant">Débutant</SelectItem>
+                <SelectItem value="intermediaire">Intermédiaire</SelectItem>
+                <SelectItem value="avance">Avancé</SelectItem>
+                <SelectItem value="expert">Expert</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Demandes spéciales */}
           <div>
             <Label htmlFor="specialRequests" className="text-sm font-medium" style={{ color: colors.brown800 }}>
-              Demandes spéciales
+              Demandes spéciales(optionnel)
             </Label>
             <Textarea
               id="specialRequests"
               value={formData.specialRequests}
               onChange={(e) => handleInputChange('specialRequests', e.target.value)}
               className="mt-1"
-              placeholder="Avez-vous des demandes particuli&#39;res ou des besoins spéciaux pour ce programme ?"
+              placeholder="Avez-vous des demandes particulières ou des besoins spéciaux pour ce programme ?"
               rows={3}
             />
           </div>

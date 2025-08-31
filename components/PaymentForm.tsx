@@ -154,7 +154,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span style={{ color: colors.brown600 }}>Prix :</span>
-                <span style={{ color: colors.brown800 }}>{program.price}€</span>
+                <span style={{ color: colors.brown800 }}>{program.price}chf</span>
               </div>
               <p className="text-xs mt-1" style={{ color: colors.gray600 }}>
                 ⚠️ Le montant affiché est celui du programme. Stripe prélève une commission pour le paiement sécurisé.
@@ -162,7 +162,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
               <Separator />
               <div className="flex justify-between text-lg font-semibold">
                 <span style={{ color: colors.brown800 }}>Total :</span>
-                <span style={{ color: colors.gold600 }}>{totalAmount}€</span>
+                <span style={{ color: colors.gold600 }}>{totalAmount}chf</span>
               </div>
             </div>
             <div className="flex items-center gap-2 p-3 rounded-lg" style={{ backgroundColor: colors.gray100 }}>

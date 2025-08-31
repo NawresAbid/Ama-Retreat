@@ -89,7 +89,7 @@ interface ProgramData {
     postalCode: string;
   };
   instructor: string;
-  schedule: string[];
+  schedule: string;
   status: 'active' | 'inactive';
 }
 
@@ -307,7 +307,7 @@ const AdminDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold" style={{ color: colors.brown800 }}>
-                {programs.reduce((sum, p) => sum + (p.price * p.capacity), 0)}€
+                {programs.reduce((sum, p) => sum + (p.price * p.capacity), 0)}chf
               </div>
               <p className="text-xs" style={{ color: colors.brown500 }}>
                 si complet
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
                         <TableCell style={{ color: colors.brown700 }}>{programData.instructor}</TableCell>
                         <TableCell style={{ color: colors.brown700 }}>{programData.duration}</TableCell>
                         <TableCell style={{ color: colors.brown700 }}>{programData.capacity}</TableCell>
-                        <TableCell style={{ color: colors.brown700 }}>{programData.price}€</TableCell>
+                        <TableCell style={{ color: colors.brown700 }}>{programData.price}chf</TableCell>
                         <TableCell>
                           <span
                             className={`px-2 py-1 rounded-full text-xs font-medium`}

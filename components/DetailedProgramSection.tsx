@@ -25,7 +25,7 @@ interface ProgramForCard {
     postalCode: string;
   };
   instructor: string;
-  schedule: string[];
+  schedule: string;
   images?: string[];
 }
 

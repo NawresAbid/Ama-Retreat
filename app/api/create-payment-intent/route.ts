@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: Math.round(amount * 100), // centimes
-    currency: 'eur',
+    currency: 'chf',
     metadata: { reservationId }, // ⚠️ correspond au webhook
   });
 

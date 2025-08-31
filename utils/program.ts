@@ -13,7 +13,7 @@ export interface Program {
   city: string;
   postal_code: string;
   instructor: string;
-  schedule: string[];
+  schedule: string;
   status: 'active' | 'inactive';
   images?: string[]; // stocke ici les chemins dans le storage (ex: programs/123456.jpg)
 }

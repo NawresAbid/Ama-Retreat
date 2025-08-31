@@ -108,7 +108,7 @@ interface ProgramForCard {
     postalCode: string;
   };
   instructor: string;
-  schedule: string[];
+  schedule: string;
 }
 
 interface ProgramCardProps {
@@ -183,7 +183,7 @@ const ProgramCard = ({
           </div>
           <div className="flex items-center space-x-1">
             <Euro size={16} />
-            <span>{program.price}€</span>
+            <span>{program.price}CHF</span>
           </div>
         </div>
         <Button

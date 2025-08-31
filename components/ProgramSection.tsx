@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 
 const ProgramSection = () => {
@@ -19,7 +20,9 @@ const ProgramSection = () => {
       ),
       title: "Yoga",
       description: "Sessions de yoga quotidiennes pour harmoniser corps et esprit dans un cadre paisible.",
-      iconColor: colors.gold600
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://media.istockphoto.com/id/2028549105/fr/photo/woman-practicing-yoga-at-home.webp?a=1&b=1&s=612x612&w=0&k=20&c=rbQnuvqQ2Yk7ddnN86lR35b6T7gbyt-DksmR0D0qjio=")',
+      textColor: 'white'
     },
     {
       icon: (props: React.SVGProps<SVGSVGElement>) => (
@@ -31,7 +34,9 @@ const ProgramSection = () => {
       ),
       title: "Alimentation Saine",
       description: "Cuisine méditerranéenne bio préparée avec des ingrédients locaux et de saison.",
-      iconColor: colors.brown600
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+      textColor: 'white'
     },
     {
       icon: (props: React.SVGProps<SVGSVGElement>) => (
@@ -41,7 +46,9 @@ const ProgramSection = () => {
       ),
       title: "Sport",
       description: "Activités physiques douces adaptées à tous les niveaux pour revitaliser votre corps.",
-      iconColor: colors.gold600
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://images.pexels.com/photos/864939/pexels-photo-864939.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+      textColor: 'white'
     },
     {
       icon: (props: React.SVGProps<SVGSVGElement>) => (
@@ -53,7 +60,9 @@ const ProgramSection = () => {
       ),
       title: "Massage",
       description: "Soins relaxants et thérapeutiques pour libérer les tensions et retrouver l'équilibre.",
-      iconColor: colors.brown600
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+      textColor: 'white'
     },
     {
       icon: (props: React.SVGProps<SVGSVGElement>) => (
@@ -64,7 +73,9 @@ const ProgramSection = () => {
       ),
       title: "Session de développement",
       description: "Un moment de guidante et de partage. Permet de libérer ce qui pèse, avec des clés concrètes pour retrouver une énergie motivante qui éclaire votre chemin vers le bonheur.",
-      iconColor: colors.gold600
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://images.pexels.com/photos/7176319/pexels-photo-7176319.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+      textColor: 'white'
     },
     {
       icon: (props: React.SVGProps<SVGSVGElement>) => (
@@ -75,8 +86,10 @@ const ProgramSection = () => {
         </svg>
       ),
       title: "Pratique de pleine conscience",
-      description: "Un moment de douceur et d'ouverture vers la sérénité et la clarté intérieure. Accompagné d’une musique apaisante.",
-      iconColor: colors.brown600
+      description: "Un moment de douceur et d'ouverture vers la sérénité et la clarité intérieure. Accompagné d'une musique apaisante.",
+      iconColor: colors.gold100,
+      backgroundImage: 'url("https://images.pexels.com/photos/3820360/pexels-photo-3820360.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260")',
+      textColor: 'white'
     }
   ];
 
@@ -89,25 +102,34 @@ const ProgramSection = () => {
             return (
               <Card
                 key={program.title}
-                className="bg-white border-0 shadow-md hover:shadow-xl transition-transform transform hover:scale-105 duration-300 min-h-[300px] flex flex-col"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="bg-white border-0 shadow-md hover:shadow-xl transition-transform transform hover:scale-105 duration-300 min-h-[300px] flex flex-col relative overflow-hidden"
+                style={{
+                  animationDelay: `${index * 0.1}s`,
+                }}
               >
-                <CardHeader className="text-center pb-4">
+                <div
+                  className="absolute inset-0 bg-cover bg-center rounded-lg"
+                  style={{
+                    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), ${program.backgroundImage}`,
+                    zIndex: 0,
+                  }}
+                />
+                <CardHeader className="text-center pb-4 relative z-10">
                   <div
-                    className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br mb-4 mx-auto"
+                    className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4 mx-auto"
                     style={{
-                      backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`,
+                      backgroundColor: 'rgba(255, 255, 255, 0.5)',
                       color: program.iconColor
                     }}
                   >
                     <IconComponent width={32} height={32} />
                   </div>
-                  <CardTitle className="text-xl font-serif" style={{ color: colors.brown800 }}>
+                  <CardTitle className="text-xl font-serif" style={{ color: program.textColor }}>
                     {program.title}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="flex-1 flex items-center justify-center">
-                  <CardDescription className="text-center leading-relaxed" style={{ color: colors.brown600 }}>
+                <CardContent className="flex-1 flex items-center justify-center relative z-10">
+                  <CardDescription className="text-center leading-relaxed" style={{ color: program.textColor }}>
                     {program.description}
                   </CardDescription>
                 </CardContent>
