@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Clock, Users, Euro } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -182,7 +182,7 @@ const ProgramCard = ({
             <span>{program.capacity} pers. max</span>
           </div>
           <div className="flex items-center space-x-1">
-            <Euro size={16} />
+           
             <span>{program.price}CHF</span>
           </div>
         </div>

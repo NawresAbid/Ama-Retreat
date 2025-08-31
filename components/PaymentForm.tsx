@@ -57,7 +57,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
     billingAddress: "",
     billingCity: "",
     billingPostalCode: "",
-    billingCountry: "FR",
+    billingCountry: "CH",
   });
   const [processing, setProcessing] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -71,7 +71,6 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
     e.preventDefault();
     if (!stripe || !elements) return;
 
-    // Validation simple
     if (!billing.cardholderName || !billing.billingAddress || !billing.billingCity || !billing.billingPostalCode) {
       setErrorMsg("Veuillez remplir tous les champs obligatoires.");
       return;
@@ -81,7 +80,6 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
     setErrorMsg(null);
 
     try {
-      // 1. Créer le PaymentIntent
       const res = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,7 +88,6 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
       const { clientSecret, error: intentError } = await res.json();
       if (intentError) throw new Error(intentError);
 
-      // 2. Confirmer le paiement
       const cardElement = elements.getElement(CardElement);
       if (!cardElement) throw new Error("Élément de carte non trouvé.");
 
@@ -116,12 +113,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
         window.location.href = "/success";
       }
     } catch (err: unknown) {
-      if (
-        err &&
-        typeof err === "object" &&
-        "message" in err &&
-        typeof (err as { message?: string }).message === "string"
-      ) {
+      if (err && typeof err === "object" && "message" in err && typeof (err as { message?: string }).message === "string") {
         setErrorMsg((err as { message: string }).message);
       } else {
         setErrorMsg("Erreur inattendue.");
@@ -154,7 +146,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span style={{ color: colors.brown600 }}>Prix :</span>
-                <span style={{ color: colors.brown800 }}>{program.price}chf</span>
+                <span style={{ color: colors.brown800 }}>{program.price} CHF</span>
               </div>
               <p className="text-xs mt-1" style={{ color: colors.gray600 }}>
                 ⚠️ Le montant affiché est celui du programme. Stripe prélève une commission pour le paiement sécurisé.
@@ -162,7 +154,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
               <Separator />
               <div className="flex justify-between text-lg font-semibold">
                 <span style={{ color: colors.brown800 }}>Total :</span>
-                <span style={{ color: colors.gold600 }}>{totalAmount}chf</span>
+                <span style={{ color: colors.gold600 }}>{totalAmount} CHF</span>
               </div>
             </div>
             <div className="flex items-center gap-2 p-3 rounded-lg" style={{ backgroundColor: colors.gray100 }}>
@@ -270,7 +262,7 @@ function PaymentFormInner({ program, reservationId, onBack }: PaymentFormProps) 
                 ) : (
                   <>
                     <Lock size={16} />
-                    Payer {totalAmount}€
+                    Payer {totalAmount} CHF
                   </>
                 )}
               </Button>
