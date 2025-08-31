@@ -32,7 +32,7 @@ const colors = {
   white: "#FFFFFF",
 };
 
-// Programme depuis l&apos;API (schedule est maintenant un texte simple)
+// Programme depuis l'API (schedule est maintenant un texte simple)
 interface ProgramFromAPILocal {
   id?: string;
   title?: string;
@@ -76,12 +76,12 @@ const ProgramDetailsPage = () => {
           };
           setProgram(mappedProgram);
         } else {
-          setError("Programme non trouv&eacute;.");
+          setError("Programme non trouvé.");
         }
       } catch (err) {
         console.error("Erreur de chargement du programme:", err);
         setError(
-          "Impossible de charger le programme. Veuillez r&eacute;essayer plus tard."
+          "Impossible de charger le programme. Veuillez réessayer plus tard."
         );
       } finally {
         setLoading(false);
@@ -127,7 +127,7 @@ const ProgramDetailsPage = () => {
     );
   }
 
-  // Fonction pour simuler la division du programme en jours et ajouter l&apos;image
+  // Fonction pour simuler la division du programme en jours et ajouter l'image
   const getDailyPrograms = (scheduleText: string) => {
     const allActivities = scheduleText.split("\n").filter(line => line.trim() !== "");
     const dailyPrograms = [];
@@ -138,15 +138,15 @@ const ProgramDetailsPage = () => {
       const activitiesForDay = allActivities.slice(i, i + activitiesPerDay);
       const dayActivitiesString = activitiesForDay.join(" ").toLowerCase();
 
-      let imageSrc = null;
+      let imageSrc = "https://images.unsplash.com/photo-1517436214552-6e2793132711?q=80&w=2787&auto=format&fit=crop";
 
-      if (dayActivitiesString.includes("yoga") || dayActivitiesString.includes("m&eacute;ditation")) {
+      if (dayActivitiesString.includes("yoga") || dayActivitiesString.includes("méditation")) {
         imageSrc = "/yoga.png";
-      } else if (dayActivitiesString.includes("randonn&eacute;e") || dayActivitiesString.includes("marche en nature")) {
+      } else if (dayActivitiesString.includes("randonnée") || dayActivitiesString.includes("marche en nature")) {
         imageSrc = "https://images.unsplash.com/photo-1594247585090-410a568165d7?q=80&w=2787&auto=format&fit=crop";
-      } else if (dayActivitiesString.includes("alimentation saine") || dayActivitiesString.includes("cuisine saine") || dayActivitiesString.includes("repas &eacute;quilibr&eacute;")) {
+      } else if (dayActivitiesString.includes("alimentation saine") || dayActivitiesString.includes("cuisine saine") || dayActivitiesString.includes("repas équilibré")) {
         imageSrc = "https://images.unsplash.com/photo-1547592180-85f173990554?w=600&auto=format&fit=crop&q=60";
-      } else {
+      } else if (dayActivitiesString.includes("gratitude") || dayActivitiesString.includes("clôture")) {
         imageSrc = "https://images.unsplash.com/photo-1517436214552-6e2793132711?q=80&w=2787&auto=format&fit=crop";
       }
 
@@ -249,7 +249,7 @@ const ProgramDetailsPage = () => {
               color: colors.white,
             }}
           >
-            &Agrave; partir de {program.price}CHF tout compris (vol non inclu)
+            À partir de {program.price}CHF tout compris (vol non inclu)
           </div>
         </div>
 
@@ -281,7 +281,7 @@ const ProgramDetailsPage = () => {
                     </CardTitle>
                   </div>
                   <p className="text-base leading-relaxed" style={{ color: colors.brown600 }}>
-                    {program.title} - Programme d&eacute;taill&eacute;
+                    {program.title} - Programme détaillé
                   </p>
                 </CardHeader>
                 <CardContent className="p-0">
@@ -308,7 +308,7 @@ const ProgramDetailsPage = () => {
               className="text-center text-xl"
               style={{ color: colors.brown600 }}
             >
-              Aucun programme d&eacute;taill&eacute; n&apos;est disponible pour le moment.
+              Aucun programme détaillé n&apos;est disponible pour le moment.
             </p>
           )}
         </div>
@@ -322,7 +322,7 @@ const ProgramDetailsPage = () => {
             className="text-2xl font-serif font-bold mb-4"
             style={{ color: colors.brown800 }}
           >
-            Pr&ecirc;t(e) pour cette exp&eacute;rience transformatrice ?
+            Prêt(e) pour cette exp&eacute;rience transformatrice ?
           </h3>
           <p className="mb-6 max-w-2xl mx-auto" style={{ color: colors.brown600 }}>
             Rejoignez-nous pour une semaine inoubliable de reconnexion avec
@@ -338,7 +338,7 @@ const ProgramDetailsPage = () => {
               }}
               onClick={() => router.push(`/register/${program.id}`)}
             >
-              R&eacute;server maintenant
+              Réserver maintenant
             </Button>
           </div>
         </div>
