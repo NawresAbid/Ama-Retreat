@@ -1,16 +1,10 @@
 // ./components/About.tsx
 
-import { Star, Sun, CalendarDays, Flower, Heart, Check, Leaf, Trees } from "lucide-react";
+import { Star, Sun, Flower,  Leaf, Trees } from "lucide-react";
 
 const About = () => {
   // Corrected: The 'forYouList' variable is now used in the JSX below.
-  const forYouList = [
-    "Faire une vraie pause loin du quotidien",
-    "Prendre du temps pour vous, sans culpabilité",
-    "Recharger vos batteries en profondeur",
-    "Danse thérapeutique libérez vos émotions et retrouvez l’harmonie intérieure à chaque mouvement.",
-    "Faire de belles rencontres, dans une ambiance chaleureuse et bienveillante",
-  ];
+
 
   return (
     <section className="py-20 bg-gradient-to-br from-stone-50 via-amber-50 to-stone-100">
@@ -82,6 +76,18 @@ const About = () => {
                 Offrir un espace d&apos;introspection et de reconnexion
                 véritable à soi-même
               </li>
+               <li className="flex items-start">
+                <span className="text-amber-600 font-bold mr-3">•</span>
+               Recharger vos batteries en profondeur
+              </li>
+              <li className="flex items-start">
+                <span className="text-amber-600 font-bold mr-3">•</span>
+               Faire une vraie pause loin du quotidien
+              </li>
+              <li className="flex items-start">
+                <span className="text-amber-600 font-bold mr-3">•</span>
+               Faire de belles rencontres, dans une ambiance chaleureuse et bienveillante
+              </li>
             </ul>
           </div>
 
@@ -103,7 +109,7 @@ const About = () => {
                 <strong>Lieu :</strong> un écrin de nature, loin du tumulte,
                 pour favoriser le calme, l&apos;écoute et la contemplation
               </p>
-              <div>
+              {/*<div>
                 <h4 className="text-xl font-serif font-semibold text-amber-700 mb-4 flex items-center">
                   <CalendarDays className="text-amber-600 w-6 h-6 mr-2" />
                   Au programme :
@@ -130,35 +136,12 @@ const About = () => {
                     Alimentation saine, locale et adaptée à vos besoins
                   </li>
                 </ul>
-              </div>
+              </div>*/}
             </div>
           </div>
         </div>
 
-        {/* Pour qui */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-xl mb-12 border border-amber-200/30">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-amber-600 to-stone-800 mb-4">
-              <Heart className="text-white" size={28} />
-            </div>
-            <h3 className="text-2xl md:text-3xl font-serif font-bold text-stone-900 mb-4">
-              Ce séjour est fait pour vous si vous souhaitez :
-            </h3>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            {/* The variable is now correctly mapped here */}
-            {forYouList.map((text, index) => (
-              <div key={index} className="flex items-start space-x-3">
-                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center">
-                  <Check className="text-white w-4 h-4" />
-                </div>
-                <span className="text-stone-800">{text}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
+       
         {/* Message final */}
         <div className="text-center bg-gradient-to-r from-amber-600 to-stone-800 rounded-2xl p-8 md:p-12 text-white shadow-xl">
           <div className="mb-6">

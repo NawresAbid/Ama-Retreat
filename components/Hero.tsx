@@ -19,23 +19,22 @@ const Hero = () => {
 
       {/* Content */}
       <div className="relative z-10 text-center text-white px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+        <h1 className="text-4xl md:text-5xl font-serif italic text-white mb-4">
           <span className="text-white mb-4">Bienvenue</span>
         </h1>
 
         {/* Title: AMA RETREAT on one line, with contrast */}
-        <h3 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
+        <h3 className="text-4xl md:text-5xl font-serif italic text-white mb-4">
           <span className="text-amber-800">AMA RETREAT</span>
         </h3>
 
-        {/* Paragraph: Centered, escaped apostrophe */}
-        <p className="text-2xl md:text-3xl font-serif text-white italic mb-8 leading-relaxed">
-          Un espace sacré pour vous reconnecter à vous-même… et à
-          l&apos;essentiel.
+        {/* Paragraph */}
+        <p className="text-2xl md:text-3xl font-serif italic text-white mb-8 leading-relaxed">
+          Un espace sacré pour vous reconnecter à vous-même… et à l&apos;essentiel.
         </p>
 
+        {/* Button */}
         <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
-          {/* Button: Increased height, matching brown color */}
           <Button
             size="lg"
             className="bg-amber-800 hover:bg-amber-900 text-white px-8 py-6 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"

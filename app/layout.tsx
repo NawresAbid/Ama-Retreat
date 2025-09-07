@@ -7,6 +7,9 @@ import '../app/globals.css' // Assurez-vous d'importer vos styles globaux
 export const metadata: Metadata = {
   title: 'Ama Retreat',
   description: 'Ama Retreat',
+   icons: {
+    icon: '/ama-favicon.ico',
+  },
 };
 
 export default function RootLayout({
