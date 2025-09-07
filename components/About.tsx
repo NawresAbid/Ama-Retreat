@@ -1,7 +1,7 @@
 // ./components/About.tsx
 
-import { Star, Sun, Flower,  Leaf, Trees } from "lucide-react";
-
+import { Star, Sun,  Leaf } from "lucide-react";
+import Image from 'next/image';
 const About = () => {
   // Corrected: The 'forYouList' variable is now used in the JSX below.
 
@@ -23,12 +23,11 @@ const About = () => {
               écouter, à ressentir.
             </span>
           </p>
+<div className="flex items-center justify-center space-x-2 mb-6">
+  <Image src="/logo ama retreat.png" alt="Logo" width={150} height={150} />
+  
+</div>
 
-          <div className="flex items-center justify-center space-x-2 text-2xl mb-6">
-            <Flower className="text-amber-600" size={24} />
-            <Trees className="text-green-600" size={24} />
-            <Flower className="text-amber-600" size={24} />
-          </div>
 
           <p className="text-lg text-stone-800 leading-relaxed text-center">
             Que vous ayez besoin de paix intérieure, d&apos;un souffle nouveau
