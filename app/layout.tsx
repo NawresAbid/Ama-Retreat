@@ -7,21 +7,19 @@ import '../app/globals.css' // Assurez-vous d'importer vos styles globaux
 export const metadata: Metadata = {
   title: 'Ama Retreat',
   description: 'Ama Retreat',
-   icons: {
-    icon: '/ama-favicon.ico',
+  icons: {
+    icon: '/favicon-v2.ico', // chemin mis à jour
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="font-sans">
-        {children}
-      </body>
+    <html lang="fr">
+      <head>
+        <link rel="icon" href="/favicon-v2.ico" />
+        <link rel="shortcut icon" href="/favicon-v2.ico" />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }
