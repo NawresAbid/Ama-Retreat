@@ -24,7 +24,7 @@ const About = () => {
             </span>
           </p>
 <div className="flex items-center justify-center space-x-2 mb-6">
-  <Image src="/logo ama retreat.png" alt="Logo" width={150} height={150} />
+  <Image src="/fleurs.png" alt="Logo" width={150} height={150} />
   
 </div>
 
@@ -39,11 +39,12 @@ const About = () => {
 
         {/* Combined "Nos objectifs" and "Ce qui vous attend" card */}
         <div className="bg-gradient-to-br from-amber-100 to-stone-100 rounded-2xl p-8 shadow-xl border border-amber-200/30 transition-all duration-300 ease-in-out hover:scale-105 mb-16">
-          <div className="text-center mb-8">
+         {/*<div className="text-center mb-8">
             <h3 className="text-2xl md:text-3xl font-serif font-bold text-stone-900">
               Nos objectifs & Ce qui vous attend
             </h3>
-          </div>
+          </div>/*}
+          
 
           {/* Section: Nos objectifs */}
           <div className="mb-8">
@@ -96,7 +97,7 @@ const About = () => {
               <div className="w-12 h-12 rounded-full bg-stone-700 flex items-center justify-center shadow-lg">
                 <Star className="text-white" size={20} />
               </div>
-              <h4 className="text-xl font-serif font-semibold text-stone-700 ml-4">
+              <h4 className="text-xl font-serif font-semibold text-amber-700 ml-4">
                 Ce qui vous attend :
               </h4>
             </div>
