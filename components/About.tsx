@@ -94,7 +94,7 @@ const About = () => {
           {/* Section: Ce qui vous attend */}
           <div>
             <div className="flex items-center mb-4">
-              <div className="w-12 h-12 rounded-full bg-stone-700 flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-full bg-amber-700 flex items-center justify-center shadow-lg">
                 <Star className="text-white" size={20} />
               </div>
               <h4 className="text-xl font-serif font-semibold text-amber-700 ml-4">
