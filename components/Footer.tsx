@@ -77,7 +77,7 @@ const Footer = () => {
               </svg>
             </a>
             <a
-  href="https://wa.me/41793471055"
+  href="https://wa.me/0041 79 668 15 26"
   className="text-white hover:text-[#F0D597] transition duration-300"
   target="_blank"
   rel="noopener noreferrer"
