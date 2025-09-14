@@ -1,7 +1,16 @@
+"use client";
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const Hero = () => {
+  
+  const router = useRouter();
+
+  const handleRedirect = () => {
+    // Remplace "1" par l'id du programme que tu veux
+    router.push("/programs/6d8b2f6e-fcef-430e-8331-bb186c441fae");
+  };
   return (
     <section
       id="accueil"
@@ -36,6 +45,7 @@ const Hero = () => {
         {/* Button */}
         <div className="animate-fade-in" style={{ animationDelay: '0.6s' }}>
           <Button
+          onClick={handleRedirect}
             size="lg"
             className="bg-amber-800 hover:bg-amber-900 text-white px-8 py-6 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
