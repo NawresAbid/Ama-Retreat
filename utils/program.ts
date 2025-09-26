@@ -72,3 +72,16 @@ export const deleteProgram = async (id: string) => {
     .eq('id', id);
   if (error) throw error;
 };
+
+
+export async function getAllPrograms() {
+  const { data, error } = await supabase
+    .from('programs')
+    .select('id'); // juste l'ID pour le sitemap
+
+  if (error) {
+    console.error('Erreur getAllPrograms:', error);
+    return [];
+  }
+  return data; // [{ id: '1' }, { id: '2' }, ...]
+}

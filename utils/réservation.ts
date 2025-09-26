@@ -64,3 +64,16 @@ export async function getReservationsByProgram(programId: string): Promise<{ res
 
   return { reservations: reservations ?? undefined, error };
 }
+
+
+export async function getAllRegisters() {
+  const { data, error } = await supabase
+    .from('reservations')
+    .select('id'); // juste l'ID pour le sitemap
+
+  if (error) {
+    console.error('Erreur getAllRegisters:', error);
+    return [];
+  }
+  return data; // [{ id: '1' }, { id: '2' }, ...]
+}

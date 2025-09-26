@@ -9,21 +9,23 @@ import About from "@/components/About";
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen w-full font-[family-name:var(--font-geist-sans)]">
-      <Header/>
+      <Header />
+
       <main className="flex-grow">
-        <Hero/>
-        <About/>
-        <ProgramSection/>
-        
-        {/* C'est ici que vous affichez la section détaillée des programmes */}
-        <DetailedProgramSection/>
-       {/*<TestimonialsSection/>*/}
-      
+        {/* Invisible H1 for SEO, doesn't affect design */}
+        <h1 className="sr-only">
+          Ama Retreat – Retraites de yoga et bien-être en Tunisie
+        </h1>
+
+        {/* Keep your components exactly as they are */}
+        <Hero />
+        <About />
+        <ProgramSection />
+        <DetailedProgramSection />
+        {/* <TestimonialsSection /> */}
       </main>
 
-      <div className="w-full">
-        <Footer/>
-      </div>
+      <Footer />
     </div>
   );
 }
