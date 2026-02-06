@@ -18,8 +18,6 @@ const Header = () => {
   const navigationItems = [
     { name: 'Accueil', href: '#accueil' },
     { name: 'Programme', href: '#programme' },
-    //{ name: 'À propos', href: '#apropos' },
-    
     { name: 'Contact', href: '#contact' },
   ];
 
@@ -30,11 +28,17 @@ const Header = () => {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <h1 className="text-2xl font-serif font-bold" style={{ color: colors.brown600 }}>
-              AMA Retreat
-            </h1>
+          
+          {/* Logo Section */}
+        {/* Logo Section */}
+          <div className="flex-shrink-0 flex items-center py-2">
+            <a href="#accueil" className="flex items-center">
+              <img 
+                src="/AMA RETREAT LOGO .png" 
+                alt="AMA Retreat Logo" 
+                className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" 
+              />
+            </a>
           </div>
 
           {/* Navigation Desktop */}
@@ -54,7 +58,6 @@ const Header = () => {
                   } : undefined}
                 >
                   {item.name}
-                  {/* The underline animation still uses Tailwind's group-hover for simplicity and effectiveness */}
                   <span
                     className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
                     style={{ backgroundColor: colors.gold500 }}
