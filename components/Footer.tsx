@@ -6,10 +6,34 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
         {/* AMA Retreat Section */}
         <div className="col-span-1 md:col-span-2">
-          <h3 className="text-2xl font-bold mb-4 text-[#F0D597]">AMA Retreat</h3>
-          <p className="text-sm leading-relaxed">
-            Votre destination privilégiée pour une retraite de bien-être authentique. Reconnectez-vous avec votre essence dans un cadre naturel exceptionnel.
-          </p>
+         
+         {/* Contact Section */}
+        <div className="col-span-1">
+          <h3 className="text-2xl font-bold mb-4 text-[#F0D597]">Contact</h3>
+          <ul className="space-y-3 text-sm">
+            <li className="flex items-center">
+              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 0110.049 0A7 7 0 0115.95 15.95L10 20l-5.95-4.05a7 7 0 010-10.049zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
+              </svg>
+            Genève ,Suisse
+            
+             
+            </li>
+            <li className="flex items-center">
+              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.06-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+              </svg>
+             0041 79 668 15 26
+            </li>
+            <li className="flex items-center">
+              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+              </svg>
+           info.amaretreat@gmail.com
+            </li>
+          </ul>
+        </div>
 
           {/* Newsletter Section 
           <div className="mt-8">
@@ -31,34 +55,7 @@ const Footer = () => {
           */}
         </div>
 
-        {/* Contact Section */}
-        <div className="col-span-1">
-          <h3 className="text-2xl font-bold mb-4 text-[#F0D597]">Contact</h3>
-          <ul className="space-y-3 text-sm">
-            <li className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M5.05 4.05a7 7 0 0110.049 0A7 7 0 0115.95 15.95L10 20l-5.95-4.05a7 7 0 010-10.049zM10 13a3 3 0 100-6 3 3 0 000 6z" clipRule="evenodd" />
-              </svg>
-             Suisse,
-             France,
-             Tunisie,
-             Maroc 
-            </li>
-            <li className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.774a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.06-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-              </svg>
-             0041 79 668 15 26
-            </li>
-            <li className="flex items-center">
-              <svg className="w-5 h-5 mr-2 text-[#F0D597]" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-              </svg>
-           info.amaretreat@gmail.com
-            </li>
-          </ul>
-        </div>
+        
 
         {/* Follow Us & Reservation Section */}
         <div className="col-span-1">

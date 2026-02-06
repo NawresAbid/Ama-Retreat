@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import "../app/globals.css";
 
 export const metadata: Metadata = {
-  title: "Ama Retreat | Yoga & Bien-être en Tunisie",
+  title: "Des retraites bien-être et culturelles pour se reconnecter, rencontrer et respirer. AMARETREAT réunit des personnes en quête de sens dans des lieux dʼexception.",
+
   description:
     "Ama Retreat propose des retraites de yoga et de bien-être en Tunisie pour retrouver sérénité, énergie et équilibre intérieur.",
   keywords: [
