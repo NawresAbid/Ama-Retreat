@@ -51,9 +51,10 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Preview URLs for display
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
 
   useEffect(() => {
+    const supabaseClient = createClient();
+    
     if (program && program.schedule) {
       // Split the schedule string by a separator (e.g., '---') to get day blocks
       const dayBlocks = program.schedule.split('---').map(block => block.trim()).filter(Boolean);
@@ -72,7 +73,7 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
           return img;
         }
         // Otherwise, it's a storage path, convert to public URL
-        const { data } = supabase.storage.from('programs').getPublicUrl(img);
+        const { data } = supabaseClient.storage.from('programs').getPublicUrl(img);
         return data.publicUrl;
       });
 
@@ -120,8 +121,9 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
     setFormData({ ...formData, images: [...storagePaths, ...urls] });
     
     // Update previews: storage paths -> public URLs, then URLs, then existing file previews
+    const supabaseClient = createClient();
     const storagePreviews = storagePaths.map(path => {
-      const { data } = supabase.storage.from('programs').getPublicUrl(path);
+      const { data } = supabaseClient.storage.from('programs').getPublicUrl(path);
       return data.publicUrl;
     });
     // Get existing file previews (blob URLs) from current imagePreviews
@@ -153,7 +155,7 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
       // It's a file preview
       const fileIndex = index - totalExisting;
       const newFiles = [...filesToUpload];
-      const removedFile = newFiles.splice(fileIndex, 1)[0];
+      newFiles.splice(fileIndex, 1);
       setFilesToUpload(newFiles);
       
       const newPreviews = [...imagePreviews];
@@ -244,7 +246,6 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
           const errorMessage = uploadError instanceof Error 
             ? uploadError.message 
             : `Erreur lors de l'upload de l'image: ${file.name}`;
-          // eslint-disable-next-line no-console
           console.error('Error uploading image:', uploadError);
           setError(errorMessage);
           setIsLoading(false);

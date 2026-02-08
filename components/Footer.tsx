@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 const Footer = () => {
   return (
@@ -33,11 +34,14 @@ const Footer = () => {
 
         {/* MILIEU : Logo (Agrandi) */}
         <div className="flex justify-center order-first md:order-none">
-          <img 
-            src="/logo.jpeg" 
-            alt="AMA Retreat Logo" 
-            className="w-48 h-48 md:w-56 md:h-56 object-contain rounded-full border-2 border-[#F0D597]/30 shadow-2xl"
-          />
+          <div className="relative w-48 h-48 md:w-56 md:h-56">
+            <Image 
+              src="/logo.jpeg" 
+              alt="AMA Retreat Logo" 
+              fill
+              className="object-contain rounded-full border-2 border-[#F0D597]/30 shadow-2xl"
+            />
+          </div>
         </div>
 
         {/* Follow Us Section */}

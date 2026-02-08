@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,14 +31,18 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           
           {/* Logo Section */}
-        {/* Logo Section */}
           <div className="flex-shrink-0 flex items-center py-2">
             <a href="#accueil" className="flex items-center">
-              <img 
-                src="/AMA RETREAT LOGO .png" 
-                alt="AMA Retreat Logo" 
-                className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" 
-              />
+              <div className="relative h-20 w-auto">
+                <Image 
+                  src="/AMA RETREAT LOGO .png" 
+                  alt="AMA Retreat Logo" 
+                  width={200}
+                  height={80}
+                  className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105" 
+                  priority
+                />
+              </div>
             </a>
           </div>
 

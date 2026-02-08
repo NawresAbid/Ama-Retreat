@@ -14,7 +14,7 @@ export default function Home() {
       <main className="flex-grow">
         {/* Invisible H1 for SEO, doesn't affect design */}
         <h3 className="sr-only">
-        "Des retraites bien-être et culturelles pour se reconnecter, rencontrer et respirer. AMARETREAT réunit des personnes en quête de sens dans des lieux dʼexception.",
+        &quot;Des retraites bien-être et culturelles pour se reconnecter, rencontrer et respirer. AMARETREAT réunit des personnes en quête de sens dans des lieux dʼexception.&quot;
         </h3>
 
         {/* Keep your components exactly as they are */}

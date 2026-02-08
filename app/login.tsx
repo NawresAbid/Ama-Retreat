@@ -15,9 +15,9 @@ export default function LoginPage() {
           
           <div className="mt-6 space-y-3">
             <div className="flex items-center justify-center text-sm">
-              <span className="text-gray-600">Vous n'avez pas de compte ?</span>
+              <span className="text-gray-600">Vous n&apos;avez pas de compte ?</span>
               <Link className="font-bold ml-2 text-blue-600 hover:text-blue-800" href="/register">
-                S'inscrire
+                S&apos;inscrire
               </Link>
             </div>
             <div className="flex items-center justify-center text-sm">
