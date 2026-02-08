@@ -1,5 +1,4 @@
 "use client";
-
 import { useRouter } from "next/navigation";
 import { Clock, Users } from "lucide-react";
 import {
@@ -10,8 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 import Image from "next/image";
+import { useState } from "react";
 
 const colors = {
   beige50: "#FDF8F0",
@@ -95,6 +94,9 @@ const customIcons = {
   ),
 };
 
+// Image par défaut
+const DEFAULT_IMAGE = "https://media.istockphoto.com/id/1716187757/photo/traditional-blue-door-with-pattern-tiles-and-pink-flowers-hara-sghira-er-riadh-djerbahood-in.jpg?s=612x612&w=0&k=20&c=-vM1Inf-ZZTGFEpnSCWGqyPEeOe_g7UNWUcHU0V8tCw=";
+
 interface ProgramForCard {
   id: string;
   title: string;
@@ -109,6 +111,7 @@ interface ProgramForCard {
   };
   instructor: string;
   schedule: string;
+  images?: string[]; // ✅ Ajout du champ images
 }
 
 interface ProgramCardProps {
@@ -116,7 +119,7 @@ interface ProgramCardProps {
   iconType: keyof typeof customIcons;
   buttonBgColor: string;
   buttonTextColor: string;
-  imageUrl?: string;
+  imageUrl?: string; // Gardé pour compatibilité mais sera ignoré
 }
 
 const ProgramCard = ({
@@ -124,30 +127,54 @@ const ProgramCard = ({
   iconType,
   buttonBgColor,
   buttonTextColor,
-  imageUrl,
 }: ProgramCardProps) => {
   const router = useRouter();
   const IconComponent = customIcons[iconType];
+  
+  // ✅ État pour gérer les erreurs de chargement d'image
+  const [imageError, setImageError] = useState(false);
+  
+  // ✅ Fonction pour obtenir l'URL de l'image à afficher
+  const getImageUrl = (): string => {
+    // Si erreur de chargement, utiliser l'image par défaut
+    if (imageError) {
+      return DEFAULT_IMAGE;
+    }
+    
+    // Si le programme a des images uploadées, utiliser la première
+    if (program.images && program.images.length > 0) {
+      return program.images[0];
+    }
+    
+    // Sinon, utiliser l'image par défaut
+    return DEFAULT_IMAGE;
+  };
 
   const handleViewDetails = () => {
     router.push(`/programs/${program.id}`);
   };
 
+  // ✅ Gérer les erreurs de chargement d'image
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
   return (
     <Card className="bg-white hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border-0 shadow-md flex flex-col">
       <CardHeader className="text-center pb-4">
-        <Image
-          src={
-            imageUrl ||
-            "https://media.istockphoto.com/id/1716187757/photo/traditional-blue-door-with-pattern-tiles-and-pink-flowers-hara-sghira-er-riadh-djerbahood-in.jpg?s=612x612&w=0&k=20&c=-vM1Inf-ZZTGFEpnSCWGqyPEeOe_g7UNWUcHU0V8tCw="
-          }
-          alt={program.title}
-          width={400}
-          height={260}
-          className="w-full h-64 object-cover rounded-t-2xl"
-          style={{ borderTopLeftRadius: 16, borderTopRightRadius: 16 }}
-          priority
-        />
+        {/* ✅ Image avec gestion d'erreur */}
+        <div className="relative w-full h-64 rounded-t-2xl overflow-hidden">
+          <Image
+            src={getImageUrl()}
+            alt={program.title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={handleImageError}
+            priority={false}
+          />
+        </div>
+        
         <div className="flex justify-center mt-2">
           <IconComponent
             width={32}
@@ -182,8 +209,7 @@ const ProgramCard = ({
             <span>{program.capacity} pers. max</span>
           </div>
           <div className="flex items-center space-x-1">
-           
-            <span>{program.price}CHF</span>
+            <span>{program.price} CHF</span>
           </div>
         </div>
         <Button

@@ -64,6 +64,28 @@ export const fetchPrograms = async (): Promise<Program[]> => {
   });
 };
 
+// Récupérer tous les programmes (pour admin) avec URLs publiques pour les images
+export const fetchAllPrograms = async (): Promise<Program[]> => {
+  const { data, error } = await supabase
+    .from('programs')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) throw error;
+
+  // Pour chaque programme, convertir les chemins images en URLs publiques
+  return (data || []).map(program => {
+    if (program.images && program.images.length) {
+      const imagesUrls = program.images.map((path: string) => {
+        const { data } = supabase.storage.from('programs').getPublicUrl(path);
+        return data.publicUrl;
+      });
+      return { ...program, images: imagesUrls };
+    }
+    return program;
+  });
+};
+
 // Supprimer un programme
 export const deleteProgram = async (id: string) => {
   const { error } = await supabase

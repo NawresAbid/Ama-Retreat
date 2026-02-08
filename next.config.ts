@@ -15,6 +15,19 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'media.istockphoto.com',
       },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.co',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.supabase.in',
+      },
+      // Pattern spécifique pour le storage Supabase
+      {
+        protocol: 'https',
+        hostname: 'pbmqezkbzoxpdjqqugzt.supabase.co',
+      },
     ],
   },
 };

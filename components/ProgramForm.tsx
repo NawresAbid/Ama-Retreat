@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { addProgram, updateProgram, Program } from '@/utils/program';
+import { uploadImage } from '@/utils/storage';
+import { createClient } from '@/utils/supabase/client';
 
 interface ProgramFormProps {
   program?: Program | null;
@@ -40,13 +42,16 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
     postal_code: '',
     instructor: '',
     // Change: schedule is now an array of objects
-    schedule: [{ dayTitle: 'Jour 1: L’accueil & la douceur de l’île', activities: '' }], 
+    schedule: [{ dayTitle: "Jour 1: L'accueil & la douceur de l'île", activities: '' }], 
     status: 'active' as 'active' | 'inactive',
-    images: [] as string[],
+    images: [] as string[], // Storage paths or URLs
   });
 
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]); // Preview URLs for display
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
     if (program && program.schedule) {
@@ -57,6 +62,18 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         const dayTitle = lines[0] || `Jour ${index + 1}`;
         const activities = lines.slice(1).join('\n');
         return { dayTitle, activities };
+      });
+
+      const images = program.images ?? [];
+      // Convert storage paths to public URLs for preview
+      const previewUrls = images.map((img: string) => {
+        // If it's already a URL (starts with http), use it
+        if (img.startsWith('http')) {
+          return img;
+        }
+        // Otherwise, it's a storage path, convert to public URL
+        const { data } = supabase.storage.from('programs').getPublicUrl(img);
+        return data.publicUrl;
       });
 
       setFormData({
@@ -71,8 +88,10 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         instructor: program.instructor ?? '',
         schedule: scheduleData.length > 0 ? scheduleData : [{ dayTitle: 'Jour 1', activities: '' }],
         status: program.status ?? 'active',
-        images: program.images ?? [],
+        images: images, // Keep storage paths or URLs as-is
       });
+      setImagePreviews(previewUrls);
+      setFilesToUpload([]);
     } else {
       setFormData({
         title: '',
@@ -84,25 +103,80 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
         city: '',
         postal_code: '',
         instructor: '',
-        schedule: [{ dayTitle: 'Jour 1: L’accueil & la douceur de l’île', activities: '' }],
+        schedule: [{ dayTitle: "Jour 1: L'accueil & la douceur de l'île", activities: '' }],
         status: 'active',
         images: [],
       });
+      setImagePreviews([]);
+      setFilesToUpload([]);
     }
   }, [program]);
 
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const images = value.split(',').map((url) => url.trim()).filter(Boolean);
-    setFormData({ ...formData, images });
+    const urls = value.split(',').map((url) => url.trim()).filter(Boolean);
+    // Only update URLs (not storage paths)
+    const storagePaths = formData.images.filter(img => !img.startsWith('http'));
+    setFormData({ ...formData, images: [...storagePaths, ...urls] });
+    
+    // Update previews: storage paths -> public URLs, then URLs, then existing file previews
+    const storagePreviews = storagePaths.map(path => {
+      const { data } = supabase.storage.from('programs').getPublicUrl(path);
+      return data.publicUrl;
+    });
+    // Get existing file previews (blob URLs) from current imagePreviews
+    const existingFilePreviews = imagePreviews.filter(preview => preview.startsWith('blob:'));
+    setImagePreviews([...storagePreviews, ...urls, ...existingFilePreviews]);
   };
 
   const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files) return;
     const fileArray = Array.from(files);
-    const newImageUrls = fileArray.map(file => URL.createObjectURL(file));
-    setFormData(prev => ({ ...prev, images: [...prev.images, ...newImageUrls] }));
+    
+    // Store files for upload on submit
+    setFilesToUpload(prev => [...prev, ...fileArray]);
+    
+    // Create preview URLs
+    const newPreviews = fileArray.map(file => URL.createObjectURL(file));
+    setImagePreviews(prev => [...prev, ...newPreviews]);
+    
+    // Clear the input
+    e.target.value = '';
+  };
+
+  const handleRemoveImage = (index: number) => {
+    // Determine if it's a file preview or an existing image
+    const totalExisting = formData.images.length;
+    
+    if (index >= totalExisting) {
+      // It's a file preview
+      const fileIndex = index - totalExisting;
+      const newFiles = [...filesToUpload];
+      const removedFile = newFiles.splice(fileIndex, 1)[0];
+      setFilesToUpload(newFiles);
+      
+      const newPreviews = [...imagePreviews];
+      // Revoke the blob URL before removing
+      if (newPreviews[index]?.startsWith('blob:')) {
+        URL.revokeObjectURL(newPreviews[index]);
+      }
+      newPreviews.splice(index, 1);
+      setImagePreviews(newPreviews);
+    } else {
+      // It's an existing image (URL or storage path)
+      const newImages = [...formData.images];
+      newImages.splice(index, 1);
+      setFormData({ ...formData, images: newImages });
+      
+      const newPreviews = [...imagePreviews];
+      // Revoke blob URL if it's a blob URL
+      if (newPreviews[index]?.startsWith('blob:')) {
+        URL.revokeObjectURL(newPreviews[index]);
+      }
+      newPreviews.splice(index, 1);
+      setImagePreviews(newPreviews);
+    }
   };
 
   const imagesInputValue = formData.images.filter(url => url.startsWith('http')).join(', ');
@@ -145,12 +219,51 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
     }
 
     try {
+      // Upload files first
+      const uploadedPaths: string[] = [];
+      for (const file of filesToUpload) {
+        try {
+          // Validate file before upload
+          if (!file || file.size === 0) {
+            setError(`Le fichier ${file.name} est vide ou invalide.`);
+            setIsLoading(false);
+            return;
+          }
+          
+          // Check file size (e.g., max 10MB)
+          const maxSize = 10 * 1024 * 1024; // 10MB
+          if (file.size > maxSize) {
+            setError(`Le fichier ${file.name} est trop volumineux (max 10MB).`);
+            setIsLoading(false);
+            return;
+          }
+
+          const path = await uploadImage(file);
+          uploadedPaths.push(path);
+        } catch (uploadError) {
+          const errorMessage = uploadError instanceof Error 
+            ? uploadError.message 
+            : `Erreur lors de l'upload de l'image: ${file.name}`;
+          // eslint-disable-next-line no-console
+          console.error('Error uploading image:', uploadError);
+          setError(errorMessage);
+          setIsLoading(false);
+          return;
+        }
+      }
+
+      // Combine existing images (storage paths and URLs) with newly uploaded paths
+      // Filter out URLs that are not storage paths (keep only storage paths and new uploads)
+      const existingStoragePaths = formData.images.filter(img => !img.startsWith('http'));
+      const allImagePaths = [...existingStoragePaths, ...uploadedPaths];
+
       // Combine schedule data back into a single string with a unique separator '---'
       const scheduleString = formData.schedule.map(day => `${day.dayTitle}\n${day.activities}`).join('\n---\n');
 
       const programData = {
         ...formData,
         schedule: scheduleString,
+        images: allImagePaths, // Save storage paths to database
       };
       
       let savedProgram: Program | null = null;
@@ -164,6 +277,13 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
       if (!savedProgram || !savedProgram.id) {
         setError('La sauvegarde du programme a échoué.');
       } else {
+        // Clean up preview URLs
+        imagePreviews.forEach(preview => {
+          if (preview.startsWith('blob:')) {
+            URL.revokeObjectURL(preview);
+          }
+        });
+        setFilesToUpload([]);
         onSave(savedProgram);
       }
     } catch (err) {
@@ -194,25 +314,76 @@ const ProgramForm = ({ program, onSave, onCancel }: ProgramFormProps) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Images */}
-              <div>
-                <Label htmlFor="images" style={{ color: colors.brown700 }}>Images (URLs, séparées par des virgules ou fichiers locaux)</Label>
-                <Input
-                  id="images"
-                  value={imagesInputValue}
-                  onChange={handleImagesChange}
-                  placeholder="https://exemple.com/image1.jpg, https://exemple.com/image2.jpg"
-                  disabled={isLoading}
-                  style={{ borderColor: colors.beige300, outlineColor: colors.gold500 }}
-                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 mb-2"
-                />
-                <input type="file" accept="image/*" multiple onChange={handleImageFileUpload} disabled={isLoading} className="block mt-1" />
-                {formData.images.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.images.map((url, idx) => (
-                      <Image key={idx} src={url} alt={`Aperçu ${idx + 1}`} width={60} height={60} style={{ objectFit: 'cover', borderRadius: 6, border: `1px solid ${colors.beige300}` }} className="rounded" />
-                    ))}
+              <div className="md:col-span-2">
+                <Label htmlFor="images" style={{ color: colors.brown700 }}>Images</Label>
+                <div className="space-y-2">
+                  <Input
+                    id="images"
+                    value={imagesInputValue}
+                    onChange={handleImagesChange}
+                    placeholder="URLs séparées par des virgules (optionnel)"
+                    disabled={isLoading}
+                    style={{ borderColor: colors.beige300, outlineColor: colors.gold500 }}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2"
+                  />
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="file-upload" className="cursor-pointer" style={{ color: colors.brown700 }}>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={isLoading}
+                        style={{ borderColor: colors.beige300, color: colors.brown700 }}
+                        className="cursor-pointer"
+                        onClick={() => document.getElementById('file-upload')?.click()}
+                      >
+                        <Plus size={16} className="mr-2" /> Télécharger depuis PC
+                      </Button>
+                    </Label>
+                    <input
+                      id="file-upload"
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      onChange={handleImageFileUpload}
+                      disabled={isLoading}
+                      className="hidden"
+                    />
                   </div>
-                )}
+                  {imagePreviews.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {imagePreviews.map((preview, idx) => (
+                        <div key={idx} className="relative group">
+                          <Image
+                            src={preview}
+                            alt={`Aperçu ${idx + 1}`}
+                            width={80}
+                            height={80}
+                            style={{ objectFit: 'cover', borderRadius: 6, border: `1px solid ${colors.beige300}` }}
+                            className="rounded"
+                          />
+                          <Button
+                            type="button"
+                            onClick={() => handleRemoveImage(idx)}
+                            variant="ghost"
+                            size="sm"
+                            disabled={isLoading}
+                            className="absolute top-0 right-0 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 hover:bg-red-600 text-white p-1 rounded-full"
+                            style={{ width: 24, height: 24, padding: 0 }}
+                          >
+                            <X size={14} />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {(filesToUpload.length > 0 || formData.images.length > 0) && (
+                    <p className="text-sm" style={{ color: colors.brown600 }}>
+                      {filesToUpload.length > 0 && `${filesToUpload.length} fichier(s) à télécharger. `}
+                      {formData.images.length > 0 && `${formData.images.length} image(s) existante(s).`}
+                    </p>
+                  )}
+                </div>
               </div>
 
               {/* Other form fields */}
