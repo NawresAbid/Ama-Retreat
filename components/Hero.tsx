@@ -9,7 +9,7 @@ const Hero = () => {
 
   const handleRedirect = () => {
     // Remplace "1" par l'id du programme que tu veux
-    router.push("/programs/6d8b2f6e-fcef-430e-8331-bb186c441fae");
+    router.push("/programCard");
   };
   return (
     <section
@@ -49,7 +49,7 @@ const Hero = () => {
             size="lg"
             className="bg-amber-800 hover:bg-amber-900 text-white px-8 py-6 text-lg font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
-            Réserver ma retraite
+            Explorez nos programmes
           </Button>
         </div>
       </div>

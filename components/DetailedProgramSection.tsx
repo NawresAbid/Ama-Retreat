@@ -125,3 +125,4 @@ const DetailedProgramSection = () => {
 };
 
 export default DetailedProgramSection;
+
