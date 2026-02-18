@@ -35,7 +35,7 @@ interface RegistrationData {
 }
 
 interface RegistrationFormProps {
-  onNext: (data: RegistrationData) => void;
+  onNext: (data: RegistrationData) => void | Promise<void>;
   initialData?: Partial<RegistrationData>;
 }
 
@@ -86,10 +86,20 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      onNext(formData);
+    setSubmitError(null);
+    if (!validateForm()) return;
+    try {
+      setSubmitting(true);
+      await onNext(formData);
+    } catch (err: any) {
+      setSubmitError(err?.message ?? 'Erreur lors de la soumission');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -265,13 +275,17 @@ const RegistrationForm = ({ onNext, initialData = {} }: RegistrationFormProps) =
           </div>
 
           {/* Bouton de soumission */}
+          {submitError && (
+            <p className="text-sm text-red-600">{submitError}</p>
+          )}
           <div className="pt-4">
             <Button
               type="submit"
+              disabled={submitting}
               className="w-full py-3 text-lg font-semibold hover:opacity-90 transition-opacity"
               style={{ backgroundColor: colors.gold600, color: colors.white }}
             >
-              Continuer vers le paiement
+              {submitting ? 'Soumission...' : 'Continuer vers le paiement'}
             </Button>
           </div>
         </form>

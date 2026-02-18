@@ -77,7 +77,7 @@ const RegisterPage = () => {
   }, [params.id]);
 
   const handleRegistrationNext = async (data: RegistrationData) => {
-    if (!program) return;
+    if (!program) throw new Error('Programme introuvable');
 
     // The validation for these fields is now removed as they are optional.
     // The `required` attribute should be removed from the RegistrationForm component.
@@ -94,11 +94,17 @@ const RegisterPage = () => {
       special_requests: data.specialRequests,
     };
 
-    const { reservation } = await createReservation(resData);
-    if (!reservation) return;
-    setRegistrationData(data);
-    setReservationId(reservation.id);
-    setCurrentStep("payment");
+    try {
+      const result = await createReservation(resData);
+      if (result.error || !result.reservation) {
+        throw new Error('Impossible de créer la réservation.');
+      }
+      setRegistrationData(data);
+      setReservationId(result.reservation.id);
+      setCurrentStep("payment");
+    } catch (err) {
+      throw err;
+    }
   };
 
   const handlePaymentBack = () => setCurrentStep("registration");

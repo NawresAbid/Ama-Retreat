@@ -109,7 +109,7 @@ function ProgramCard({ program, router }: { program: Program; router: AppRouterI
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex flex-col flex-grow px-8 pb-8">
+      <CardContent className="flex flex-col grow px-8 pb-8">
         <CardDescription className="text-center text-sm line-clamp-3 mb-8" style={{ color: colors.brown600 }}>
           {program.description}
         </CardDescription>

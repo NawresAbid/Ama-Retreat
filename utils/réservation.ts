@@ -77,3 +77,13 @@ export async function getAllRegisters() {
   }
   return data; // [{ id: '1' }, { id: '2' }, ...]
 }
+
+// Get all reservation records with full fields
+export async function getAllReservations(): Promise<{ reservations?: Reservation[]; error?: any }> {
+  const { data: reservations, error } = await supabase
+    .from('reservations')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  return { reservations: reservations ?? undefined, error };
+}

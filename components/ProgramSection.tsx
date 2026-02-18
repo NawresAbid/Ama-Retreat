@@ -102,7 +102,7 @@ const ProgramSection = () => {
             return (
               <Card
                 key={program.title}
-                className="bg-white border-0 shadow-md hover:shadow-xl transition-transform transform hover:scale-105 duration-300 min-h-[300px] flex flex-col relative overflow-hidden"
+                className="bg-white border-0 shadow-md hover:shadow-xl transition-transform transform hover:scale-105 duration-300 min-h-75 flex flex-col relative overflow-hidden"
                 style={{
                   animationDelay: `${index * 0.1}s`,
                 }}

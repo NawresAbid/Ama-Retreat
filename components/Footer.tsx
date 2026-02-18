@@ -33,7 +33,7 @@ const Footer = () => {
         </div>
 
         {/* MILIEU : Logo (Agrandi) */}
-        <div className="flex justify-center order-first md:order-none">
+        <div className="flex justify-center order-first md:order-0">
           <div className="relative w-48 h-48 md:w-56 md:h-56">
             <Image 
               src="/logo.jpeg" 

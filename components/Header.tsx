@@ -31,7 +31,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           
           {/* Logo Section */}
-          <div className="flex-shrink-0 flex items-center py-2">
+          <div className="shrink-0 flex items-center py-2">
             <a href="#accueil" className="flex items-center">
               <div className="relative h-20 w-auto">
                 <Image 

@@ -19,6 +19,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import ProgramForm from '@/components/ProgramForm';
+import Reservations from '@/components/Reservations';
+import Sidebar from '@/components/Sidebar';
 import { deleteProgram, fetchPrograms, Program } from '@/utils/program';
 
 // Define colors and shadows directly within the component, matching the desired aesthetic
@@ -103,6 +105,8 @@ const AdminDashboard = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   // État pour gérer le programme en cours d'édition
   const [editingProgram, setEditingProgram] = useState<Program | null>(null);
+  // État pour afficher les réservations
+  const [showReservations, setShowReservations] = useState(false);
 
   // Fonction pour convertir Program (Supabase) vers ProgramData (affichage)
   const convertProgramToDisplayFormat = (program: Program): ProgramData => ({
@@ -216,9 +220,20 @@ const AdminDashboard = () => {
   }
 
   return (
-    // Conteneur principal du tableau de bord d'administration
+    // Conteneur principal du tableau de bord d'administration avec sidebar
     <div className="min-h-screen p-2 sm:p-4 md:p-6" style={{ backgroundColor: colors.beige50 }}>
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[240px_1fr] gap-6">
+        <Sidebar
+          onRefresh={loadPrograms}
+          onAddProgram={handleAddProgram}
+          onShowReservations={() => setShowReservations(true)}
+          totalPrograms={totalPrograms}
+          activePrograms={activePrograms}
+          colors={colors}
+          customShadows={customShadows}
+        />
+
+        <main className="space-y-6">
         {/* Affichage des erreurs */}
         {error && (
           <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
@@ -316,6 +331,37 @@ const AdminDashboard = () => {
           </Card>
         </div>
 
+        {/* Contacts & Réservations panel (visible in main content) */}
+        <Card style={{ backgroundColor: colors.white, boxShadow: customShadows.ama }}>
+          <CardHeader>
+            <div className="flex items-center justify-between w-full">
+              <div>
+                <CardTitle style={{ color: colors.brown800 }}>Contacts & Réservations</CardTitle>
+                <CardDescription style={{ color: colors.brown600 }}>Liste des réservations</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <Reservations />
+          </CardContent>
+        </Card>
+
+        {/* Mobile drawer for Reservations */}
+        {showReservations && (
+          <div className="sm:hidden fixed inset-0 z-50">
+            <div className="absolute inset-0 bg-black/40" onClick={() => setShowReservations(false)} />
+            <div className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-lg overflow-auto" style={{ boxShadow: customShadows.ama }}>
+              <div className="p-4 border-b flex items-center justify-between">
+                <h3 className="text-lg font-medium" style={{ color: colors.brown800 }}>Contacts & Réservations</h3>
+                <Button variant="ghost" size="sm" onClick={() => setShowReservations(false)} style={{ color: colors.brown700 }}>Fermer</Button>
+              </div>
+              <div className="p-4">
+                <Reservations />
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Section du tableau des programmes */}
         <Card style={{ backgroundColor: colors.white, boxShadow: customShadows.ama }}>
           <CardHeader>
@@ -338,7 +384,7 @@ const AdminDashboard = () => {
                 </Button>
               </div>
             ) : (
-              <div className="w-full min-w-[600px] sm:min-w-0">
+              <div className="w-full min-w-150 sm:min-w-0">
                 <Table className="text-xs sm:text-sm">
                   <TableHeader>
                     <TableRow>
@@ -429,6 +475,7 @@ const AdminDashboard = () => {
             }}
           />
         )}
+        </main>
       </div>
     </div>
   );

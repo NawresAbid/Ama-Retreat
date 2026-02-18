@@ -8,10 +8,10 @@ import About from "@/components/About";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen w-full font-[family-name:var(--font-geist-sans)]">
+    <div className="flex flex-col min-h-screen w-full font-(family-name:--font-geist-sans)">
       <Header />
 
-      <main className="flex-grow">
+      <main className="grow">
         {/* Invisible H1 for SEO, doesn't affect design */}
         <h3 className="sr-only">
         &quot;Des retraites bien-être et culturelles pour se reconnecter, rencontrer et respirer. AMARETREAT réunit des personnes en quête de sens dans des lieux dʼexception.&quot;
