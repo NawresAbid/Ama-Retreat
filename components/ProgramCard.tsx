@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
+import { getSlugFromId } from "@/utils/program";
 
 const colors = {
   beige50: "#FDF8F0",
@@ -151,7 +152,13 @@ const ProgramCard = ({
   };
 
   const handleViewDetails = () => {
-    router.push(`/programs/${program.id}`);
+    const slug = getSlugFromId(program.id);
+    if (slug) {
+      router.push(`/programs/${slug}`);
+    } else {
+      // Fallback to ID if slug not found
+      router.push(`/programs/${program.id}`);
+    }
   };
 
   // ✅ Gérer les erreurs de chargement d'image
