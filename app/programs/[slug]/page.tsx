@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar, User, Sun, Users, Clock, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, User, Sun, Users, Clock, CheckCircle2, Compass, Star, HelpCircle, XCircle } from "lucide-react";
 import Image from "next/image";
 import {
   Card,
@@ -11,6 +11,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
   fetchPrograms,
   Program as ProgramFromAPIType,
@@ -132,45 +138,12 @@ const ProgramDetailsPage = () => {
     );
   }
 
-  // Fonction pour parser le schedule et extraire les activités
-  const parseSchedule = (scheduleText: string) => {
-    // Diviser par le séparateur '---' pour obtenir les jours
-    const dayBlocks = scheduleText.split('---').map(block => block.trim()).filter(Boolean);
-    
-    if (dayBlocks.length === 0) {
-      // Si pas de séparateur, traiter comme une liste simple
-      const activities = scheduleText.split('\n').filter(line => line.trim() !== '');
-      return {
-        hasDays: false,
-        activities: activities,
-        days: []
-      };
-    }
 
-    // Parser chaque bloc de jour
-    const days = dayBlocks.map((block, index) => {
-      const lines = block.split('\n').map(line => line.trim()).filter(Boolean);
-      const dayTitle = lines[0] || `Jour ${index + 1}`;
-      const activities = lines.slice(1);
-      return {
-        day: dayTitle,
-        activities: activities
-      };
-    });
-
-    return {
-      hasDays: true,
-      activities: [],
-      days: days
-    };
-  };
-
-  const scheduleData = parseSchedule(program.schedule);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        {/* Retour */}
+        {/* Back Button */}
         <Button
           onClick={() => router.back()}
           variant="outline"
@@ -185,364 +158,345 @@ const ProgramDetailsPage = () => {
           Retour aux programmes
         </Button>
 
-        {/* En-tête avec image */}
-        <div className="mb-16">
-          {/* Image principale du programme */}
-          {program.images && program.images.length > 0 && (
-            <div className="relative w-full h-96 mb-8 rounded-2xl overflow-hidden shadow-2xl">
-              <Image
-                src={program.images[0]}
-                alt={program.title || "Programme"}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div
-                className="absolute inset-0"
-                style={{
-                  background: `linear-gradient(to bottom, transparent 0%, ${colors.brown800}dd 100%)`,
-                }}
-              />
-              <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                <h2
-                  className="text-4xl md:text-5xl font-serif font-bold mb-4"
-                >
-                  {program.title}
-                </h2>
-                <p className="text-lg md:text-xl max-w-3xl leading-relaxed opacity-95">
-                  {program.description}
-                </p>
-              </div>
+        {/* Section 1: Title Section */}
+        <div className="mb-20">
+          <div className="text-center mb-12">
+            <div
+              className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6"
+              style={{
+                backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`,
+                color: colors.gold600,
+              }}
+            >
+              <Sun size={36} />
             </div>
-          )}
+            <h1
+              className="text-4xl md:text-5xl font-serif font-bold mb-4"
+              style={{ color: colors.brown800 }}
+            >
+              Retraite Bien-Être à Djerba – Yoga, Méditation et Évasion
+            </h1>
+            <p className="text-2xl mb-8" style={{ color: colors.gold600 }}>
+              Du 25 au 29 Avril 2026
+            </p>
+          </div>
 
-          {/* En-tête sans image */}
-          {(!program.images || program.images.length === 0) && (
-            <div className="text-center mb-12">
-              <div
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6"
-                style={{
-                  backgroundImage: `linear-gradient(to bottom right, ${colors.gold100}, ${colors.beige100})`,
-                  color: colors.gold600,
-                }}
-              >
-                <Sun size={36} />
-              </div>
-              <h2
-                className="text-4xl md:text-5xl font-serif font-bold mb-6"
-                style={{ color: colors.brown800 }}
-              >
-                <span
-                  style={{
-                    backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
-                >
-                  {program.title}
-                </span>
-              </h2>
-              <p
-                className="text-xl max-w-4xl mx-auto leading-relaxed mb-8"
-                style={{ color: colors.brown600 }}
-              >
-                {program.description}
-              </p>
-            </div>
-          )}
-
-          {/* Infos organisées en cartes */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <Card className="border-0 shadow-md hover:shadow-lg transition-shadow" style={{ backgroundColor: colors.white }}>
+          {/* Info Row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
+            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
               <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: colors.gold50 }}
-                  >
-                    <Calendar size={24} style={{ color: colors.gold600 }} />
-                  </div>
-                </div>
-                <p className="text-sm mb-1" style={{ color: colors.brown600 }}>Durée</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>
-                  {program.duration}
-                </p>
+                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Durée</p>
+                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>4 jours</p>
               </CardContent>
             </Card>
-
-            <Card className="border-0 shadow-md hover:shadow-lg transition-shadow" style={{ backgroundColor: colors.white }}>
+            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
               <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: colors.gold50 }}
-                  >
-                    <Users size={24} style={{ color: colors.gold600 }} />
-                  </div>
-                </div>
-                <p className="text-sm mb-1" style={{ color: colors.brown600 }}>Capacité</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>
-                  {program.capacity} personnes
-                </p>
+                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Lieu</p>
+                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>Djerba, Tunisie</p>
               </CardContent>
             </Card>
-
-            <Card className="border-0 shadow-md hover:shadow-lg transition-shadow" style={{ backgroundColor: colors.white }}>
+            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
               <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: colors.gold50 }}
-                  >
-                    <User size={24} style={{ color: colors.gold600 }} />
-                  </div>
-                </div>
-                <p className="text-sm mb-1" style={{ color: colors.brown600 }}>Instructeur</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>
-                  {program.instructor}
-                </p>
+                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Capacité</p>
+                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>10 personnes</p>
               </CardContent>
             </Card>
-
-            <Card className="border-0 shadow-md hover:shadow-lg transition-shadow" style={{ backgroundColor: colors.white }}>
+            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
               <CardContent className="p-6 text-center">
-                <div className="flex justify-center mb-3">
-                  <div
-                    className="w-12 h-12 rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: colors.gold50 }}
-                  >
-                    <MapPin size={24} style={{ color: colors.gold600 }} />
-                  </div>
-                </div>
-                <p className="text-sm mb-1" style={{ color: colors.brown600 }}>Lieu</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>
-                  {program.city}
-                </p>
-                <p className="text-xs" style={{ color: colors.brown600 }}>
-                  {program.postal_code}
-                </p>
+                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Instructeur</p>
+                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>Team AMA Retreat</p>
+              </CardContent>
+            </Card>
+            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
+              <CardContent className="p-6 text-center">
+                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Prix</p>
+                <p className="font-bold text-lg" style={{ color: colors.gold600 }}>800€</p>
               </CardContent>
             </Card>
           </div>
+        </div>
 
-          {/* Prix en badge élégant */}
-          <div className="text-center">
+        {/* Section 2: Introduction */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="flex items-start gap-6 mb-6">
             <div
-              className="inline-flex items-center gap-3 rounded-full px-8 py-4 font-serif text-xl shadow-lg"
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full flex-shrink-0"
               style={{
                 backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
                 color: colors.white,
               }}
             >
-              <span className="text-2xl font-bold">{program.price}</span>
-              <span className="text-lg">CHF</span>
+              <Compass size={32} />
             </div>
-          </div>
-        </div>
-
-        {/* Programme - Design amélioré avec timeline */}
-        <Card
-          className="overflow-hidden bg-white shadow-xl border-0 p-8 sm:p-12 animate-fade-in rounded-2xl"
-        >
-          <CardHeader className="p-0 mb-10">
-            <div className="flex flex-col items-center text-center mb-4">
-              <div
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-4 shadow-lg"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
-                }}
-              >
-                <Calendar size={40} style={{ color: colors.white }} />
-              </div>
-              <CardTitle
-                className="text-3xl md:text-4xl font-serif font-bold mb-3"
-                style={{ color: colors.brown800 }}
-              >
-                Programme Complet
-              </CardTitle>
-              <p className="text-lg leading-relaxed max-w-2xl" style={{ color: colors.brown600 }}>
-                Découvrez toutes les activités et expériences qui vous attendent
+            <div className="flex-1">
+              <h2 className="text-3xl font-serif font-bold mb-4" style={{ color: colors.brown800 }}>
+                Introduction
+              </h2>
+              <p className="text-lg leading-relaxed" style={{ color: colors.brown600 }}>
+                A wellness retreat in Djerba designed to help participants slow down, reconnect with themselves, and share meaningful experiences. The retreat combines yoga sessions, meditation, personal development, cultural discovery, and relaxation moments in a peaceful environment.
               </p>
             </div>
-          </CardHeader>
-          
-          <CardContent className="p-0">
-            {/* Affichage avec jours structurés - Timeline Design */}
-            {scheduleData.hasDays && scheduleData.days.length > 0 ? (
-              <div className="relative">
-                {/* Ligne verticale de la timeline */}
-                <div
-                  className="absolute left-8 top-0 bottom-0 w-0.5 hidden md:block"
-                  style={{ backgroundColor: colors.gold200 }}
-                />
-                
-                <div className="space-y-12">
-                  {scheduleData.days.map((dayData, dayIndex) => (
-                    <div key={dayIndex} className="relative">
-                      {/* Point de la timeline */}
-                      <div className="absolute left-0 top-0 hidden md:flex items-center justify-center">
-                        <div
-                          className="w-16 h-16 rounded-full flex items-center justify-center shadow-lg z-10"
-                          style={{
-                            backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
-                            color: colors.white,
-                          }}
-                        >
-                          <span className="font-bold text-xl">{dayIndex + 1}</span>
-                        </div>
-                      </div>
-
-                      {/* Contenu du jour */}
-                      <div className="md:ml-24">
-                        {/* En-tête du jour */}
-                        <div
-                          className="mb-6 pb-4 border-b-2 rounded-lg p-6"
-                          style={{
-                            borderColor: colors.gold200,
-                            backgroundColor: colors.gold50,
-                          }}
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className="md:hidden">
-                              <div
-                                className="w-12 h-12 rounded-full flex items-center justify-center"
-                                style={{
-                                  backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
-                                  color: colors.white,
-                                }}
-                              >
-                                <span className="font-bold text-lg">{dayIndex + 1}</span>
-                              </div>
-                            </div>
-                            <div className="flex-1">
-                              <h3
-                                className="text-2xl md:text-3xl font-serif font-bold mb-2"
-                                style={{ color: colors.brown800 }}
-                              >
-                                {dayData.day}
-                              </h3>
-                              <div className="flex items-center gap-2 text-sm" style={{ color: colors.brown600 }}>
-                                <Clock size={16} />
-                                <span>{dayData.activities.length} activité{dayData.activities.length > 1 ? 's' : ''}</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        {/* Activités du jour - Design amélioré */}
-                        {dayData.activities.length > 0 ? (
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {dayData.activities.map((activity: string, activityIndex: number) => (
-                              <div
-                                key={activityIndex}
-                                className="group flex items-start gap-4 p-5 rounded-xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                                style={{
-                                  borderColor: colors.beige200,
-                                  backgroundColor: colors.white,
-                                }}
-                              >
-                                <div className="flex-shrink-0 mt-1">
-                                  <div
-                                    className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                                    style={{ backgroundColor: colors.gold50 }}
-                                  >
-                                    <CheckCircle2 size={18} style={{ color: colors.gold600 }} />
-                                  </div>
-                                </div>
-                                <div className="flex-1">
-                                  <p
-                                    className="text-base leading-relaxed font-medium"
-                                    style={{ color: colors.brown700 }}
-                                  >
-                                    {activity}
-                                  </p>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        ) : (
-                          <div className="text-center py-8 rounded-xl" style={{ backgroundColor: colors.beige50 }}>
-                            <p style={{ color: colors.brown600 }}>
-                              Aucune activité prévue pour ce jour
-                            </p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ) : scheduleData.activities.length > 0 ? (
-              /* Affichage simple sans jours - Design amélioré */
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {scheduleData.activities.map((activity: string, activityIndex: number) => (
-                  <div
-                    key={activityIndex}
-                    className="group flex items-start gap-4 p-5 rounded-xl border-2 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
-                    style={{
-                      borderColor: colors.beige200,
-                      backgroundColor: colors.white,
-                    }}
-                  >
-                    <div className="flex-shrink-0 mt-1">
-                      <div
-                        className="w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-                        style={{ backgroundColor: colors.gold50 }}
-                      >
-                        <CheckCircle2 size={18} style={{ color: colors.gold600 }} />
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <p
-                        className="text-base leading-relaxed font-medium"
-                        style={{ color: colors.brown700 }}
-                      >
-                        {activity}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-16 rounded-xl" style={{ backgroundColor: colors.beige50 }}>
-                <Calendar size={48} className="mx-auto mb-4" style={{ color: colors.gold600 }} />
-                <p className="text-xl font-medium" style={{ color: colors.brown600 }}>
-                  Aucun programme détaillé n&apos;est disponible pour le moment.
-                </p>
-              </div>
-            )}
-          </CardContent>
+          </div>
         </Card>
 
-        {/* CTA */}
-        <div
-          className="text-center mt-16 rounded-2xl p-8"
-          style={{ backgroundColor: colors.white }}
-        >
-          <h3
-            className="text-2xl font-serif font-bold mb-4"
-            style={{ color: colors.brown800 }}
-          >
-            Prêt(e) pour cette exp&eacute;rience transformatrice ?
-          </h3>
-          <p className="mb-6 max-w-2xl mx-auto" style={{ color: colors.brown600 }}>
-            Rejoignez-nous pour une semaine inoubliable de reconnexion avec
-            vous-m&ecirc;me dans un cadre naturel exceptionnel.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              size="lg"
-              className="px-12 py-4 text-lg font-medium rounded-full hover:scale-105 transition-all duration-300"
+        {/* Section 3: Points Forts de l'Expérience */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="mb-10">
+            <div className="flex items-center gap-4 mb-8">
+              <div
+                className="inline-flex items-center justify-center w-16 h-16 rounded-full"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
+                  color: colors.white,
+                }}
+              >
+                <Star size={32} />
+              </div>
+              <h2 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+                Points Forts de l'Expérience
+              </h2>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              "Retraite bien-être dans un cadre paisible à Djerba",
+              "Séances de yoga et méditation guidées",
+              "Activités de développement personnel",
+              "Découverte de l'île de Djerba",
+              "Demi-journée spa dans un hôtel d'exception",
+              "Hébergement dans une maison avec piscine",
+              "Cuisine méditerranéenne locale",
+              "Groupe limité à 10 personnes",
+            ].map((highlight, index) => (
+              <div key={index} className="flex items-start gap-4 p-4 rounded-lg" style={{ backgroundColor: colors.beige50 }}>
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                  style={{ backgroundColor: colors.gold200 }}
+                >
+                  <CheckCircle2 size={18} style={{ color: colors.gold600 }} />
+                </div>
+                <p className="text-base leading-relaxed" style={{ color: colors.brown700 }}>
+                  {highlight}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Section 4: Détails Complets */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="flex items-center gap-4 mb-8">
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full"
               style={{
-                backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
+                backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
                 color: colors.white,
               }}
-              onClick={() => router.push(`/register/${program.id}`)}
             >
-              Réserver maintenant
-            </Button>
+              <Calendar size={32} />
+            </div>
+            <h2 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+              Détails Complets de l'Expérience
+            </h2>
           </div>
-        </div>
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                Morning Yoga and Meditation Sessions
+              </h3>
+              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                Start each day with guided yoga and meditation sessions in a serene setting, designed to energize your body and calm your mind.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                Personal Development Workshops and Group Sharing
+              </h3>
+              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                Participate in interactive workshops focused on personal growth, mindfulness, and meaningful group discussions.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                Exploration of Djerba with Walks and Cultural Visits
+              </h3>
+              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                Discover the beauty of Djerba through guided walks and cultural excursions to local sites and attractions.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                Relaxation Experiences Including a Spa Half-Day
+              </h3>
+              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                Enjoy rejuvenating spa treatments and relaxation sessions in a luxury hotel setting.
+              </p>
+            </div>
+            <div>
+              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                Optional Desert Excursion for a Unique Sahara Experience
+              </h3>
+              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                Experience the magic of the Sahara with an optional desert excursion (additional cost may apply).
+              </p>
+            </div>
+          </div>
+        </Card>
+
+        {/* Section 5: Inclusions */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="flex items-center gap-4 mb-8">
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
+                color: colors.white,
+              }}
+            >
+              <CheckCircle2 size={32} />
+            </div>
+            <h2 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+              Inclusions
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              "Hébergement dans une maison avec piscine",
+              "Pension complète (petit-déjeuner, déjeuner, dîner)",
+              "Séances de yoga et méditation",
+              "Activités de développement personnel",
+              "Activités de groupe",
+              "Randonnées et visites locales",
+              "Demi-journée spa dans un hôtel",
+            ].map((item, index) => (
+              <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: colors.gold50 }}>
+                <CheckCircle2 size={20} style={{ color: colors.gold600, flexShrink: 0 }} />
+                <span style={{ color: colors.brown700 }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Section 6: Non Inclus */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="flex items-center gap-4 mb-8">
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full"
+              style={{
+                backgroundImage: `linear-gradient(135deg, #E74C3C, #C0392B)`,
+                color: colors.white,
+              }}
+            >
+              <XCircle size={32} />
+            </div>
+            <h2 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+              Non Inclus
+            </h2>
+          </div>
+          <div className="space-y-4">
+            {[
+              "Vols internationaux",
+              "Transferts aéroport (si non précisés)",
+              "Excursion désert (activité optionnelle)",
+              "Dépenses personnelles",
+              "Assurance voyage",
+            ].map((item, index) => (
+              <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: "#FCE4E4" }}>
+                <XCircle size={20} style={{ color: "#E74C3C", flexShrink: 0 }} />
+                <span style={{ color: colors.brown700 }}>{item}</span>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        {/* Section 7: FAQ */}
+        <Card className="border-0 shadow-md mb-20 p-8 md:p-12" style={{ backgroundColor: colors.white }}>
+          <div className="flex items-center gap-4 mb-8">
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
+                color: colors.white,
+              }}
+            >
+              <HelpCircle size={32} />
+            </div>
+            <h2 className="text-3xl font-serif font-bold" style={{ color: colors.brown800 }}>
+              FAQ – Questions Fréquemment Posées
+            </h2>
+          </div>
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="item-1">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                Le séjour est-il adapté aux débutants en yoga ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                Oui, notre retraite accueille les participants de tous les niveaux, du débutant au confirmé. Nos instructeurs adaptent les sessions pour chacun.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                Combien de participants participent à la retraite ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                Notre retraite est limitée à 10 personnes pour créer une atmosphère intime et permettre une attention personnalisée.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                Où se déroule l'hébergement ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                L'hébergement se fait dans une belle maison avec piscine, idéalement située à Djerba pour un accès facile aux activités et aux attractions locales.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-4">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                Les repas sont-ils inclus ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                Oui, la pension complète est incluse avec un petit-déjeuner, déjeuner et dîner tous les jours, préparés avec des ingrédients locaux méditerranéens.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-5">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                L'excursion dans le désert est-elle incluse ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                Non, l'excursion dans le désert est une activité optionnelle avec un coût supplémentaire. Contactez-nous pour plus de détails.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-6">
+              <AccordionTrigger style={{ color: colors.brown800 }}>
+                Comment réserver ?
+              </AccordionTrigger>
+              <AccordionContent style={{ color: colors.brown600 }}>
+                Vous pouvez réserver en cliquant sur le bouton "Réserver maintenant" ci-dessous ou en nous contactant directement pour plus d'informations.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </Card>
+
+        {/* CTA Section */}
+        <Card className="border-0 shadow-lg p-8 md:p-12 text-center" style={{ backgroundColor: colors.gold50 }}>
+          <h3 className="text-3xl font-serif font-bold mb-4" style={{ color: colors.brown800 }}>
+            Prêt(e) pour cette expérience transformatrice ?
+          </h3>
+          <p className="text-lg mb-8 max-w-2xl mx-auto" style={{ color: colors.brown600 }}>
+            Rejoignez-nous pour une semaine inoubliable de reconnexion avec vous-même dans un cadre naturel exceptionnel.
+          </p>
+          <Button
+            size="lg"
+            className="px-12 py-4 text-lg font-medium rounded-full hover:scale-105 transition-all duration-300"
+            style={{
+              backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.brown600})`,
+              color: colors.white,
+            }}
+            onClick={() => router.push(`/register/${program.id}`)}
+          >
+            Réserver maintenant
+          </Button>
+        </Card>
       </div>
     </div>
   );
