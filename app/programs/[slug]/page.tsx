@@ -265,7 +265,10 @@ const ProgramDetailsPage = () => {
               </h2>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div
+            className="p-6 rounded-lg space-y-4"
+            style={{ backgroundColor: colors.beige50 }}
+          >
             {[
               "Retraite bien-être dans un cadre paisible à Djerba",
               "Séances de yoga et méditation guidées",
@@ -276,12 +279,12 @@ const ProgramDetailsPage = () => {
               "Cuisine méditerranéenne locale",
               "Groupe limité à 10 personnes",
             ].map((highlight, index) => (
-              <div key={index} className="flex items-start gap-4 p-4 rounded-lg" style={{ backgroundColor: colors.beige50 }}>
+              <div key={index} className="flex items-start gap-3">
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
+                  className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
                   style={{ backgroundColor: colors.gold200 }}
                 >
-                  <CheckCircle2 size={18} style={{ color: colors.gold600 }} />
+                  <CheckCircle2 size={16} style={{ color: colors.gold600 }} />
                 </div>
                 <p className="text-base leading-relaxed" style={{ color: colors.brown700 }}>
                   {highlight}
