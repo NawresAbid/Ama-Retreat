@@ -360,7 +360,7 @@ const ProgramDetailsPage = () => {
             <div
               className="inline-flex items-center justify-center w-16 h-16 rounded-full"
               style={{
-                backgroundImage: `linear-gradient(135deg, ${colors.gold600}, ${colors.gold700})`,
+                backgroundImage: `linear-gradient(135deg, #10b981, #059669)`,
                 color: colors.white,
               }}
             >
@@ -380,8 +380,8 @@ const ProgramDetailsPage = () => {
               "Randonnées et visites locales",
               "Demi-journée spa dans un hôtel",
             ].map((item, index) => (
-              <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: colors.gold50 }}>
-                <CheckCircle2 size={20} style={{ color: colors.gold600, flexShrink: 0 }} />
+              <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: "#DCFCE7" }}>
+                <CheckCircle2 size={20} style={{ color: "#10b981", flexShrink: 0 }} />
                 <span style={{ color: colors.brown700 }}>{item}</span>
               </div>
             ))}
