@@ -241,7 +241,7 @@ const ProgramDetailsPage = () => {
                 Introduction
               </h2>
               <p className="text-lg leading-relaxed" style={{ color: colors.brown600 }}>
-                A wellness retreat in Djerba designed to help participants slow down, reconnect with themselves, and share meaningful experiences. The retreat combines yoga sessions, meditation, personal development, cultural discovery, and relaxation moments in a peaceful environment.
+                Une retraite bien-être à Djerba conçue pour aider les participants à ralentir, se reconnecter avec eux-mêmes et partager des expériences significatives. La retraite combine des séances de yoga, de la méditation, du développement personnel, une découverte culturelle et des moments de relaxation dans un environnement paisible.
               </p>
             </div>
           </div>
@@ -313,42 +313,42 @@ const ProgramDetailsPage = () => {
           <div className="space-y-6">
             <div>
               <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Morning Yoga and Meditation Sessions
+                Séances de Yoga et Méditation du Matin
               </h3>
               <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Start each day with guided yoga and meditation sessions in a serene setting, designed to energize your body and calm your mind.
+                Commencez chaque journée par des séances guidées de yoga et de méditation dans un cadre serein, conçues pour dynamiser votre corps et apaiser votre esprit.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Personal Development Workshops and Group Sharing
+                Ateliers de Développement Personnel et Partages en Groupe
               </h3>
               <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Participate in interactive workshops focused on personal growth, mindfulness, and meaningful group discussions.
+                Participez à des ateliers interactifs axés sur la croissance personnelle, la pleine conscience et des discussions de groupe significatives.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Exploration of Djerba with Walks and Cultural Visits
+                Exploration de Djerba avec Promenades et Visites Culturelles
               </h3>
               <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Discover the beauty of Djerba through guided walks and cultural excursions to local sites and attractions.
+                Découvrez la beauté de Djerba lors de promenades guidées et d'excursions culturelles vers des sites locaux et des attractions.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Relaxation Experiences Including a Spa Half-Day
+                Expériences de Relaxation Incluant une Demi-Journée Spa
               </h3>
               <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Enjoy rejuvenating spa treatments and relaxation sessions in a luxury hotel setting.
+                Profitez de traitements spa revitalisants et de séances de relaxation dans un cadre hôtelier de luxe.
               </p>
             </div>
             <div>
               <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Optional Desert Excursion for a Unique Sahara Experience
+                Excursion Désert Optionnelle pour une Expérience Sahara Unique
               </h3>
               <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Experience the magic of the Sahara with an optional desert excursion (additional cost may apply).
+                Vivez la magie du Sahara avec une excursion optionnelle dans le désert (un coût supplémentaire peut s'appliquer).
               </p>
             </div>
           </div>
