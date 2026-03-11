@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar, User, Sun, Users, Clock, CheckCircle2, Compass, Star, HelpCircle, XCircle } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, DollarSign } from "lucide-react";
 import Image from "next/image";
 import {
   Card,
@@ -184,37 +184,42 @@ const ProgramDetailsPage = () => {
           {/* Info Badges Row */}
           <div className="flex flex-wrap justify-center gap-3 mb-12">
             <div
-              className="px-4 py-2 rounded-full text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
-              <span style={{ color: colors.brown600 }}>Durée:</span> <span className="font-bold">4 jours</span>
+              <Calendar size={16} style={{ color: colors.gold600 }} />
+              <span className="font-bold">4 jours</span>
             </div>
             <div
-              className="px-4 py-2 rounded-full text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
-              <span style={{ color: colors.brown600 }}>Lieu:</span> <span className="font-bold">Djerba, Tunisie</span>
+              <MapPin size={16} style={{ color: colors.gold600 }} />
+              <span className="font-bold">Djerba, Tunisie</span>
             </div>
             <div
-              className="px-4 py-2 rounded-full text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
-              <span style={{ color: colors.brown600 }}>Capacité:</span> <span className="font-bold">10 personnes</span>
+              <Users size={16} style={{ color: colors.gold600 }} />
+              <span className="font-bold">10 personnes</span>
             </div>
             <div
-              className="px-4 py-2 rounded-full text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
-              <span style={{ color: colors.brown600 }}>Instructeur:</span> <span className="font-bold">Team AMA Retreat</span>
+              <User size={16} style={{ color: colors.gold600 }} />
+              <span className="font-bold">Team AMA Retreat</span>
             </div>
             <div
-              className="px-4 py-2 rounded-full text-sm"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{
                 backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.gold700})`,
                 color: colors.white,
               }}
             >
-              <span className="font-bold">Prix: 800€</span>
+              <DollarSign size={16} />
+              <span className="font-bold">800€</span>
             </div>
           </div>
         </div>
