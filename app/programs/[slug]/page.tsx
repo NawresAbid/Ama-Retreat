@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, DollarSign } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle } from "lucide-react";
 import Image from "next/image";
 import {
   Card,
@@ -218,8 +218,7 @@ const ProgramDetailsPage = () => {
                 color: colors.white,
               }}
             >
-              <DollarSign size={16} />
-              <span className="font-bold">800€</span>
+              <span className="font-bold">Prix: 800€</span>
             </div>
           </div>
         </div>
