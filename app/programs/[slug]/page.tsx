@@ -181,38 +181,41 @@ const ProgramDetailsPage = () => {
             </p>
           </div>
 
-          {/* Info Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-12">
-            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
-              <CardContent className="p-6 text-center">
-                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Durée</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>4 jours</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
-              <CardContent className="p-6 text-center">
-                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Lieu</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>Djerba, Tunisie</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
-              <CardContent className="p-6 text-center">
-                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Capacité</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>10 personnes</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
-              <CardContent className="p-6 text-center">
-                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Instructeur</p>
-                <p className="font-bold text-lg" style={{ color: colors.brown800 }}>Team AMA Retreat</p>
-              </CardContent>
-            </Card>
-            <Card className="border-0 shadow-md" style={{ backgroundColor: colors.white }}>
-              <CardContent className="p-6 text-center">
-                <p className="text-sm mb-2" style={{ color: colors.brown600 }}>Prix</p>
-                <p className="font-bold text-lg" style={{ color: colors.gold600 }}>800€</p>
-              </CardContent>
-            </Card>
+          {/* Info Badges Row */}
+          <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <div
+              className="px-4 py-2 rounded-full text-sm"
+              style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
+            >
+              <span style={{ color: colors.brown600 }}>Durée:</span> <span className="font-bold">4 jours</span>
+            </div>
+            <div
+              className="px-4 py-2 rounded-full text-sm"
+              style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
+            >
+              <span style={{ color: colors.brown600 }}>Lieu:</span> <span className="font-bold">Djerba, Tunisie</span>
+            </div>
+            <div
+              className="px-4 py-2 rounded-full text-sm"
+              style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
+            >
+              <span style={{ color: colors.brown600 }}>Capacité:</span> <span className="font-bold">10 personnes</span>
+            </div>
+            <div
+              className="px-4 py-2 rounded-full text-sm"
+              style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
+            >
+              <span style={{ color: colors.brown600 }}>Instructeur:</span> <span className="font-bold">Team AMA Retreat</span>
+            </div>
+            <div
+              className="px-4 py-2 rounded-full text-sm"
+              style={{
+                backgroundImage: `linear-gradient(to right, ${colors.gold600}, ${colors.gold700})`,
+                color: colors.white,
+              }}
+            >
+              <span className="font-bold">Prix: 800€</span>
+            </div>
           </div>
         </div>
 
