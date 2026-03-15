@@ -63,29 +63,189 @@ const ProgramDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Static content for both retraites
+  const retraiteContent: Record<string, any> = {
+    "retraite-a-djerba": {
+      id: "6d8b2f6e-fcef-430e-8331-bb186c441fae",
+      title: "Retraite Bien-Être à Djerba – Yoga, Méditation et Évasion",
+      dates: "Du 25 au 29 Avril 2026",
+      duration: "4 jours",
+      location: "Djerba, Tunisie",
+      capacity: 10,
+      instructor: "Team AMA Retreat",
+      price: "800€",
+      introduction: "Une retraite bien-être à Djerba conçue pour aider les participants à ralentir, se reconnecter avec eux-mêmes et partager des expériences significatives. La retraite combine des séances de yoga, de la méditation, du développement personnel, une découverte culturelle et des moments de relaxation dans un environnement paisible.",
+      highlights: [
+        "Retraite bien-être dans un cadre paisible à Djerba",
+        "Séances de yoga et méditation guidées",
+        "Activités de développement personnel",
+        "Découverte de l'île de Djerba",
+        "Demi-journée spa dans un hôtel d'exception",
+        "Hébergement dans une maison avec piscine",
+        "Cuisine méditerranéenne locale",
+        "Groupe limité à 10 personnes",
+      ],
+      details: [
+        {
+          title: "Séances de Yoga et Méditation du Matin",
+          description: "Commencez chaque journée par des séances guidées de yoga et de méditation dans un cadre serein, conçues pour dynamiser votre corps et apaiser votre esprit.",
+        },
+        {
+          title: "Ateliers de Développement Personnel et Partages en Groupe",
+          description: "Participez à des ateliers interactifs axés sur la croissance personnelle, la pleine conscience et des discussions de groupe significatives.",
+        },
+        {
+          title: "Exploration de Djerba avec Promenades et Visites Culturelles",
+          description: "Découvrez la beauté de Djerba lors de promenades guidées et d'excursions culturelles vers des sites locaux et des attractions.",
+        },
+        {
+          title: "Expériences de Relaxation Incluant une Demi-Journée Spa",
+          description: "Profitez de traitements spa revitalisants et de séances de relaxation dans un cadre hôtelier de luxe.",
+        },
+        {
+          title: "Excursion Désert Optionnelle pour une Expérience Sahara Unique",
+          description: "Vivez la magie du Sahara avec une excursion optionnelle dans le désert (un coût supplémentaire peut s'appliquer).",
+        },
+      ],
+      inclusions: [
+        "Hébergement dans une maison avec piscine",
+        "Pension complète (petit-déjeuner, déjeuner, dîner)",
+        "Séances de yoga et méditation",
+        "Activités de développement personnel",
+        "Activités de groupe",
+        "Randonnées et visites locales",
+        "Demi-journée spa dans un hôtel",
+      ],
+      exclusions: [
+        "Vols internationaux",
+        "Transferts aéroport (si non précisés)",
+        "Excursion désert (activité optionnelle)",
+        "Dépenses personnelles",
+        "Assurance voyage",
+      ],
+      faqs: [
+        {
+          question: "Le séjour est-il adapté aux débutants en yoga ?",
+          answer: "Oui, notre retraite accueille les participants de tous les niveaux, du débutant au confirmé. Nos instructeurs adaptent les sessions pour chacun.",
+        },
+        {
+          question: "Combien de participants participent à la retraite ?",
+          answer: "Notre retraite est limitée à 10 personnes pour créer une atmosphère intime et permettre une attention personnalisée.",
+        },
+        {
+          question: "Où se déroule l'hébergement ?",
+          answer: "L'hébergement se fait dans une belle maison avec piscine, idéalement située à Djerba pour un accès facile aux activités et aux attractions locales.",
+        },
+        {
+          question: "Les repas sont-ils inclus ?",
+          answer: "Oui, la pension complète est incluse avec un petit-déjeuner, déjeuner et dîner tous les jours, préparés avec des ingrédients locaux méditerranéens.",
+        },
+        {
+          question: "L'excursion dans le désert est-elle incluse ?",
+          answer: "Non, l'excursion dans le désert est une activité optionnelle avec un coût supplémentaire. Contactez-nous pour plus de détails.",
+        },
+        {
+          question: "Comment réserver ?",
+          answer: "Vous pouvez réserver en cliquant sur le bouton 'Réserver maintenant' ci-dessous ou en nous contactant directement pour plus d'informations.",
+        },
+      ],
+    },
+    "retraite-a-palerme": {
+      id: "2eb64782-9126-4e61-bda8-b200cee20ae5",
+      title: "Retraite Bien-Être à Palerme – Immersion entre culture sicilienne et développement personnel",
+      dates: "Du 16 au 21 Mai 2026",
+      duration: "5 jours",
+      location: "Palerme, Italie",
+      capacity: 10,
+      instructor: "Team AMA Retreat",
+      price: "1200€",
+      introduction: "Cette retraite à Palerme propose une immersion intimiste mêlant bien-être, exploration personnelle et découverte de l'art de vivre sicilien. Dans un cadre raffiné et apaisant, les participants alternent entre pratiques de yoga, méditation, moments de développement personnel et exploration culturelle de la région. Hébergés dans un hôtel de charme avec piscine, les participants profitent d'une atmosphère élégante et conviviale, idéale pour se ressourcer et découvrir la richesse culturelle et gastronomique de la Sicile.",
+      highlights: [
+        "Retraite bien-être dans la ville historique de Palerme",
+        "Hébergement dans un hôtel de charme avec piscine",
+        "Séances de yoga et méditation guidées",
+        "Ateliers de développement personnel",
+        "Découverte culturelle de Palerme et de ses environs",
+        "Excursion à vélo dans une ville sicilienne voisine",
+        "Immersion dans la gastronomie et les saveurs locales",
+        "Petit groupe limité à 10 participants pour une expérience intimiste",
+      ],
+      details: [
+        {
+          title: "Séances de Yoga et Méditation pour une Énergie Équilibrée",
+          description: "Les journées commencent généralement par des séances de yoga et de méditation permettant d'installer une énergie calme et équilibrée pour la journée.",
+        },
+        {
+          title: "Ateliers de Développement Personnel et Partages Bienveillants",
+          description: "Des ateliers de développement personnel et des moments de partage en groupe permettent d'approfondir la réflexion intérieure dans une atmosphère bienveillante.",
+        },
+        {
+          title: "Découverte Culturelle de Palerme et de ses Environs",
+          description: "Les participants découvrent Palerme à travers des visites guidées et des explorations culturelles, afin d'apprécier l'histoire, l'architecture et l'atmosphère unique de la ville.",
+        },
+        {
+          title: "Excursion à Vélo dans les Paysages Siciliens",
+          description: "Une excursion à vélo dans une charmante ville voisine permet de découvrir les paysages siciliens d'une manière active et immersive.",
+        },
+        {
+          title: "Immersion dans la Cuisine Sicilienne",
+          description: "La retraite inclut également une immersion dans la cuisine sicilienne, permettant de savourer les spécialités locales et de profiter pleinement de l'art de vivre méditerranéen.",
+        },
+      ],
+      inclusions: [
+        "Hébergement dans un hôtel de charme avec piscine",
+        "Demi-pension (petit-déjeuner et dîner)",
+        "Séances de yoga et méditation",
+        "Ateliers de développement personnel",
+        "Visites culturelles guidées à Palerme",
+        "Excursion à vélo dans une ville voisine",
+        "Activités de groupe et accompagnement par Team AMA Retreat",
+      ],
+      exclusions: [
+        "Vols internationaux vers l'Italie",
+        "Déjeuners (pour permettre la découverte libre de la gastronomie locale)",
+        "Dépenses personnelles",
+        "Assurance voyage",
+        "Transferts non mentionnés",
+      ],
+      faqs: [
+        {
+          question: "Le séjour est-il adapté aux débutants en yoga ?",
+          answer: "Oui, notre retraite accueille tous les niveaux. Nos instructeurs adaptent les sessions de yoga pour chaque participant.",
+        },
+        {
+          question: "Combien de participants participent à la retraite ?",
+          answer: "Notre groupe est limité à 10 personnes pour créer une atmosphère intimiste et permettre un accompagnement personnalisé.",
+        },
+        {
+          question: "Où se situe l'hébergement ?",
+          answer: "L'hébergement se fait dans un hôtel de charme avec piscine, idéalement situé à Palerme pour un accès facile aux attractions culturelles et aux restaurants locaux.",
+        },
+        {
+          question: "Les repas sont-ils inclus dans le séjour ?",
+          answer: "La demi-pension est incluse avec petit-déjeuner et dîner. Les déjeuners ne sont pas inclus pour permettre une découverte libre de la gastronomie sicilienne.",
+        },
+        {
+          question: "Faut-il une condition physique particulière pour l'excursion à vélo ?",
+          answer: "Une condition physique normale suffit. L'excursion est accessible et adaptée à tous les niveaux. Des vélos confortables sont fournis.",
+        },
+        {
+          question: "Comment réserver ma place ?",
+          answer: "Vous pouvez réserver en cliquant sur le bouton 'Réserver maintenant' ci-dessous ou en nous contactant directement pour plus d'informations.",
+        },
+      ],
+    },
+  };
+
   useEffect(() => {
-    const loadProgram = async () => {
+    const loadProgram = () => {
       try {
         setLoading(true);
-        const apiPrograms: ProgramFromAPIType[] = await fetchPrograms();
-
-        // Get the ID from the slug
         const slug = params.slug as string;
-        const programId = getIdFromSlug(slug);
+        const content = retraiteContent[slug];
 
-        const foundProgram = apiPrograms.find(
-          (p) => p.id === programId
-        );
-
-        if (foundProgram) {
-          const mappedProgram: ProgramFromAPILocal = {
-            ...foundProgram,
-            schedule:
-              typeof foundProgram.schedule === "string"
-                ? foundProgram.schedule
-                : "", // fallback si pas string
-          };
-          setProgram(mappedProgram);
+        if (content) {
+          setProgram(content);
         } else {
           setError("Programme non trouvé.");
         }
@@ -99,9 +259,7 @@ const ProgramDetailsPage = () => {
       }
     };
 
-    if (params.slug) {
-      loadProgram();
-    }
+    loadProgram();
   }, [params.slug]);
 
   if (loading) {
@@ -174,10 +332,10 @@ const ProgramDetailsPage = () => {
               className="text-4xl md:text-5xl font-serif font-bold mb-4"
               style={{ color: colors.brown800 }}
             >
-              Retraite Bien-Être à Djerba – Yoga, Méditation et Évasion
+              {program?.title}
             </h1>
             <p className="text-2xl mb-8" style={{ color: colors.gold600 }}>
-              Du 25 au 29 Avril 2026
+              {program?.dates}
             </p>
           </div>
 
@@ -188,28 +346,28 @@ const ProgramDetailsPage = () => {
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
               <Calendar size={16} style={{ color: colors.gold600 }} />
-              <span className="font-bold">4 jours</span>
+              <span className="font-bold">{program?.duration}</span>
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
               <MapPin size={16} style={{ color: colors.gold600 }} />
-              <span className="font-bold">Djerba, Tunisie</span>
+              <span className="font-bold">{program?.location}</span>
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
               <Users size={16} style={{ color: colors.gold600 }} />
-              <span className="font-bold">10 personnes</span>
+              <span className="font-bold">{program?.capacity} personnes</span>
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
             >
               <User size={16} style={{ color: colors.gold600 }} />
-              <span className="font-bold">Team AMA Retreat</span>
+              <span className="font-bold">{program?.instructor}</span>
             </div>
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
@@ -218,7 +376,7 @@ const ProgramDetailsPage = () => {
                 color: colors.white,
               }}
             >
-              <span className="font-bold">Prix: 800€</span>
+              <span className="font-bold">Prix: {program?.price}</span>
             </div>
           </div>
         </div>
@@ -240,7 +398,7 @@ const ProgramDetailsPage = () => {
                 Introduction
               </h2>
               <p className="text-lg leading-relaxed" style={{ color: colors.brown600 }}>
-                Une retraite bien-être à Djerba conçue pour aider les participants à ralentir, se reconnecter avec eux-mêmes et partager des expériences significatives. La retraite combine des séances de yoga, de la méditation, du développement personnel, une découverte culturelle et des moments de relaxation dans un environnement paisible.
+                {program?.introduction}
               </p>
             </div>
           </div>
@@ -268,16 +426,7 @@ const ProgramDetailsPage = () => {
             className="p-6 rounded-lg space-y-4"
             style={{ backgroundColor: colors.beige50 }}
           >
-            {[
-              "Retraite bien-être dans un cadre paisible à Djerba",
-              "Séances de yoga et méditation guidées",
-              "Activités de développement personnel",
-              "Découverte de l'île de Djerba",
-              "Demi-journée spa dans un hôtel d'exception",
-              "Hébergement dans une maison avec piscine",
-              "Cuisine méditerranéenne locale",
-              "Groupe limité à 10 personnes",
-            ].map((highlight, index) => (
+            {program?.highlights?.map((highlight: string, index: number) => (
               <div key={index} className="flex items-start gap-3">
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
@@ -310,46 +459,16 @@ const ProgramDetailsPage = () => {
             </h2>
           </div>
           <div className="space-y-6">
-            <div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Séances de Yoga et Méditation du Matin
-              </h3>
-              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Commencez chaque journée par des séances guidées de yoga et de méditation dans un cadre serein, conçues pour dynamiser votre corps et apaiser votre esprit.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Ateliers de Développement Personnel et Partages en Groupe
-              </h3>
-              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Participez à des ateliers interactifs axés sur la croissance personnelle, la pleine conscience et des discussions de groupe significatives.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Exploration de Djerba avec Promenades et Visites Culturelles
-              </h3>
-              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Découvrez la beauté de Djerba lors de promenades guidées et d'excursions culturelles vers des sites locaux et des attractions.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Expériences de Relaxation Incluant une Demi-Journée Spa
-              </h3>
-              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Profitez de traitements spa revitalisants et de séances de relaxation dans un cadre hôtelier de luxe.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
-                Excursion Désert Optionnelle pour une Expérience Sahara Unique
-              </h3>
-              <p className="leading-relaxed" style={{ color: colors.brown600 }}>
-                Vivez la magie du Sahara avec une excursion optionnelle dans le désert (un coût supplémentaire peut s'appliquer).
-              </p>
-            </div>
+            {program?.details?.map((detail: any, index: number) => (
+              <div key={index}>
+                <h3 className="text-xl font-bold mb-3" style={{ color: colors.brown800 }}>
+                  {detail.title}
+                </h3>
+                <p className="leading-relaxed" style={{ color: colors.brown600 }}>
+                  {detail.description}
+                </p>
+              </div>
+            ))}
           </div>
         </Card>
 
@@ -370,15 +489,7 @@ const ProgramDetailsPage = () => {
             </h2>
           </div>
           <div className="space-y-4">
-            {[
-              "Hébergement dans une maison avec piscine",
-              "Pension complète (petit-déjeuner, déjeuner, dîner)",
-              "Séances de yoga et méditation",
-              "Activités de développement personnel",
-              "Activités de groupe",
-              "Randonnées et visites locales",
-              "Demi-journée spa dans un hôtel",
-            ].map((item, index) => (
+            {program?.inclusions?.map((item: string, index: number) => (
               <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: "#DCFCE7" }}>
                 <CheckCircle2 size={20} style={{ color: "#10b981", flexShrink: 0 }} />
                 <span style={{ color: colors.brown700 }}>{item}</span>
@@ -404,13 +515,7 @@ const ProgramDetailsPage = () => {
             </h2>
           </div>
           <div className="space-y-4">
-            {[
-              "Vols internationaux",
-              "Transferts aéroport (si non précisés)",
-              "Excursion désert (activité optionnelle)",
-              "Dépenses personnelles",
-              "Assurance voyage",
-            ].map((item, index) => (
+            {program?.exclusions?.map((item: string, index: number) => (
               <div key={index} className="flex items-center gap-4 p-3 rounded-lg" style={{ backgroundColor: "#FCE4E4" }}>
                 <XCircle size={20} style={{ color: "#E74C3C", flexShrink: 0 }} />
                 <span style={{ color: colors.brown700 }}>{item}</span>
@@ -436,54 +541,16 @@ const ProgramDetailsPage = () => {
             </h2>
           </div>
           <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                Le séjour est-il adapté aux débutants en yoga ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                Oui, notre retraite accueille les participants de tous les niveaux, du débutant au confirmé. Nos instructeurs adaptent les sessions pour chacun.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-2">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                Combien de participants participent à la retraite ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                Notre retraite est limitée à 10 personnes pour créer une atmosphère intime et permettre une attention personnalisée.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-3">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                Où se déroule l'hébergement ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                L'hébergement se fait dans une belle maison avec piscine, idéalement située à Djerba pour un accès facile aux activités et aux attractions locales.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-4">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                Les repas sont-ils inclus ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                Oui, la pension complète est incluse avec un petit-déjeuner, déjeuner et dîner tous les jours, préparés avec des ingrédients locaux méditerranéens.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-5">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                L'excursion dans le désert est-elle incluse ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                Non, l'excursion dans le désert est une activité optionnelle avec un coût supplémentaire. Contactez-nous pour plus de détails.
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="item-6">
-              <AccordionTrigger style={{ color: colors.brown800 }}>
-                Comment réserver ?
-              </AccordionTrigger>
-              <AccordionContent style={{ color: colors.brown600 }}>
-                Vous pouvez réserver en cliquant sur le bouton "Réserver maintenant" ci-dessous ou en nous contactant directement pour plus d'informations.
-              </AccordionContent>
-            </AccordionItem>
+            {program?.faqs?.map((faq: any, index: number) => (
+              <AccordionItem key={index} value={`item-${index + 1}`}>
+                <AccordionTrigger style={{ color: colors.brown800 }}>
+                  {faq.question}
+                </AccordionTrigger>
+                <AccordionContent style={{ color: colors.brown600 }}>
+                  {faq.answer}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </Card>
 
