@@ -73,7 +73,7 @@ const ProgramDetailsPage = () => {
       location: "Djerba, Tunisie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "856 CHF",
+      price: "722 CHF",
       introduction: "Une retraite bien-être à Djerba conçue pour aider les participants à ralentir, se reconnecter avec eux-mêmes et partager des expériences significatives. La retraite combine des séances de yoga, de la méditation, du développement personnel, une découverte culturelle et des moments de relaxation dans un environnement paisible.",
       highlights: [
         "Retraite bien-être dans un cadre paisible à Djerba",
@@ -158,7 +158,7 @@ const ProgramDetailsPage = () => {
       location: "Palerme, Italie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "1284 CHF",
+      price: "1084 CHF",
       introduction: "Cette retraite à Palerme propose une immersion intimiste mêlant bien-être, exploration personnelle et découverte de l'art de vivre sicilien. Dans un cadre raffiné et apaisant, les participants alternent entre pratiques de yoga, méditation, moments de développement personnel et exploration culturelle de la région. Hébergés dans un hôtel de charme avec piscine, les participants profitent d'une atmosphère élégante et conviviale, idéale pour se ressourcer et découvrir la richesse culturelle et gastronomique de la Sicile.",
       highlights: [
         "Retraite bien-être dans la ville historique de Palerme",
@@ -340,7 +340,7 @@ const ProgramDetailsPage = () => {
           </div>
 
           {/* Info Badges Row */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-3 mb-8">
             <div
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm"
               style={{ backgroundColor: colors.beige100, color: colors.brown700 }}
@@ -378,6 +378,13 @@ const ProgramDetailsPage = () => {
             >
               <span className="font-bold">Prix: {program?.price}</span>
             </div>
+          </div>
+          
+          {/* Currency Conversion Note */}
+          <div className="text-center mb-12">
+            <p className="text-sm" style={{ color: colors.brown600 }}>
+              <span style={{ color: colors.gold600, fontWeight: "500" }}>Note:</span> Les prix affichés sont en CHF. Taux de conversion appliqué: 1 EUR = 0.9025 CHF. Le paiement s'effectuera en CHF lors de la réservation.
+            </p>
           </div>
         </div>
 
