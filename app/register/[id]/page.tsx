@@ -38,6 +38,12 @@ type RegistrationData = {
   specialRequests: string;
 };
 
+// Pricing for the two retraites
+const retraitePrices: Record<string, number> = {
+  "6d8b2f6e-fcef-430e-8331-bb186c441fae": 800, // Retraite à Djerba
+  "2eb64782-9126-4e61-bda8-b200cee20ae5": 1200, // Retraite à Palerme
+};
+
 const RegisterPage = () => {
   const params = useParams();
   const [currentStep, setCurrentStep] = useState<Step>("registration");
@@ -55,13 +61,18 @@ const RegisterPage = () => {
           (p) => (p.id || p.title) === params.id
         );
         if (!found) return;
+        
+        // Use the new pricing for the retraites
+        const programId = found.id || found.title || "";
+        const price = retraitePrices[programId] || found.price ?? 0;
+        
         setProgram({
-          id: found.id || found.title || "",
+          id: programId,
           title: found.title || "",
           description: found.description || "",
           duration: found.duration || "",
           capacity: found.capacity ?? 0,
-          price: found.price ?? 0,
+          price: price,
           instructor: found.instructor || "",
           schedule: found.schedule || "",
           location: {
