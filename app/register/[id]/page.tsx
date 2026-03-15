@@ -64,7 +64,7 @@ const RegisterPage = () => {
         
         // Use the new pricing for the retraites
         const programId = found.id || found.title || "";
-        const price = retraitePrices[programId] || found.price ?? 0;
+        const price = retraitePrices[programId] ?? (found.price ?? 0);
         
         setProgram({
           id: programId,
