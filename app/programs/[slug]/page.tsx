@@ -317,13 +317,23 @@ export default function ProgramPage() {
     );
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
+        <div className="text-center">
+          <p style={{ color: colors.brown600 }}>Chargement du programme...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (error || !program) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <div className="text-red-600 bg-red-100 p-6 rounded-lg max-w-md mx-auto">
             <h3 className="font-bold text-lg mb-2">Erreur</h3>
-            <p>{error}</p>
+            <p>{error || "Programme non trouvé"}</p>
           </div>
           <Button
             onClick={() => router.back()}
@@ -337,8 +347,6 @@ export default function ProgramPage() {
       </div>
     );
   }
-
-
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
@@ -679,5 +687,3 @@ export default function ProgramPage() {
     </div>
   );
 }
-
-export default ProgramDetailsPage;
