@@ -56,13 +56,6 @@ interface ProgramFromAPILocal {
   schedule: string; // <-- simplifié en texte
 }
 
-const ProgramDetailsPage = () => {
-  const router = useRouter();
-  const params = useParams();
-  const [program, setProgram] = useState<ProgramFromAPILocal | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
 export default function ProgramPage() {
   const router = useRouter();
   const params = useParams();
@@ -156,7 +149,7 @@ export default function ProgramPage() {
           answer: "Notre retraite est limitée à 10 personnes pour créer une atmosphère intime et permettre une attention personnalisée.",
         },
         {
-          question: "Où se déroule l'hébergement ?",
+          question: "O�� se déroule l'hébergement ?",
           answer: "L'hébergement se fait dans une belle maison avec piscine, idéalement située à Djerba pour un accès facile aux activités et aux attractions locales.",
         },
         {
@@ -685,6 +678,6 @@ export default function ProgramPage() {
       </div>
     </div>
   );
-};
+}
 
 export default ProgramDetailsPage;
