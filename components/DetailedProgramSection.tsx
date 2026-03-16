@@ -45,7 +45,7 @@ const staticRetraites: ProgramForCard[] = [
       city: "Djerba, Tunisie",
       postalCode: "",
     },
-    images: [],
+    images: ["/djerba/12.jpeg"],
   },
   {
     id: "2eb64782-9126-4e61-bda8-b200cee20ae5",
@@ -61,7 +61,7 @@ const staticRetraites: ProgramForCard[] = [
       city: "Palerme, Italie",
       postalCode: "",
     },
-    images: [],
+    images: ["/palerm/0.jpeg"],
   },
 ];
 
