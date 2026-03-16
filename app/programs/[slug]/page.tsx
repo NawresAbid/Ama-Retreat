@@ -63,6 +63,14 @@ const ProgramDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+export default function ProgramPage() {
+  const router = useRouter();
+  const params = useParams();
+  const [program, setProgram] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   // Static content for both retraites
   const retraiteContent: Record<string, any> = {
     "retraite-a-djerba": {
