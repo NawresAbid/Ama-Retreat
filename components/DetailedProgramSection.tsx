@@ -37,7 +37,7 @@ const staticRetraites: ProgramForCard[] = [
     description: "Yoga, méditation et évasion à Djerba. Une expérience transformatrice dans un cadre paisible.",
     duration: "4 jours",
     capacity: 10,
-    price: 722,
+    price: 800,
     instructor: "Team AMA Retreat",
     schedule: "",
     location: {
@@ -53,7 +53,7 @@ const staticRetraites: ProgramForCard[] = [
     description: "Immersion entre culture sicilienne et développement personnel. Yoga, méditation et découverte culturelle.",
     duration: "5 jours",
     capacity: 10,
-    price: 1084,
+    price: 1200,
     instructor: "Team AMA Retreat",
     schedule: "",
     location: {
@@ -66,25 +66,34 @@ const staticRetraites: ProgramForCard[] = [
 ];
 
 const DetailedProgramSection = () => {
-  const [programs, setPrograms] = useState<ProgramForCard[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [programs, setPrograms] = useState<ProgramForCard[]>(staticRetraites);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const loadPrograms = async () => {
+    const loadImages = async () => {
       try {
-        setLoading(true);
-        // Use static data for the two retraites
-        setPrograms(staticRetraites);
+        // Fetch only images from API
+        const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
+        
+        // Map images to static data
+        const updatedPrograms = staticRetraites.map(staticProgram => {
+          const apiProgram = apiPrograms.find(p => p.id === staticProgram.id);
+          return {
+            ...staticProgram,
+            images: apiProgram?.images || [],
+          };
+        });
+        
+        setPrograms(updatedPrograms);
       } catch (err) {
-        console.error("Erreur de chargement des programmes:", err);
-        setError("Impossible de charger les programmes. Veuillez réessayer plus tard.");
-      } finally {
-        setLoading(false);
+        console.error("Erreur de chargement des images:", err);
+        // Keep static data even if images fail to load
+        setPrograms(staticRetraites);
       }
     };
 
-    loadPrograms();
+    loadImages();
   }, []);
 
   return (

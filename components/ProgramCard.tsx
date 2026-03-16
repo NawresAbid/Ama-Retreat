@@ -216,7 +216,7 @@ const ProgramCard = ({
             <span>{program.capacity} pers. max</span>
           </div>
           <div className="flex items-center space-x-1">
-            <span>{program.price} CHF</span>
+            <span>{program.price}€</span>
           </div>
         </div>
         <Button
