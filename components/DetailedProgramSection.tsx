@@ -29,6 +29,42 @@ interface ProgramForCard {
   images?: string[];
 }
 
+// Static data for the two retraites
+const staticRetraites: ProgramForCard[] = [
+  {
+    id: "6d8b2f6e-fcef-430e-8331-bb186c441fae",
+    title: "Retraite Bien-Être à Djerba",
+    description: "Yoga, méditation et évasion à Djerba. Une expérience transformatrice dans un cadre paisible.",
+    duration: "4 jours",
+    capacity: 10,
+    price: 722,
+    instructor: "Team AMA Retreat",
+    schedule: "",
+    location: {
+      address: "",
+      city: "Djerba, Tunisie",
+      postalCode: "",
+    },
+    images: [],
+  },
+  {
+    id: "2eb64782-9126-4e61-bda8-b200cee20ae5",
+    title: "Retraite Bien-Être à Palerme",
+    description: "Immersion entre culture sicilienne et développement personnel. Yoga, méditation et découverte culturelle.",
+    duration: "5 jours",
+    capacity: 10,
+    price: 1084,
+    instructor: "Team AMA Retreat",
+    schedule: "",
+    location: {
+      address: "",
+      city: "Palerme, Italie",
+      postalCode: "",
+    },
+    images: [],
+  },
+];
+
 const DetailedProgramSection = () => {
   const [programs, setPrograms] = useState<ProgramForCard[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,26 +74,8 @@ const DetailedProgramSection = () => {
     const loadPrograms = async () => {
       try {
         setLoading(true);
-        const apiPrograms: ProgramFromAPI[] = await fetchPrograms();
-
-        const formattedPrograms: ProgramForCard[] = apiPrograms.map((p) => ({
-          id: p.id ?? p.title ?? 'unknown-id',
-          title: p.title ?? 'Titre inconnu',
-          description: p.description,
-          duration: p.duration,
-          capacity: p.capacity,
-          price: p.price,
-          instructor: p.instructor,
-          schedule: p.schedule,
-          location: {
-            address: p.address,
-            city: p.city,
-            postalCode: p.postal_code,
-          },
-          images: p.images || [],
-        }));
-
-        setPrograms(formattedPrograms);
+        // Use static data for the two retraites
+        setPrograms(staticRetraites);
       } catch (err) {
         console.error("Erreur de chargement des programmes:", err);
         setError("Impossible de charger les programmes. Veuillez réessayer plus tard.");
