@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import {
   Card,
@@ -62,6 +62,7 @@ export default function ProgramPage() {
   const [program, setProgram] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   // Static content for both retraites
   const retraiteContent: Record<string, any> = {
@@ -75,19 +76,14 @@ export default function ProgramPage() {
       instructor: "Team AMA Retreat",
       price: "722 CHF",
       images: [
-        "/djerba/0.jpeg",
-        "/djerba/1.jpeg",
-        "/djerba/2.jpeg",
-        "/djerba/3.jpeg",
-        "/djerba/4.jpeg",
-        "/djerba/5.jpeg",
-        "/djerba/6.jpeg",
-        "/djerba/7.jpeg",
-        "/djerba/8.jpeg",
-        "/djerba/9.jpeg",
         "/djerba/10.jpeg",
         "/djerba/11.jpeg",
         "/djerba/12.jpeg",
+        "/djerba/13.jpeg",
+        "/djerba/14.jpeg",
+        "/djerba/15.jpeg",
+        "/djerba/16.jpeg",
+        "/djerba/17.jpeg",
       ],
       introduction: "Une retraite bien-être à Djerba conçue pour aider les participants à ralentir, se reconnecter avec eux-mêmes et partager des expériences significatives. La retraite combine des séances de yoga, de la méditation, du développement personnel, une découverte culturelle et des moments de relaxation dans un environnement paisible.",
       highlights: [
@@ -183,7 +179,6 @@ export default function ProgramPage() {
         "/palerm/5.jpeg",
         "/palerm/6.jpeg",
         "/palerm/7.jpeg",
-        "/palerm/8.jpeg",
       ],
       introduction: "Cette retraite à Palerme propose une immersion intimiste mêlant bien-être, exploration personnelle et découverte de l'art de vivre sicilien. Dans un cadre raffiné et apaisant, les participants alternent entre pratiques de yoga, méditation, moments de développement personnel et exploration culturelle de la région. Hébergés dans un hôtel de charme avec piscine, les participants profitent d'une atmosphère élégante et conviviale, idéale pour se ressourcer et découvrir la richesse culturelle et gastronomique de la Sicile.",
       highlights: [
@@ -288,6 +283,22 @@ export default function ProgramPage() {
     loadProgram();
   }, [params.slug]);
 
+  const handlePrevImage = () => {
+    if (program?.images && program.images.length > 0) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === 0 ? program.images.length - 1 : prevIndex - 1
+      );
+    }
+  };
+
+  const handleNextImage = () => {
+    if (program?.images && program.images.length > 0) {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === program.images.length - 1 ? 0 : prevIndex + 1
+      );
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
@@ -337,14 +348,58 @@ export default function ProgramPage() {
           Retour aux programmes
         </Button>
 
-        {/* Placeholder Section */}
-        <div className="mb-20">
-          <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl" style={{ aspectRatio: "16/9", maxHeight: "500px", backgroundColor: colors.beige100 }}>
-            <div className="w-full h-full flex items-center justify-center">
-              <p style={{ color: colors.brown600 }}>Galerie photos</p>
+        {/* Image Carousel */}
+        {program?.images && program.images.length > 0 && (
+          <div className="mb-20 relative group">
+            <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl" style={{ aspectRatio: "16/9", maxHeight: "500px" }}>
+              <Image
+                src={program.images[currentImageIndex]}
+                alt={`${program.title} - Image ${currentImageIndex + 1}`}
+                fill
+                className="object-cover transition-transform duration-500"
+                priority={currentImageIndex === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+              />
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: `linear-gradient(to bottom, transparent 0%, ${colors.brown800}33 100%)`,
+                }}
+              />
+              
+              {/* Carousel Controls */}
+              <button
+                onClick={handlePrevImage}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+                aria-label="Image précédente"
+              >
+                <ChevronLeft size={24} style={{ color: colors.brown800 }} />
+              </button>
+            
+              <button
+                onClick={handleNextImage}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
+                aria-label="Image suivante"
+              >
+                <ChevronRight size={24} style={{ color: colors.brown800 }} />
+              </button>
+              
+              {/* Dots Indicator */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {program.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentImageIndex ? "w-8 bg-white" : "bg-white/50"
+                    }`}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* Section 1: Title Section */}
         <div className="mb-20">
