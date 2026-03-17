@@ -355,15 +355,16 @@ export default function ProgramPage() {
         </Button>
 
         {/* Image Carousel */}
-        {program?.images && program.images.length > 0 ? (
-          <div className="mb-20 relative group">
-            <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100">
+        {program?.images && program.images.length > 0 && (
+          <div className="mb-20">
+            <div className="relative w-full rounded-3xl overflow-hidden shadow-2xl" style={{ aspectRatio: "16/9", maxHeight: "500px" }}>
               <Image
-                src={program.images[currentImageIndex] || ""}
+                src={program.images[currentImageIndex]}
                 alt={`${program.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-cover transition-transform duration-500"
-                onError={() => console.log("[v0] Failed to load image:", program.images[currentImageIndex])}
+                priority={currentImageIndex === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
               />
               <div
                 className="absolute inset-0"
@@ -371,10 +372,9 @@ export default function ProgramPage() {
                   background: `linear-gradient(to bottom, transparent 0%, ${colors.brown800}33 100%)`,
                 }}
               />
-            </div>
-            
-            {/* Carousel Controls */}
-            <button
+              
+              {/* Carousel Controls */}
+              <button
               onClick={handlePrevImage}
               className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
               aria-label="Image précédente"
@@ -388,25 +388,22 @@ export default function ProgramPage() {
               aria-label="Image suivante"
             >
               <ChevronRight size={24} style={{ color: colors.brown800 }} />
-            </button>
-            
-            {/* Dots Indicator */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-              {program.images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === currentImageIndex ? "w-8 bg-white" : "bg-white/50"
-                  }`}
-                  aria-label={`Go to image ${index + 1}`}
-                />
-              ))}
+              </button>
+              
+              {/* Dots Indicator */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                {program.images.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentImageIndex ? "w-8 bg-white" : "bg-white/50"
+                    }`}
+                    aria-label={`Go to image ${index + 1}`}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ) : (
-          <div className="mb-20 w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 flex items-center justify-center">
-            <p style={{ color: colors.brown600 }}>Images non disponibles</p>
           </div>
         )}
 
