@@ -355,15 +355,15 @@ export default function ProgramPage() {
         </Button>
 
         {/* Image Carousel */}
-        {program?.images && program.images.length > 0 && (
+        {program?.images && program.images.length > 0 ? (
           <div className="mb-20 relative group">
-            <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
+            <div className="relative w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100">
               <Image
-                src={program.images[currentImageIndex]}
+                src={program.images[currentImageIndex] || ""}
                 alt={`${program.title} - Image ${currentImageIndex + 1}`}
                 fill
                 className="object-cover transition-transform duration-500"
-                priority
+                onError={() => console.log("[v0] Failed to load image:", program.images[currentImageIndex])}
               />
               <div
                 className="absolute inset-0"
@@ -403,6 +403,10 @@ export default function ProgramPage() {
                 />
               ))}
             </div>
+          </div>
+        ) : (
+          <div className="mb-20 w-full h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl bg-gray-100 flex items-center justify-center">
+            <p style={{ color: colors.brown600 }}>Images non disponibles</p>
           </div>
         )}
 
