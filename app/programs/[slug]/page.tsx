@@ -305,18 +305,6 @@ export default function ProgramPage() {
     }
   };
 
-  return (
-    <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
-        <div
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center"
-          style={{ color: colors.brown600 }}
-        >
-          <p className="text-xl">Chargement du programme...</p>
-        </div>
-      </div>
-    );
-  }
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
