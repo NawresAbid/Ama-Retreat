@@ -366,7 +366,7 @@ export default function ProgramPage() {
                   background: `linear-gradient(to bottom, transparent 0%, ${colors.brown800}33 100%)`,
                 }}
               />
-              
+
               {/* Carousel Controls */}
               <button
                 onClick={handlePrevImage}
@@ -375,7 +375,7 @@ export default function ProgramPage() {
               >
                 <ChevronLeft size={24} style={{ color: colors.brown800 }} />
               </button>
-            
+
               <button
                 onClick={handleNextImage}
                 className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white rounded-full p-2 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
@@ -383,16 +383,15 @@ export default function ProgramPage() {
               >
                 <ChevronRight size={24} style={{ color: colors.brown800 }} />
               </button>
-              
+
               {/* Dots Indicator */}
               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-                {program.images.map((_, index) => (
+                {program.images.map((image: string, index: number) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      index === currentImageIndex ? "w-8 bg-white" : "bg-white/50"
-                    }`}
+                    className={`w-2 h-2 rounded-full transition-all ${index === currentImageIndex ? "w-8 bg-white" : "bg-white/50"
+                      }`}
                     aria-label={`Go to image ${index + 1}`}
                   />
                 ))}
@@ -464,7 +463,7 @@ export default function ProgramPage() {
               <span className="font-bold">Prix: {program?.price}</span>
             </div>
           </div>
-          
+
           {/* Currency Conversion Note */}
           <div className="text-center mb-12">
             <p className="text-sm" style={{ color: colors.brown600 }}>
