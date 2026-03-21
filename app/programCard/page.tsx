@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 // Importation du type Program depuis votre fichier utils
-import { fetchPrograms, type Program } from "@/utils/program"; 
+import { fetchPrograms, type Program, getSlugFromId } from "@/utils/program"; 
 
 const colors = {
   beige50: "#FDF8F0",
@@ -84,7 +84,13 @@ function ProgramCard({ program, router }: { program: Program; router: AppRouterI
   // Sécurisation de la navigation : si pas d'ID, on ne fait rien
   const handleViewDetails = () => {
     if (program.id) {
-      router.push(`/programs/${program.id}`);
+      const slug = getSlugFromId(program.id);
+      if (slug) {
+        router.push(`/programs/${slug}`);
+      } else {
+        // Fallback to ID if slug not found
+        router.push(`/programs/${program.id}`);
+      }
     }
   };
 

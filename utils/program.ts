@@ -107,3 +107,24 @@ export async function getAllPrograms() {
   }
   return data; // [{ id: '1' }, { id: '2' }, ...]
 }
+
+// Slug mapping for SEO-friendly URLs
+const slugMapping: Record<string, string> = {
+  '6d8b2f6e-fcef-430e-8331-bb186c441fae': 'retraite-a-djerba',
+  '2eb64782-9126-4e61-bda8-b200cee20ae5': 'retraite-a-palerme',
+};
+
+const reverseSlugMapping: Record<string, string> = {
+  'retraite-a-djerba': '6d8b2f6e-fcef-430e-8331-bb186c441fae',
+  'retraite-a-palerme': '2eb64782-9126-4e61-bda8-b200cee20ae5',
+};
+
+// Get the ID from a slug
+export const getIdFromSlug = (slug: string): string | null => {
+  return reverseSlugMapping[slug] || null;
+};
+
+// Get the slug from an ID
+export const getSlugFromId = (id: string): string | null => {
+  return slugMapping[id] || null;
+};
