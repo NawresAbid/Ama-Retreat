@@ -247,7 +247,6 @@ const retraiteContent: Record<string, any> = {
       ],
     },
   };
-};
 
 export default function ProgramPage({ params }: { params: { slug: string } }) {
   const router = useRouter();
