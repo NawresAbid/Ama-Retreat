@@ -247,21 +247,6 @@ const retraiteContent: Record<string, any> = {
       ],
     },
   };
-
-  useEffect(() => {
-    const loadProgram = () => {
-      try {
-        setLoading(true);
-        const slug = params.slug as string;
-        const content = retraiteContent[slug];
-
-        if (content) {
-          setProgram(content);
-        } else {
-          setError("Programme non trouvé.");
-        }
-      } catch (err) {
-        console.error("Erreur de chargement du programme:", err);
 };
 
 export default function ProgramPage({ params }: { params: { slug: string } }) {
