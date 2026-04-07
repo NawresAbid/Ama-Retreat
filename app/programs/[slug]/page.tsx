@@ -262,13 +262,7 @@ const retraiteContent: Record<string, any> = {
         }
       } catch (err) {
         console.error("Erreur de chargement du programme:", err);
-        setError(
-          "Impossible de charger le programme. Veuillez réessayer plus tard."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+};
 
 export default function ProgramPage({ params }: { params: { slug: string } }) {
   const router = useRouter();
