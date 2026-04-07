@@ -37,7 +37,7 @@ const staticRetraites: ProgramForCard[] = [
     description: "Yoga, méditation et évasion à Djerba. Une expérience transformatrice dans un cadre paisible.",
     duration: "4 jours",
     capacity: 10,
-    price: 800,
+    price: 810,
     instructor: "Team AMA Retreat",
     schedule: "",
     location: {
@@ -53,7 +53,7 @@ const staticRetraites: ProgramForCard[] = [
     description: "Immersion entre culture sicilienne et développement personnel. Yoga, méditation et découverte culturelle.",
     duration: "5 jours",
     capacity: 10,
-    price: 1200,
+    price: 1297,
     instructor: "Team AMA Retreat",
     schedule: "",
     location: {

@@ -38,10 +38,10 @@ type RegistrationData = {
   specialRequests: string;
 };
 
-// Pricing for the two retraites (converted from EUR to CHF)
+// Pricing for the two retraites (in CHF)
 const retraitePrices: Record<string, number> = {
-  "6d8b2f6e-fcef-430e-8331-bb186c441fae": 722, // Retraite à Djerba (800 EUR)
-  "2eb64782-9126-4e61-bda8-b200cee20ae5": 1084, // Retraite à Palerme (1200 EUR)
+  "6d8b2f6e-fcef-430e-8331-bb186c441fae": 750, // Retraite à Djerba (810 EUR)
+  "2eb64782-9126-4e61-bda8-b200cee20ae5": 1297, // Retraite à Palerme (1297 EUR)
 };
 
 const RegisterPage = () => {

@@ -74,7 +74,7 @@ export default function ProgramPage() {
       location: "Djerba, Tunisie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "722 CHF",
+      price: "810€ (750 CHF)",
       images: [
         "/djerba/10.jpeg",
         "/djerba/11.jpeg",
@@ -169,7 +169,7 @@ export default function ProgramPage() {
       location: "Palerme, Italie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "1084 CHF",
+      price: "1297€ (1297 CHF)",
       images: [
         "/palerm/0.jpeg",
         "/palerm/1.jpeg",
