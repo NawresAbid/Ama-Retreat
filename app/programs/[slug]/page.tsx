@@ -1,7 +1,5 @@
-"use client";
-
-import { useState, useEffect } from "react";
-import { useRouter, useParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import {
@@ -56,16 +54,8 @@ interface ProgramFromAPILocal {
   schedule: string; // <-- simplifié en texte
 }
 
-export default function ProgramPage() {
-  const router = useRouter();
-  const params = useParams();
-  const [program, setProgram] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Static content for both retraites
-  const retraiteContent: Record<string, any> = {
+// Static content for both retraites
+const retraiteContent: Record<string, any> = {
     "retraite-a-djerba": {
       id: "6d8b2f6e-fcef-430e-8331-bb186c441fae",
       title: "Retraite Bien-Être à Djerba – Yoga, Méditation et Évasion",
@@ -280,8 +270,32 @@ export default function ProgramPage() {
       }
     };
 
-    loadProgram();
-  }, [params.slug]);
+export default function ProgramPage({ params }: { params: { slug: string } }) {
+  const router = useRouter();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const program = retraiteContent[params.slug];
+
+  if (!program) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <div className="text-red-600 bg-red-100 p-6 rounded-lg max-w-md mx-auto">
+            <h3 className="font-bold text-lg mb-2">Erreur</h3>
+            <p>Programme non trouvé</p>
+          </div>
+          <Button
+            onClick={() => router.back()}
+            className="mt-6"
+            style={{ backgroundColor: colors.gold600, color: colors.white }}
+          >
+            <ArrowLeft className="mr-2" size={16} />
+            Retour
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const handlePrevImage = () => {
     if (program?.images && program.images.length > 0) {
@@ -298,37 +312,6 @@ export default function ProgramPage() {
       );
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
-        <div className="text-center">
-          <p style={{ color: colors.brown600 }}>Chargement du programme...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !program) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <div className="text-red-600 bg-red-100 p-6 rounded-lg max-w-md mx-auto">
-            <h3 className="font-bold text-lg mb-2">Erreur</h3>
-            <p>{error || "Programme non trouvé"}</p>
-          </div>
-          <Button
-            onClick={() => router.back()}
-            className="mt-6"
-            style={{ backgroundColor: colors.gold600, color: colors.white }}
-          >
-            <ArrowLeft className="mr-2" size={16} />
-            Retour
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
