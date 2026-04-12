@@ -56,16 +56,8 @@ interface ProgramFromAPILocal {
   schedule: string; // <-- simplifié en texte
 }
 
-export default function ProgramPage() {
-  const router = useRouter();
-  const params = useParams();
-  const [program, setProgram] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  // Static content for both retraites
-  const retraiteContent: Record<string, any> = {
+// Static content for both retraites
+const retraiteContent: Record<string, any> = {
     "retraite-a-djerba": {
       id: "6d8b2f6e-fcef-430e-8331-bb186c441fae",
       title: "Retraite Bien-Être à Djerba – Yoga, Méditation et Évasion",
@@ -74,7 +66,7 @@ export default function ProgramPage() {
       location: "Djerba, Tunisie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "722 CHF",
+      price: "810€ (750 CHF)",
       images: [
         "/djerba/10.jpeg",
         "/djerba/11.jpeg",
@@ -169,7 +161,7 @@ export default function ProgramPage() {
       location: "Palerme, Italie",
       capacity: 10,
       instructor: "Team AMA Retreat",
-      price: "1084 CHF",
+      price: "1297€ (1297 CHF)",
       images: [
         "/palerm/0.jpeg",
         "/palerm/1.jpeg",
@@ -258,30 +250,56 @@ export default function ProgramPage() {
     },
   };
 
+export default function ProgramPage() {
+  const router = useRouter();
+  const params = useParams();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
-    const loadProgram = () => {
-      try {
-        setLoading(true);
-        const slug = params.slug as string;
-        const content = retraiteContent[slug];
+    setMounted(true);
+  }, []);
 
-        if (content) {
-          setProgram(content);
-        } else {
-          setError("Programme non trouvé.");
-        }
-      } catch (err) {
-        console.error("Erreur de chargement du programme:", err);
-        setError(
-          "Impossible de charger le programme. Veuillez réessayer plus tard."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+  const program = retraiteContent[params.slug as string];
 
-    loadProgram();
-  }, [params.slug]);
+  if (!mounted) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          {/* Skeleton loader */}
+          <div className="animate-pulse">
+            <div className="h-96 bg-gray-300 rounded-3xl mb-20"></div>
+            <div className="space-y-6">
+              <div className="h-12 bg-gray-300 rounded-lg w-3/4"></div>
+              <div className="h-6 bg-gray-200 rounded w-full"></div>
+              <div className="h-6 bg-gray-200 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!program) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
+          <div className="text-red-600 bg-red-100 p-6 rounded-lg max-w-md mx-auto">
+            <h3 className="font-bold text-lg mb-2">Erreur</h3>
+            <p>Programme non trouvé</p>
+          </div>
+          <Button
+            onClick={() => router.back()}
+            className="mt-6"
+            style={{ backgroundColor: colors.gold600, color: colors.white }}
+          >
+            <ArrowLeft className="mr-2" size={16} />
+            Retour
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   const handlePrevImage = () => {
     if (program?.images && program.images.length > 0) {
@@ -298,37 +316,6 @@ export default function ProgramPage() {
       );
     }
   };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: colors.beige50 }}>
-        <div className="text-center">
-          <p style={{ color: colors.brown600 }}>Chargement du programme...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !program) {
-    return (
-      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <div className="text-red-600 bg-red-100 p-6 rounded-lg max-w-md mx-auto">
-            <h3 className="font-bold text-lg mb-2">Erreur</h3>
-            <p>{error || "Programme non trouvé"}</p>
-          </div>
-          <Button
-            onClick={() => router.back()}
-            className="mt-6"
-            style={{ backgroundColor: colors.gold600, color: colors.white }}
-          >
-            <ArrowLeft className="mr-2" size={16} />
-            Retour
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
