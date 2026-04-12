@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
@@ -254,8 +254,31 @@ export default function ProgramPage() {
   const router = useRouter();
   const params = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const program = retraiteContent[params.slug as string];
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen" style={{ backgroundColor: colors.beige50 }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          {/* Skeleton loader */}
+          <div className="animate-pulse">
+            <div className="h-96 bg-gray-300 rounded-3xl mb-20"></div>
+            <div className="space-y-6">
+              <div className="h-12 bg-gray-300 rounded-lg w-3/4"></div>
+              <div className="h-6 bg-gray-200 rounded w-full"></div>
+              <div className="h-6 bg-gray-200 rounded w-5/6"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!program) {
     return (
