@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, User, Sun, Users, CheckCircle2, Compass, Star, HelpCircle, XCircle, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import {
@@ -250,11 +250,12 @@ const retraiteContent: Record<string, any> = {
     },
   };
 
-export default function ProgramPage({ params }: { params: { slug: string } }) {
+export default function ProgramPage() {
   const router = useRouter();
+  const params = useParams();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const program = retraiteContent[params.slug];
+  const program = retraiteContent[params.slug as string];
 
   if (!program) {
     return (
